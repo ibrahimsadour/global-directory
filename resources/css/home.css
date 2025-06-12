@@ -10772,7 +10772,7 @@ img{
 }
 .breadcrumb{
     background-color:#cccccc54;
-    padding:125px 50px 50px;
+    padding:100px 50px 15px;
     text-align:center
 }
 .breadcrumb ul{
@@ -10781,14 +10781,14 @@ img{
 }
 @media screen and (max-width: 576px){
     .breadcrumb{
-        padding-top:125px;
+        padding-top:100px;
         padding-right:20px;
         padding-right:20px
     }
 }
 @media screen and (max-width: 356px){
     .breadcrumb{
-        padding-top:125px;
+        padding-top:100px;
         padding-right:20px;
         padding-right:20px
     }
@@ -10808,7 +10808,7 @@ img{
 .breadcrumb ul{
     float:none;
     margin:auto;
-    width:auto
+    /* width:auto */
 }
 .breadcrumb ul li{
     float:right;
@@ -10817,7 +10817,7 @@ img{
     font-size:1rem
 }
 .breadcrumb ul li svg{
-    width:50px;
+    width:30px;
     text-align:center;
     color:#444;
     font-weight:600;
@@ -11609,7 +11609,7 @@ footer .subcrib .input-group-text i{
     }
 }
 .single-container{
-    padding-top:30px
+    padding-top:10px
 }
 .businesscover{
     background-color:#fff;

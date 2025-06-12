@@ -1,10 +1,69 @@
 @extends('layouts.app')
-@if(isset($tag))
-    @section('title',$business->name)
-    {{-- @section('seo_keyword',$tag ->seo_keyword)
-    @section('seo_description',$tag ->seo_description)
-    @section('seo_url', URL::route('tag.index',$tag ->slug) ) --}}
+
+@if(isset($business))
+   @section('title', $seo_title)
+   @section('seo_description', $seo_description)
+   @section('seo_keyword', $seo_keywords)
+   @section('og:image', $seo_image)
 @endif
+
+@section('structured_data')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "{{ $business->name }}",
+  "description": "{{ $seo_description }}",
+  "url": "{{ url()->current() }}",
+  "image": "{{ $business->image ? asset('storage/' . $business->image) : asset('storage/site-settings/default-banner.webp') }}",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "{{ $business->governorate->name ?? '' }}",
+    "addressRegion": "{{ $business->location->area ?? '' }}",
+    "addressCountry": "KW"
+  },
+  "telephone": "{{ $business->phone }}",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "257"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "الرئيسية",
+      "item": "{{ url('/') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ $business->governorate->name ?? 'غير محددة' }}",
+      "item": "{{ route('governorates.show', $business->governorate->slug ?? '') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ $business->category->name ?? 'غير محددة' }}",
+      "item": "{{ route('categories.show', $business->category->slug ?? '') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "{{ $business->name }}",
+      "item": "{{ url()->current() }}"
+    }
+  ]
+}
+</script>
+@endsection
 
 
 @section('content')
@@ -15,6 +74,7 @@
    //  ['title' => 'كل الفئات', 'url' => url('/cat')],
     ['title' => $business->name]
 ]" />
+
 
 {{-- Begin Second section --}}
 <div class="container-fluid single-container" bis_skin_checked="1">
@@ -30,7 +90,7 @@
                <div class="business-info" bis_skin_checked="1">
 
                   @if(!empty($business->name))
-                     <h2>{{ $business->name }}</h2>
+                     <h1>{{ $business->name }}</h1>
                   @endif
 
                   @if(!empty($business->description))
@@ -66,20 +126,25 @@
                               // إزالة www. من البداية إذا موجود
                               $host = preg_replace('/^www\./', '', $host);
                               @endphp
-                           <li>
-                              <a href="{{ $business->website }}" target="_blank" rel="nofollow">
-                                    <i class="bi bi-globe"></i> {{ $host }}
-                              </a>
-                           </li>
+                              @if(!empty($business->website))
+                              <li>
+                                 <a href="{{ $business->website }}" target="_blank" rel="nofollow">
+                                       <i class="bi bi-globe"></i> {{ $host }}
+                                 </a>
+                              </li>
+                              @endif
                         @endif
 
                      </ul>
                   </div>
                   <div class="col-lg-7 col-md-12" bis_skin_checked="1">
                      <ul>
-                        <li> <i class="bi bi-map"></i> الكويت </li>
-                        <li class="text-truncate"><i class="bi bi-geo-alt"></i> {{ $business->address ? $business->address : '' }}</li>
-
+                        @if(!setting('site_address'))
+                           <li> <i class="bi bi-map"></i>{{setting('site_address')}} </li>
+                        @endif
+                        @if(!empty($business->address))
+                           <li class="text-truncate"><i class="bi bi-geo-alt"></i> {{ $business->address ? $business->address : '' }}</li>
+                        @endif
                         @if(!empty($business->whatsapp))
                            @php
                               // إزالة أي مسافات أو رموز زائدة من الرقم
@@ -472,7 +537,7 @@
             </div>
 
             {{-- تم تعطيله الان / اتصل بنا --}} 
-            <div x-data="contactForm" class="overview services shadow-sm no-margin d-none " bis_skin_checked="1">
+            {{-- <div x-data="contactForm" class="overview services shadow-sm no-margin d-none " bis_skin_checked="1">
                <h2 class="border-bottom">اتصل بنا</h2>
                <form @submit.prevent="handleSubmit">
                   <div x-show="success" class="alert alert-success m-3 mb-0" role="alert" bis_skin_checked="1" style="display: none;">
@@ -491,7 +556,7 @@
                      <button x-show="process" disabled="true" class="btn btn-primary mt-3 w-100" style="display: none;">Send Message</button>
                   </div>
                </form>
-            </div>
+            </div> --}}
 
             {{-- social Links --}}
             <div class="overview services shadow-sm no-margin " bis_skin_checked="1">
@@ -567,8 +632,8 @@
 
             {{-- اوقات الدوام --}}
             <div class="overview services shadow-sm no-margin " bis_skin_checked="1">
-                  @php
-                     $days = [
+               @php
+                  $days = [
                         'monday'    => 'الإثنين',
                         'tuesday'   => 'الثلاثاء',
                         'wednesday' => 'الأربعاء',
@@ -576,48 +641,47 @@
                         'friday'    => 'الجمعة',
                         'saturday'  => 'السبت',
                         'sunday'    => 'الأحد',
-                     ];
+                  ];
 
-                     function arabic_time($time) {
+                  $arabic_time = function($time) {
                         $formatted = \Carbon\Carbon::parse($time)->format('h:i A');
                         $formatted = str_replace('AM', ' صباحاً ', $formatted);
                         $formatted = str_replace('PM', ' مساءً ', $formatted);
                         return $formatted;
-                     }
+                  };
 
-                     // التحقق إذا يوجد يوم واحد على الأقل فيه وقت فتح وإغلاق
-                     $has_open_days = $business->hours->whereNotNull('open_time')
-                                                      ->whereNotNull('close_time')
-                                                      ->count() > 0;
-                  @endphp
+                  // التحقق إذا يوجد يوم واحد على الأقل فيه وقت فتح وإغلاق
+                  $has_open_days = $business->hours->whereNotNull('open_time')
+                                                   ->whereNotNull('close_time')
+                                                   ->count() > 0;
+               @endphp
 
-                  @if($has_open_days)
-                     {{-- اوقات الدوام --}}
-                     <div class="overview services shadow-sm no-margin">
+               @if($has_open_days)
+                  {{-- اوقات الدوام --}}
+                  <div class="overview services shadow-sm no-margin">
                         <h2 class="border-bottom">اوقات الدوام</h2>
                         <ul class="list-group">
-                              @foreach($business->hours as $hour)
-                                 <li class="list-group-item">
+                           @foreach($business->hours as $hour)
+                              <li class="list-group-item">
                                     {{ $days[$hour->day] ?? $hour->day }}
                                     @if($hour->open_time && $hour->close_time)
-                                          <span>
-                                             {{ arabic_time($hour->open_time) }}
-                                             -
-                                             {{ arabic_time($hour->close_time) }}
-                                          </span>
+                                       <span>
+                                          {{ $arabic_time($hour->open_time) }}
+                                          -
+                                          {{ $arabic_time($hour->close_time) }}
+                                       </span>
                                     @else
-                                          <span style="color: red; font-weight: bold;">
-                                             مغلق
-                                          </span>
+                                       <span style="color: red; font-weight: bold;">
+                                          مغلق
+                                       </span>
                                     @endif
-                                 </li>
-                              @endforeach
+                              </li>
+                           @endforeach
                         </ul>
-                     </div>
-                  @endif
-
-
+                  </div>
+               @endif
             </div>
+
 
          </div>
       </div>

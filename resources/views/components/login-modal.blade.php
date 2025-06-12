@@ -8,10 +8,10 @@
         </div>
         <center>
         <div class="modal-footer">
-            <a href="login.html">
+            <a href="#">
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">تسجيل الدخول</button>
             </a>
-            <a href="registration.html">
+            <a href="#">
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal"> انشاء حساب جديد</button>
             </a>
         </div>

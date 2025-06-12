@@ -1,5 +1,32 @@
 @extends('layouts.app')
-@section('title', 'الرئيسية')
+
+{{-- السيو الافتراضي الخاص بالموقع --}}
+
+@section('structured_data')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ setting('site_title', 'Global Directory') }}",
+  "url": "{{ url('/') }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ url('/') }}?s={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "{{ setting('site_title', 'Global Directory') }}",
+  "url": "{{ url('/') }}",
+  "logo": "{{ setting('site_logo') ? asset('storage/' . setting('site_logo')) : asset('storage/site-settings/default-logo.webp') }}"
+}
+</script>
+@endsection
 
 @section('content')
 

@@ -1,11 +1,8 @@
 @extends('layouts.app')
-@if(isset($tag))
-    @section('title','كل الفئات')
-    {{-- @section('seo_keyword',$tag ->seo_keyword)
-    @section('seo_description',$tag ->seo_description)
-    @section('seo_url', URL::route('tag.index',$tag ->slug) ) --}}
-@endif
-
+@section('title',setting('site_title').' - كل الفئات')
+@section('seo_keyword',setting('seo_meta_keywords'))
+@section('seo_description',setting('seo_meta_description'))
+@section('og:image', asset('storage/site-settings/default-banner.webp'))
 
 @section('content')
 
@@ -26,7 +23,7 @@
                      <h2>تصفية حسب الفئات <i @click="filterCat()" class="bi cp float-end bi-funnel"></i></h2>
                   </div>
                   <div id="cfilter" class="filter-body">
-                     <ul x-data="{url: 'https://directory.smarteyeapps.com' }">
+                     <ul x-data="#">
                         @foreach($categories as $category)  
 
                             <li class="cp">
@@ -41,7 +38,7 @@
                   <div  x-data="{clocation}" class="filter-head border-top border-bottom">
                      <h2>تصفية حسب التقييمات<i @click="filterRating()" class="bi cp float-end bi-funnel"></i></h2>
                   </div>
-                  <div id="clocation" x-data="{url: 'https://directory.smarteyeapps.com/cat/restuarent123' }" class="filter-body">
+                  <div id="clocation" x-data="#" class="filter-body">
                      <ul class="rev">
                         <li>
                            <input checked  @click="ratingFilterClick(url, 0, 'list', '')" class="form-check-input" type="radio" name="rating" id="rating">
@@ -101,10 +98,10 @@
                </div>
                <div class="col-6">
                   <ul>
-                     <a href="restuarent12343ce.html?rating=0&amp;typ=list&amp;key=">
+                     <a href="">
                         <li  class="border-primary" ><i class="bi text-primary bi-list-ul"></i></li>
                      </a>
-                     <a href="restuarent123d7fb.html?rating=0&amp;typ=grid&amp;key=">
+                     <a href="">
                         <li  class="ms-2"><i class="bi bi-grid"></i></li>
                      </a>
                   </ul>
@@ -112,38 +109,52 @@
             </div>
             @foreach($businesses as $business)  
                 <div class="row shadow-sm list-row border rounded">
-                <div class="col-lg-4  pe-0 img-col">
-                    <a href="{{ url('business/' . $business->slug) }}">
-                    <img  class="rounded" src="{{ asset('storage/' . $business->image) }}" alt="{{ $business->name }}">
-                    </a>
-                </div>
+                  @if($business->image)
+                     <div class="col-lg-4  pe-0 img-col">
+                        <a href="{{ url('business/' . $business->slug) }}">
+                           <img  class="rounded" src="{{ asset('storage/' . $business->image) }}"  title="{{ $business->name ?? '-' }}" alt="{{ $business->name ?? '-' }}" />
+                        </a>
+                     </div>
+                  @endif
                 <div class="col-lg-8 detail-col">
                     <a href="{{ url('business/' . $business->slug) }}">
                         <div class="bofy-col">
-                            <h2 class="text-truncate">{{ $business->name }} 
+                           @if(!empty($business->name))
+                              <h2 class="text-truncate">{{ $business->name }} 
+                           @endif
                             </i>
                             </h2>
+                            @if(!empty($business->description))
                             <p class="text-truncate">{{ $business->description }}</p>
-                            <ul class="row ms-1">
-                            <li class="col-md-4"><i class="bi bi-telephone"></i> {{ $business->phone }}</li>
-                            <li class="col-md-8"><i class="bi bi-envelope"></i> {{ $business->email }}</li>
-                            </ul>
-                            <ul class="row ms-1">
-                            <li class="col-md-4"> <i class="bi bi-map"></i> {{ $business->country ?? '' }}</li>
-                            <li class="col-md-8">
-                                <p class="text-truncate"><i class="bi bi-geo-alt"></i>{{ $business->address }}</p>
-                            </li>
+                            @endif
+                           <ul class="row ms-1">
+                              @if(!empty($business->phone))
+                              <li class="col-md-4"><i class="bi bi-telephone"></i> {{ $business->phone }}</li>
+                              @endif
+                              @if(!empty($business->email))
+                              <li class="col-md-8"><i class="bi bi-envelope"></i> {{ $business->email }}</li>
+                              @endif
+                              </ul>
+                              <ul class="row ms-1">
+                              @if(!empty($business->governorate->name))
+                              <li class="col-md-4"> <i class="bi bi-map"></i> {{ $business->governorate->name ?? '' }}</li>
+                              @endif
+                              @if(!empty($business->address))
+                              <li class="col-md-8">
+                                 <p class="text-truncate"><i class="bi bi-geo-alt"></i>{{ $business->address }}</p>
+                              </li>
+                              @endif
                             </ul>
                         </div>
                     </a>
                     <div  class="footcover">
                         <ul>
                             <li class="rev">
-                            <i class="bi  act  bi-star-fill"></i>
-                            <i class="bi  act  bi-star-fill"></i>
-                            <i class="bi  act  bi-star-fill"></i>
-                            <i class="bi  act  bi-star-fill"></i>
-                            <i class="bi  act  bi-star-fill"></i>
+                            <i class="bi  bi-star-fill"></i>
+                            <i class="bi  bi-star-fill"></i>
+                            <i class="bi  bi-star-fill"></i>
+                            <i class="bi  bi-star-fill"></i>
+                            <i class="bi  bi-star-fill"></i>
                             <small>{{ $business->rating ?? '0.0' }} ({{ $business->reviews_count ?? 0 }} Reviews)</small>
                             </li>
                             <li class="">

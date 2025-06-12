@@ -50,7 +50,7 @@ class GovernorateController extends Controller
         return view('governorate.show', [
             'governorate' => $governorate,
             'businesses' => $businesses,
-            'governorates   ' => $governorates 
+            'governorates' => $governorates 
         ]);
     }
     
