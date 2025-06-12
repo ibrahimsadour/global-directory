@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
+        @vite(['resources/css/home.css', 'resources/js/home.js'])
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

@@ -27,6 +27,7 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Components\Actions\Action;
 use App\Models\User;
+use Filament\Tables\Columns\ToggleColumn;
 
 class BusinessResource extends Resource
 {
@@ -407,17 +408,23 @@ class BusinessResource extends Resource
                     ->sortable()
                     ->badge(),
 
-                Tables\Columns\BadgeColumn::make('is_approved')
+                ToggleColumn::make('is_approved')
                     ->label('مقبول؟')
-                    ->formatStateUsing(fn ($state) => $state ? 'مقبول' : 'غير مقبول')
-                    ->colors([
-                        'success' => fn ($state) => $state,
-                        'danger' => fn ($state) => !$state,
-                    ]),
+                    ->onIcon('heroicon-o-check-circle')
+                    ->offIcon('heroicon-o-x-circle')
+                    ->onColor('success')
+                    ->offColor('danger'),
 
-                Tables\Columns\BadgeColumn::make('is_active')
+                ToggleColumn::make('is_active')
                     ->label('مفعل؟')
-                    ->formatStateUsing(fn ($state) => $state ? 'مفعل' : 'غير مفعل')
+                    ->onIcon('heroicon-o-check-circle')
+                    ->offIcon('heroicon-o-x-circle')
+                    ->onColor('success')
+                    ->offColor('danger'),
+
+                Tables\Columns\BadgeColumn::make('is_featured')
+                    ->label('مميز')
+                    ->formatStateUsing(fn ($state) => $state ? 'مميز' : 'غير مميز')
                     ->colors([
                         'success' => fn ($state) => $state,
                         'danger' => fn ($state) => !$state,

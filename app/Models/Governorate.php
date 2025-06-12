@@ -19,9 +19,17 @@ class Governorate extends Model
     ];
     protected $withCount = ['locations'];
 
+
+    // كل محافظة لها اكثر من مدينة
     public function locations(): HasMany
     {
         return $this->hasMany(Location::class);
+    }
+
+    //  كل محافظة لها اكثر من اعلان 
+    public function businesses()
+    {
+        return $this->hasMany(Business::class);
     }
 
     // السيو
