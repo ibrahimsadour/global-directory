@@ -3,7 +3,7 @@
     <div class="row">
         <div  class="col-lg-3 col-md-4 logo">
             <a href="{{ route('home.index') }}" class="cp">
-            <img src="{{ setting('site_logo') ? asset('storage/' . setting('site_logo')) : asset('storage/site-settings/default-logo.webp') }}" alt="{{ setting('site_title', 'Global Directory') }}" title="{{ setting('site_title', 'Global Directory') }}" style="height: 40px;">
+            <img src="{{ setting('site_logo') ? asset('storage/' . setting('site_logo')) : asset('storage/site-settings/default-logo.webp') }}" alt="{{ setting('site_title', 'Global Directory') }}" title="{{ setting('site_title', 'Global Directory') }}" style="height: 50px;">
             </a> 
             <a class="d-md-none small-menu" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <button style="font-weight: 500;" type="button" class="btn btn-outline-primary">انشر نشاطك تجاري ✚</button>

@@ -27,6 +27,8 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
+        {{-- ايقونة الموقع --}}
+        <link rel="icon" type="image/png" href="{{ setting('site_favicon') ? asset('storage/' . setting('site_favicon')) : asset('storage/site-settings/site_favicon') }}">
 
     
         <script>
