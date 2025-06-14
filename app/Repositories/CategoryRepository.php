@@ -5,10 +5,13 @@ use App\Models\Category;
 
 class CategoryRepository
 {
-    public function getActiveCategories()
-    {
-        return Category::where('is_active', 1)
-            ->orderBy('order', 'asc')
-            ->get();
-    }
+public function getActiveCategories()
+{
+    return Category::with('children')
+        ->where('is_active', 1)
+        ->whereNull('parent_id')
+        ->orderBy('order', 'asc')
+        ->get();
+}
+
 }

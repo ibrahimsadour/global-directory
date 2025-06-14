@@ -55,17 +55,31 @@
                   <div x-data="{cfilter}" class="filter-head">
                      <h2>تصفية حسب الفئات <i @click="filterCat()" class="bi cp float-end bi-funnel"></i></h2>
                   </div>
+
                   <div id="cfilter" class="filter-body">
-                     <ul x-data="">
-                        @foreach($categories as $category)  
+                     <ul>
+                        @foreach($categories as $category)
+                              @if(is_null($category->parent_id)) {{-- فقط الفئات الرئيسية --}}
+                                 <li class="cp fw-bold">
+                                    <a href="{{ route('categories.show', $category->slug) }}" style="font-weight: 700;">
+                                          {{ $category->name }}
+                                    </a>
+                                 </li>
 
-                            <li class="cp">
-                            <a href="{{ route('categories.show', $category->slug) }}">
-                            <input  checked  @click="catFilterClick(url, 'restuarent123', 0, 'list', '')" class="form-check-input" type="radio" name="filtercat" id="filtercat"> {{ $category->name }}
-                            </a> 
-                            </li>
+                                 {{-- عرض الفئات الفرعية --}}
+                                 @if($category->children && $category->children->count())
+                                    <ul class="ms-4">
+                                          @foreach($category->children as $child)
+                                             <li class="cp">
+                                                <a href="{{ route('categories.show', $child->slug) }}" style=" margin-right: 10px; ">
+                                                      - {{ $child->name }}
+                                                </a>
+                                             </li>
+                                          @endforeach
+                                    </ul>
+                                 @endif
+                              @endif
                         @endforeach
-
                      </ul>
                   </div>
                   <div  x-data="{clocation}" class="filter-head border-top border-bottom">

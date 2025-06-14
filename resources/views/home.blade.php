@@ -52,11 +52,15 @@
                             <div class="col-md-3 no-padding">
                                 <select name="cat" class="form-control selcmk">
                                     <option value="">اختر الفئة</option>
-                                    @if($categories && $categories->count()) @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach @else
-                                    <option disabled selected>لا توجد فئات متاحة</option>
-                                    @endif
+                                        @if($categories && $categories->count())
+                                            @foreach($categories as $category)
+                                                @if(is_null($category->parent_id))
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <option disabled selected>لا توجد فئات متاحة</option>
+                                        @endif
                                 </select>
                             </div>
                             <div class="col-md-6 no-padding">

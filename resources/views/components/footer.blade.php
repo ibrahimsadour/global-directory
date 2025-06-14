@@ -41,7 +41,13 @@
 
                         <ul class="topc">
                             @foreach($categories as $category)
-                            <li><a href="cat/restuarent123.html"><i class="bi bi-stop-circle"></i> {{ $category->name }}</a></li>
+                                @if(is_null($category->parent_id))
+                                    <li>
+                                        <a href="cat/restuarent123.html">
+                                            <i class="bi bi-stop-circle"></i> {{ $category->name }}
+                                        </a>
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>
