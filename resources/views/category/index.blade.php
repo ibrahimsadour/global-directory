@@ -11,55 +11,6 @@
     ['title' => 'الرئيسية', 'url' => url('/')],
     ['title' => 'كل الفئات', 'url' => route('categories.index')],
 ]" />
-<style>
-    .dropdown-category {
-        position: relative;
-        display: inline-block;
-    }
-
-    .dropdown-category > a {
-        display: block;
-        padding: 10px 15px;
-        font-weight: 700;
-        color: #333;
-        text-decoration: none;
-        background-color: #f8f8f8;
-        border-radius: 6px;
-    }
-
-    .dropdown-category > a:hover {
-        background-color: #e0e0e0;
-    }
-
-    .dropdown-submenu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background-color: #fff;
-        min-width: 220px;
-        padding: 10px 0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        border-radius: 6px;
-        z-index: 999;
-    }
-
-    .dropdown-submenu a {
-        display: block;
-        padding: 8px 15px;
-        text-decoration: none;
-        color: #333;
-        white-space: nowrap;
-    }
-
-    .dropdown-submenu a:hover {
-        background-color: #f1f1f1;
-    }
-
-    .dropdown-category:hover .dropdown-submenu {
-        display: block;
-    }
-</style>
 {{-- Begin Second section --}}
 <div class="container-fluid business-listing">
    <div class="container">
@@ -71,65 +22,61 @@
                   <div x-data="{cfilter}" class="filter-head">
                      <h2>تصفية حسب الفئات <i @click="filterCat()" class="bi cp float-end bi-funnel"></i></h2>
                   </div>
+                     {{-- JavaScript للتبديل بين إظهار/إخفاء القوائم الفرعية --}}
+                     <script>
+                        function toggleSubcategories(element) {
+                           const icon = element.querySelector('.toggle-icon');
+                           const sublist = element.nextElementSibling;
 
-                  <div id="cfilter" class="filter-body">
-                  <ul>
-                     @foreach($categories as $category)
-                        @if(is_null($category->parent_id)) {{-- الفئات الرئيسية فقط --}}
-                              <li class="cp fw-bold">
-                                 @if($category->children && $category->children->count())
-                                    {{-- زر توسيع مع رمز ⯈ --}}
-                                    <span onclick="toggleSubcategories(this)" style="cursor: pointer; font-weight: 700;">
-                                          <span class="toggle-icon" style=" color: #0062ff; ">⯈</span> {{ $category->name }} <span style=" color: #0062ff; ">( {{$category->children->count()}} )</span>
-                                    </span>
-
-                                    {{-- قائمة الفئات الفرعية --}}
-                                    <ul class="ms-4 d-none">
-                                          @foreach($category->children as $child)
-                                             <li class="cp">
-                                                <a href="{{ route('categories.show', $child->slug) }}" style="margin-right: 10px;">
-                                                      - {{ $child->name }}
-                                                </a>
-                                             </li>
-                                          @endforeach
-                                    </ul>
-                                 @else
-                                    {{-- لا يوجد فروع – فقط الاسم كرابط --}}
-                                    <a href="{{ route('categories.show', $category->slug) }}" style="font-weight: 700;">
-                                          {{ $category->name }}
-                                    </a>
-                                 @endif
-                              </li>
-                        @endif
-                     @endforeach
-                  </ul>
-
-                  {{-- JavaScript للتبديل بين إظهار/إخفاء القوائم الفرعية --}}
-                  <script>
-                     function toggleSubcategories(element) {
-                        const icon = element.querySelector('.toggle-icon');
-                        const sublist = element.nextElementSibling;
-
-                        if (sublist) {
-                              sublist.classList.toggle('d-none');
-                              // تبديل الرمز ⯈ و ⯆
-                              if (icon.textContent === '⯈') {
-                                 icon.textContent = '⯆';
-                              } else {
-                                 icon.textContent = '⯈';
-                              }
+                           if (sublist) {
+                                 sublist.classList.toggle('d-none');
+                                 // تبديل الرمز ⯈ و ⯆
+                                 if (icon.textContent === '⯈') {
+                                    icon.textContent = '⯆';
+                                 } else {
+                                    icon.textContent = '⯈';
+                                 }
+                           }
                         }
-                     }
-                  </script>
+                     </script>
 
-                  {{-- CSS لإخفاء العناصر بشكل مبدئي --}}
-                  <style>
-                     .d-none {
-                        display: none;
-                     }
-                  </style>
+                     {{-- CSS لإخفاء العناصر بشكل مبدئي --}}
+                     <style>
+                        .d-none {
+                           display: none;
+                        }
+                     </style>
+                  <div id="cfilter" class="filter-body">
+                     <ul>
+                        @foreach($categories as $category)
+                           @if(is_null($category->parent_id)) {{-- الفئات الرئيسية فقط --}}
+                                 <li class="cp fw-bold">
+                                    @if($category->children && $category->children->count())
+                                       {{-- زر توسيع مع رمز ⯈ --}}
+                                       <span onclick="toggleSubcategories(this)" style="cursor: pointer; font-weight: 700;">
+                                             <span class="toggle-icon" style=" color: #0062ff; ">⯈</span> {{ $category->name }} <span style=" color: #0062ff; ">( {{$category->children->count()}} )</span>
+                                       </span>
 
-
+                                       {{-- قائمة الفئات الفرعية --}}
+                                       <ul class="ms-4 d-none">
+                                             @foreach($category->children as $child)
+                                                <li class="cp">
+                                                   <a href="{{ route('categories.show', $child->slug) }}" style="margin-right: 10px;">
+                                                         - {{ $child->name }}
+                                                   </a>
+                                                </li>
+                                             @endforeach
+                                       </ul>
+                                    @else
+                                       {{-- لا يوجد فروع – فقط الاسم كرابط --}}
+                                       <a href="{{ route('categories.show', $category->slug) }}" style="font-weight: 700;">
+                                             {{ $category->name }}
+                                       </a>
+                                    @endif
+                                 </li>
+                           @endif
+                        @endforeach
+                     </ul>
                   </div>
 
                   <div  x-data="{clocation}" class="filter-head border-top border-bottom">
