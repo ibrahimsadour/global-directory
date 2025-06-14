@@ -55,33 +55,89 @@
                   <div x-data="{cfilter}" class="filter-head">
                      <h2>تصفية حسب الفئات <i @click="filterCat()" class="bi cp float-end bi-funnel"></i></h2>
                   </div>
+<style>
+   .active-category {
+      color: #d8232a !important;
+      font-weight: bold;
+   }
+</style>
 
-                  <div id="cfilter" class="filter-body">
-                     <ul>
-                        @foreach($categories as $category)
-                              @if(is_null($category->parent_id)) {{-- فقط الفئات الرئيسية --}}
-                                 <li class="cp fw-bold">
-                                    <a href="{{ route('categories.show', $category->slug) }}" style="font-weight: 700;">
-                                          {{ $category->name }}
-                                    </a>
-                                 </li>
+<style>
+   .active-category {
+      color: #0062ff !important;
+      font-weight: bold;
+   }
+</style>
 
-                                 {{-- عرض الفئات الفرعية --}}
-                                 @if($category->children && $category->children->count())
-                                    <ul class="ms-4">
-                                          @foreach($category->children as $child)
-                                             <li class="cp">
-                                                <a href="{{ route('categories.show', $child->slug) }}" style=" margin-right: 10px; ">
-                                                      - {{ $child->name }}
-                                                </a>
-                                             </li>
-                                          @endforeach
-                                    </ul>
-                                 @endif
-                              @endif
-                        @endforeach
-                     </ul>
-                  </div>
+<script>
+   function toggleSubcategories(element) {
+      const icon = element.querySelector('.toggle-icon');
+      const sublist = element.nextElementSibling;
+
+      if (sublist) {
+         sublist.classList.toggle('d-none');
+         icon.textContent = (icon.textContent === '⯈') ? '⯆' : '⯈';
+      }
+   }
+</script>
+
+<div id="cfilter" class="filter-body">
+   <ul>
+      @foreach($categories as $category)
+         @if(is_null($category->parent_id))
+            @php
+               $isActiveMain = request()->is('categories/'.$category->slug);
+               $hasActiveChild = $category->children->contains(function ($child) {
+                   return request()->is('categories/'.$child->slug);
+               });
+               $shouldOpen = $isActiveMain || $hasActiveChild;
+            @endphp
+
+            <li class="cp">
+               @if($category->children && $category->children->count())
+                  <span 
+                     onclick="toggleSubcategories(this)" 
+                     style="cursor: pointer; {{ $isActiveMain ? 'font-weight: bold;' : '' }}"
+                     class="{{ $isActiveMain ? 'active-category' : '' }}"
+                  >
+                     <span class="toggle-icon" style="color: #0062ff;">
+                        {{ $shouldOpen ? '⯆' : '⯈' }}
+                     </span> 
+                     {{ $category->name }}
+                     <span style="color: #0062ff;">({{ $category->children->count() }})</span>
+                  </span>
+
+                  <ul class="ms-4 {{ $shouldOpen ? '' : 'd-none' }}">
+                     @foreach($category->children as $child)
+                        <li class="cp">
+                           <a 
+                              href="{{ route('categories.show', $child->slug) }}" 
+                              style="margin-right: 10px; {{ request()->is('categories/'.$child->slug) ? 'font-weight: bold;' : '' }}"
+                              class="{{ request()->is('categories/'.$child->slug) ? 'active-category' : '' }}"
+                           >
+                              - {{ $child->name }}
+                           </a>
+                        </li>
+                     @endforeach
+                  </ul>
+               @else
+                  <a 
+                     href="{{ route('categories.show', $category->slug) }}" 
+                     style="{{ $isActiveMain ? 'font-weight: bold;' : '' }}" 
+                     class="{{ $isActiveMain ? 'active-category' : '' }}"
+                  >
+                     {{ $category->name }}
+                  </a>
+               @endif
+            </li>
+         @endif
+      @endforeach
+   </ul>
+</div>
+
+
+
+
                   <div  x-data="{clocation}" class="filter-head border-top border-bottom">
                      <h2>تصفية حسب التقييمات<i @click="filterRating()" class="bi cp float-end bi-funnel"></i></h2>
                   </div>
