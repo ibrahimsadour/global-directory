@@ -12,6 +12,19 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
+// تعريف دوال التحقق بشكل آمن
+if (!function_exists('isValidLatitude')) {
+    function isValidLatitude($lat) {
+        return is_numeric($lat) && $lat >= -90 && $lat <= 90;
+    }
+}
+
+if (!function_exists('isValidLongitude')) {
+    function isValidLongitude($lng) {
+        return is_numeric($lng) && $lng >= -180 && $lng <= 180;
+    }
+}
+
 class BusinessesImport implements ToModel, WithHeadingRow
 {
     // تخزين الأخطاء
@@ -42,9 +55,19 @@ class BusinessesImport implements ToModel, WithHeadingRow
             $relationsValid = false;
         }
 
-        // لو أي علاقة فيها خطأ → لا نحفظ السطر
         if (!$relationsValid) {
             return null;
+        }
+
+        // تحويل الإحداثيات لقيم رقمية
+        $row['latitude'] = floatval($row['latitude']);
+        $row['longitude'] = floatval($row['longitude']);
+
+        // توليد العنوان تلقائيًا إذا لم يكن موجودًا
+        $address = $row['address'];
+
+        if (empty($address) && isValidLatitude($row['latitude']) && isValidLongitude($row['longitude'])) {
+            $address = getAddressFromCoordinates($row['latitude'], $row['longitude']);
         }
 
         // توليد slug
@@ -58,7 +81,7 @@ class BusinessesImport implements ToModel, WithHeadingRow
             'governorate_id' => $row['governorate_id'],
             'name' => $row['name'],
             'slug' => $slug,
-            'address' => $row['address'],
+            'address' => $address,
             'latitude' => $row['latitude'],
             'longitude' => $row['longitude'],
             'phone' => $row['phone'],

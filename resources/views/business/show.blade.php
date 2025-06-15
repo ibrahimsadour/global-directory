@@ -177,13 +177,11 @@
                   </ul>
                </div>
             </div>
-            <div class="overview shadow-sm no-margin row" bis_skin_checked="1">
-               <h2 class="border-bottom">About Dr Suresh Opticals and Health Care</h2>
-               <div class="details p-3" bis_skin_checked="1">
-                  <p class="mb-2">Sed quis metus scelerisque, porta turpis non, tristique diam. Integer vitae lorem lectus. Morbi gravida justo at neque suscipit ultricies. Vestibulum elementum ac ex vitae porttitor. Donec ligula leo, bibendum eget lectus sed, euismod venenatis turpis. Aliquam interdum velit lorem, vitae cursus magna rhoncus eu. Nam viverra arcu non mi sodales venenatis. Fusce eu turpis ac sem faucibus tempus.</p>
-                  <p class="mb-2">Maecenas mattis lorem nunc, a vulputate sapien egestas quis. Maecenas massa risus, pellentesque vel suscipit et, pulvinar ut nibh. Proin sit amet nunc porta, interdum erat eu, laoreet lectus. Proin a ligula eu nisl eleifend porta auctor vel massa. Nullam quis enim ex. Fusce aliquet fermentum auctor. Nam tincidunt nisi vitae sodales aliquet. Nulla quis laoreet odio, et sagittis massa. Cras iaculis feugiat vestibulum. Sed fermentum nisi in dolor elementum, aliquet scelerisque eros ultricies. Quisque elementum lacinia eros. Praesent blandit eget neque quis ullamcorper. Vivamus ultricies sodales lectus, sed ornare diam tristique ac.</p>
+            {{-- <div class="overview shadow-sm no-margin row" bis_skin_checked="1">
+               <div class="details p-3 border-bottom" bis_skin_checked="1">
+                  <p class="mb-2">{{ $business->description }}</p>
                </div>
-            </div>
+            </div> --}}
             
             {{-- الخدمات والمنتجات --}}
             {{-- <div x-data="dropdown, {service:[], bid: 2 }" class="overview services shadow-sm no-margin " bis_skin_checked="1">
@@ -459,23 +457,28 @@
             {{-- الخريطة --}}
             <script>
                document.addEventListener('DOMContentLoaded', function () {
-                  var latitude = {{ $business->latitude ?? 29.3759 }};
-                  var longitude = {{ $business->longitude ?? 47.9774 }};
-                  var address = @json($business->address ?? '');
+                  const latitude = @json($business->latitude ?? 29.3759);
+                  const longitude = @json($business->longitude ?? 47.9774);
+                  const address = @json($business->address ?? '');
 
-                  var map = L.map('map').setView([latitude, longitude], 14);
+                  if (!isNaN(latitude) && !isNaN(longitude)) {
+                     const map = L.map('map').setView([latitude, longitude], 14);
 
-                  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; OpenStreetMap contributors'
-                  }).addTo(map);
+                     }).addTo(map);
 
-                  var marker = L.marker([latitude, longitude]).addTo(map);
+                     const marker = L.marker([latitude, longitude]).addTo(map);
 
-                  if(address){
+                     if (address) {
                         marker.bindPopup(address).openPopup();
+                     }
+
+                     L.control.scale().addTo(map);
                   }
                });
             </script>
+
             <div class=" shadow-sm overview mt-4" bis_skin_checked="1">
                <h2 class="border-bottom">العنوان على الخريطة</h2>
                <div id="map" style="width: 100%; height: 350px; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>

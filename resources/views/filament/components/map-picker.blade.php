@@ -38,26 +38,51 @@
                 latitudeInput.value = latlng.lat.toFixed(6);
                 longitudeInput.value = latlng.lng.toFixed(6);
 
-                // Important: notify Livewire of change
                 latitudeInput.dispatchEvent(new Event('input', { bubbles: true }));
                 longitudeInput.dispatchEvent(new Event('input', { bubbles: true }));
             }
 
-            // ✅ NEW: Get address via reverse geocoding
-            const addressInput = document.querySelector('[wire\\:model="data.address"]');
-            if (addressInput) {
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latlng.lat}&lon=${latlng.lng}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.display_name) {
-                            addressInput.value = data.display_name;
-                            addressInput.dispatchEvent(new Event('input', { bubbles: true }));
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Reverse Geocoding error:', error);
-                    });
+const addressInput = document.querySelector('[wire\\:model="data.address"]');
+if (addressInput) {
+    const apiKey = '{{ env("GOOGLE_MAPS_API_KEY") }}';
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng.lat},${latlng.lng}&key=${apiKey}&language=ar`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'OK') {
+                // 1. فلترة النتائج الواقعية حسب نوعها
+                let result = data.results.find(r =>
+                    r.types.some(type =>
+                        ['street_address', 'route', 'neighborhood', 'sublocality', 'locality'].includes(type)
+                    ) &&
+                    !r.formatted_address.match(/^\s*[A-Z0-9]+\+\w+/)
+                );
+
+                // 2. إذا لم نجد نتيجة مناسبة، استبعد Plus Code
+                if (!result) {
+                    result = data.results.find(r => !r.formatted_address.match(/^\s*[A-Z0-9]+\+\w+/));
+                }
+
+                // 3. fallback: استخدم أول نتيجة إذا لم تجد شيء آخر
+                if (!result && data.results.length > 0) {
+                    result = data.results[0];
+                }
+
+                // 4. إذا وجدنا نتيجة، حدث الحقل
+                if (result && result.formatted_address) {
+                    addressInput.value = result.formatted_address;
+                } else {
+                    addressInput.value = 'العنوان غير متوفر بدقة';
+                }
+
+                addressInput.dispatchEvent(new Event('input', { bubbles: true }));
             }
+        })
+        .catch(error => {
+            console.error('Google Geocoding error:', error);
+        });
+}
+
+
         });
 
         if (latitudeInput && longitudeInput) {
@@ -76,7 +101,6 @@
             });
         }
 
-        // حل freeze
         setTimeout(() => {
             mapInstance.invalidateSize();
             setTimeout(() => mapInstance.invalidateSize(), 100);
