@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\GovernorateController;
 use App\Http\Controllers\LocationController;
+use App\Models\Location;
 
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
@@ -56,7 +57,7 @@ Route::get('/sitemap-categories.xml', function () {
 
     foreach (\App\Models\Category::all() as $category) {
         $sitemap->add(
-            Url::create(route('category.show', $category->slug))
+            Url::create(route('categories.show', $category->slug))
                 ->setPriority(0.9)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                 ->setLastModificationDate($category->updated_at)
@@ -71,7 +72,7 @@ Route::get('/sitemap-governorates.xml', function () {
 
     foreach (\App\Models\Governorate::all() as $governorate) {
         $sitemap->add(
-            Url::create(route('governorate.show', $governorate->slug))
+            Url::create(route('governorates.show', $governorate->slug))
                 ->setPriority(0.9)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                 ->setLastModificationDate($governorate->updated_at)
@@ -81,6 +82,20 @@ Route::get('/sitemap-governorates.xml', function () {
     return $sitemap->toResponse(request());
 });
 
+Route::get('/sitemap-locations.xml', function () {
+    $sitemap = Sitemap::create();
+
+    foreach (Location::all() as $location) {
+        $sitemap->add(
+            Url::create(route('locations.show', $location->slug))
+                ->setPriority(0.8)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                ->setLastModificationDate($location->updated_at)
+        );
+    }
+
+    return $sitemap->toResponse(request());
+});
 Route::get('/sitemap-business.xml', function () {
 
     $sitemap = Sitemap::create();
