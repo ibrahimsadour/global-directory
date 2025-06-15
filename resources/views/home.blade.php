@@ -34,8 +34,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 col-md-12 searchcol">
-                    <h1>ما الذي تبحث عنه</h1>
-                    <p>اكتشف المعالم السياحية والأنشطة الأعلى تقييمًا والمزيد...</p>
+                    <h1 class="homepage-title">{{setting('site_title')}}</h1>
+                    <p>{{setting('site_description')}}<p>
                     <form action="#" method="post">
                         <input type="hidden" name="_token" value="qbHoaClofDRMUj8Fr2MUCq0W5WYZC3Z5fVZspNFG" autocomplete="off" />
                         <div class="search-box-card no-margin row">
@@ -100,7 +100,7 @@
     <section class="container-fluid featured-category">
         <div class="container">
             <div class="section-title mb-3 row">
-                <h2>إكتشف <strong class="after-category-title"> أقسامنا</strong></h2>
+                <h2 class="homepage-title">إكتشف <strong class="after-category-title"> أقسامنا</strong></h2>
                 <p>ألقِ نظرة على الفئة المميزة. لم تجد ما تبحث عنه؟<a class="text-primary" href="{{ route('categories.index') }}">عرض جميع الفئات</a>
             </div>
             <div class="fcatrow row">
@@ -128,7 +128,7 @@
     <div class="featured-listing container-fluid">
         <div class="container">
             <div class="section-title mb-3 row">
-                <h2>القوائم <strong class="after-category-title"> المميزة</strong></h2>
+                <h2 class="homepage-title">القوائم <strong class="after-category-title"> المميزة</strong></h2>
                 <p>ألقِ نظرة على العروض المميزة. لم تجد ما تبحث عنه؟ <a class="text-primary" href="{{ route('categories.index') }}">عرض جميع القوائم</a></p>
             </div>
 
@@ -189,7 +189,7 @@
     <section class="container-fluid featured-city">
         <div class="container">
             <div class="section-title mb-3 row">
-                <h2>استكشف <strong class="after-category-title"> المواقع</strong> المزدحمة</h2>
+                <h2 class="homepage-title">استكشف <strong class="after-category-title"> المواقع</strong> المزدحمة</h2>
                 <p>لم تجد ما تبحث عنه؟ <a class="text-primary" href="{{ route('governorates.index') }}" title="عرض جميع المحافظات">عرض جميع المحافظات</a></p>
             </div>
 
@@ -228,7 +228,7 @@
         <div class="featured-listing container-fluid">
             <div class="container">
                 <div class="section-title mb-3 row">
-                    <h2>أحدث <strong class="after-category-title"> الأعمال</strong> التجارية</h2>
+                    <h2 class="homepage-title" >أحدث <strong class="after-category-title"> الأعمال</strong> التجارية</h2>
                     <p>ألقِ نظرة على الإعلانات المُضافة حديثًا. لم تجد ما تبحث عنه؟ <a class="text-primary" href="{{ route('categories.index') }}">عرض جميع الاعمال التجارية</a></p>
                 </div>
 
