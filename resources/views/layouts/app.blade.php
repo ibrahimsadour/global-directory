@@ -14,6 +14,8 @@
         {{-- السكيما --}}
         @yield('structured_data')
 
+        {{--اكواد وقت الحاجة --}}
+        {!! setting('code_snippet') !!}
 
 
         
