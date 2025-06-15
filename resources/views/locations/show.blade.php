@@ -1,15 +1,15 @@
 @extends('layouts.app')
-@section('title',$governorate->seo->meta_title)
-@section('seo_keyword',$governorate->seo->meta_keywords)
-@section('seo_description',$governorate->seo->meta_description)
-@section('og:image', asset('storage/' . $governorate->image))
+@section('title',$location->seo->meta_title ?? setting('seo_meta_title') .'|'.$location->area )
+@section('seo_keyword',$location->seo->meta_keywords ?? setting('seo_meta_keywords') .'|'.$location->area )
+@section('seo_description',$location->seo->meta_description ?? setting('seo_meta_description') .'|'.$location->area )
+@section('og:image', asset('storage/' . $location->image) ?? asset('storage/site-settings/default-banner.webp'))
 @section('structured_data')
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "دليل الأنشطة في {{ $governorate->name }} | {{ setting('site_title', 'Global Directory') }}",
-  "description": "استعرض جميع الأنشطة التجارية والخدمية في محافظة {{ $governorate->name }}.",
+  "name": "دليل الأنشطة في {{ $location->name }} | {{ setting('site_title', 'Global Directory') }}",
+  "description": "استعرض جميع الأنشطة التجارية والخدمية في محافظة {{ $location->name }}.",
   "url": "{{ url()->current() }}",
   "breadcrumb": {
     "@type": "BreadcrumbList",
@@ -23,7 +23,7 @@
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "{{ $governorate->name }}",
+        "name": "{{ $location->name }}",
         "item": "{{ url()->current() }}"
       }
     ]
@@ -38,7 +38,7 @@
 <x-breadcrumb :items="[
     ['title' => 'الرئيسية', 'url' => url('/')],
     ['title' => 'كل المحافظات', 'url' => route('governorates.index')],
-    ['title' => $governorate->name]
+    ['title' => $location->name]
 ]" />
 
 {{-- Begin Second section --}}
@@ -118,7 +118,6 @@
       @endif
    </li>
 @endforeach
-
 
                      </ul>
                   </div>

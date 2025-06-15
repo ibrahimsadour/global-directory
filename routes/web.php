@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\GovernorateController;
+use App\Http\Controllers\LocationController;
+
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
@@ -27,7 +29,7 @@ Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('cat
 
 Route::get('/governorates', [GovernorateController::class, 'index'])->name('governorates.index');
 Route::get('/governorates/{slug}', [GovernorateController::class, 'show'])->name('governorates.show');
-
+Route::get('/locations/{slug}', [LocationController::class, 'show'])->name('locations.show');
 
 Route::get('/business/{slug}', [BusinessController::class, 'show'])->name('business.show');
 

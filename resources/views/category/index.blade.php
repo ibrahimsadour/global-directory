@@ -49,17 +49,18 @@
                   <div id="cfilter" class="filter-body">
                      <ul>
                         @foreach($categories as $category)
-                           @if(is_null($category->parent_id)) {{-- الفئات الرئيسية فقط --}}
+                           @if(is_null($category->parent_id) && $category->is_active) {{-- فقط الفئات الرئيسية والمفعّلة --}}
                                  <li class="cp fw-bold">
-                                    @if($category->children && $category->children->count())
+                                    @if($category->children && $category->children->where('is_active', 1)->count())
                                        {{-- زر توسيع مع رمز ⯈ --}}
                                        <span onclick="toggleSubcategories(this)" style="cursor: pointer; font-weight: 700;">
-                                             <span class="toggle-icon" style=" color: #0062ff; ">⯈</span> {{ $category->name }} <span style=" color: #0062ff; ">( {{$category->children->count()}} )</span>
+                                             <span class="toggle-icon" style=" color: #0062ff; ">⯈</span> {{ $category->name }}
+                                             <span style=" color: #0062ff; ">({{ $category->children->where('is_active', 1)->count() }})</span>
                                        </span>
 
                                        {{-- قائمة الفئات الفرعية --}}
                                        <ul class="ms-4 d-none">
-                                             @foreach($category->children as $child)
+                                             @foreach($category->children->where('is_active', 1) as $child)
                                                 <li class="cp">
                                                    <a href="{{ route('categories.show', $child->slug) }}" style="margin-right: 10px;">
                                                          - {{ $child->name }}
