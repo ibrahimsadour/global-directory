@@ -78,10 +78,7 @@ class BusinessResource extends Resource
                                             ->label('صاحب النشاط')
                                             ->relationship('user', 'name')
                                             ->required()
-                                            ->columnSpanFull()
-                                            ->visible(fn () => auth()->user()->role === 'admin')
-                                            ->default(fn () => auth()->user()->role !== 'admin' ? auth()->user()->id : null)
-                                            ->dehydrated(fn () => auth()->user()->role === 'admin'),
+                                            ->columnSpanFull(),
 
                                     Select::make('category_id')
                                         ->label('الفئة')
@@ -148,13 +145,11 @@ class BusinessResource extends Resource
                                     Grid::make(3)->schema([
                                         Toggle::make('is_featured')
                                             ->label('مميز؟')
-                                            ->default(false)
-                                            ->visible(fn () => auth()->user()->role === 'admin'),
+                                            ->default(false),
 
                                         Toggle::make('is_approved')
                                             ->label('مقبول؟')
-                                            ->default(true)
-                                            ->visible(fn () => auth()->user()->role === 'admin'),
+                                            ->default(true),
 
                                         Toggle::make('is_active')
                                             ->label('مفعل؟')
@@ -466,8 +461,7 @@ class BusinessResource extends Resource
                     ->label('حذف')
                     ->icon('heroicon-o-trash')
                     ->button()
-                    ->color('danger')
-                    ->visible(fn (Business $record) => auth()->user()->role === 'admin' || $record->user_id === auth()->user()->id),
+                    ->color('danger'),
 
             ])
             ->bulkActions([
@@ -479,17 +473,6 @@ class BusinessResource extends Resource
     }
 
 
-    public static function getEloquentQuery(): Builder
-    {
-        $user = auth()->user();
-
-        if ($user->role === 'admin') {
-            return parent::getEloquentQuery();
-        }
-
-        // صاحب النشاط → يرى فقط نشاطاته
-        return parent::getEloquentQuery()->where('user_id', $user->id);
-    }
 
 
 

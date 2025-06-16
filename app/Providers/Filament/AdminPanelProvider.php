@@ -45,13 +45,6 @@ class AdminPanelProvider extends PanelProvider
         ])
 
         ->navigationItems([
-            NavigationItem::make('الملف الشخصي')
-                ->label('الملف الشخصي')
-                ->icon('heroicon-o-user')
-                ->url(fn () => auth()->user()->role === 'user'
-                    ? UserResource::getUrl('edit', ['record' => auth()->user()->id])
-                    : UserResource::getUrl())
-                ->visible(fn () => auth()->check() && auth()->user()->role === 'user'),
                 
     ])
         ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
