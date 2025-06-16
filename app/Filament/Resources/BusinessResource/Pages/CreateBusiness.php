@@ -55,17 +55,5 @@ class CreateBusiness extends CreateRecord
         }
     }
 
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        if (auth()->user()->role !== 'admin') {
-            $data['user_id'] = auth()->user()->id;
-        }
-
-        // دائما نجعل is_approved = true
-        $data['is_approved'] = true;
-
-        return $data;
-    }
-
 
 }

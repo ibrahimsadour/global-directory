@@ -20,6 +20,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationItem;
 use App\Filament\Resources\UserResource;
 use App\Filament\Widgets\StatsOverview;
+use App\Http\Middleware\EnsureUserIsAdmin; // ✅ استدعاء الميدل وير الجديد
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
         ->default()
         ->id('admin')
         ->path('admin')
+        ->authGuard('web')
         ->login()
         ->darkMode(false)
         ->colors([
@@ -69,7 +71,8 @@ class AdminPanelProvider extends PanelProvider
             DispatchServingFilamentEvent::class,
         ])
         ->authMiddleware([
-            Authenticate::class,
+                Authenticate::class,
+                EnsureUserIsAdmin::class, // ✅ هنا نضيف الحماية
         ]);
 
     }
