@@ -72,6 +72,38 @@ class BusinessesImport implements ToModel, WithHeadingRow
             $slug = Str::slug($slugSource);
         }
 
+        // توليد الوصف إذا لم يكن موجوداً
+        $description = $row['description'];
+        if (empty($description)) {
+            try {
+                $openAiKey = env('OPENAI_API_KEY');
+
+                $businessName = $row['name'];
+                $siteAddress = setting('site_address');
+                $prompt = "اكتب وصفًا تسويقيًا واضحًا باللغة العربية لخدمة اسمها \"{$businessName}\"، وتخدم منطقة \"{$siteAddress}\". اجعله طبيعيًا، جذابًا، ولا يتجاوز 50 كلمة. تجنب التكرار أو نسخ محتوى السيو.";
+
+                $response = Http::withToken($openAiKey)->post('https://api.openai.com/v1/chat/completions', [
+                    'model' => 'gpt-3.5-turbo',
+                    'messages' => [
+                        ['role' => 'user', 'content' => $prompt]
+                    ],
+                ]);
+
+                if ($response->successful()) {
+                    $aiText = $response['choices'][0]['message']['content'];
+                    $description = trim($aiText);
+                }
+            } catch (\Exception $e) {
+                Log::error('فشل توليد وصف النشاط من OpenAI: ' . $e->getMessage());
+            }
+
+            if (empty($description)) {
+                $categoryName = Category::find($row['category_id'])->name ?? 'الخدمة';
+                $governorateName = Governorate::find($row['governorate_id'])->name ?? 'المحافظة';
+                $description = "نقدم خدمات {$categoryName} في {$governorateName}. لمزيد من المعلومات، تواصل معنا عبر {$row['phone']}.";
+            }
+        }
+
         $business = Business::create([
             'user_id' => $row['user_id'],
             'category_id' => $row['category_id'],
@@ -86,7 +118,7 @@ class BusinessesImport implements ToModel, WithHeadingRow
             'email' => $row['email'],
             'website' => $row['website'],
             'whatsapp' => $row['whatsapp'],
-            'description' => $row['description'],
+            'description' => $description,
             'is_featured' => $row['is_featured'],
             'is_approved' => $row['is_approved'],
             'is_active' => $row['is_active'],
@@ -127,7 +159,7 @@ class BusinessesImport implements ToModel, WithHeadingRow
                         $metaKeywords = $metaKeywords ?? trim($keywordsMatch[1] ?? $business->name);
                     }
                 } catch (\Exception $e) {
-                        Log::error('فشل توليد بيانات السيو من OpenAI: ' . $e->getMessage());
+                    Log::error('فشل توليد بيانات السيو من OpenAI: ' . $e->getMessage());
                 }
             }
 
