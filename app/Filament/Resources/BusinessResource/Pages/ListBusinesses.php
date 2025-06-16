@@ -9,6 +9,7 @@ use Filament\Forms;
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use App\Imports\BusinessesImport; // تأكد أنك أنشأت هذا الكلاس كما كتبناه سابقاً
+use Illuminate\Support\Facades\Auth;
 
 class ListBusinesses extends ListRecords
 {
@@ -33,24 +34,15 @@ Actions\Action::make('importBusinesses')
             ])
             ->required(),
     ])
-    ->action(function (array $data): void {
-        \App\Imports\BusinessesImport::$errors = []; // تصفير الأخطاء
+            ->action(function (array $data): void {
+                Excel::import(new BusinessesImport(Auth::user()), $data['file']);
 
-        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\BusinessesImport, $data['file']);
-
-        if (count(\App\Imports\BusinessesImport::$errors) > 0) {
-            Notification::make()
-                ->title('⚠️ تم الاستيراد مع بعض الأخطاء')
-                ->body(implode("\n", \App\Imports\BusinessesImport::$errors))
-                ->danger()
-                ->send();
-        } else {
-            Notification::make()
-                ->title('✅ تم استيراد البزنس بنجاح!')
-                ->success()
-                ->send();
-        }
-    }),
+                Notification::make()
+                    ->title('✅ تم إرسال الصفوف للمعالجة')
+                    ->body('سيتم استيراد البيانات في الخلفية. تأكد من تشغيل queue:work')
+                    ->success()
+                    ->send();
+            }),
 
 
         ];
