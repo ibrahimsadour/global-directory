@@ -15,11 +15,12 @@
                     @foreach($businesses as $business)
                         <div class="col-md-4 mb-4">
                             <div class="card h-100">
-                                <img src="{{ $business->image ? asset('storage/' . $business->image) : 'https://via.placeholder.com/300' }}"
-                                    class="card-img-top" alt="{{ $business->name }}">
+                                @if($business->image)
+                                <img class="business-img" src="{{ asset('storage/' . $business->image) }}" alt="{{ $business->name }}" title="{{ $business->name }}" />
+                                @endif
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $business->name }}</h5>
-                                    <p class="card-text text-truncate">{{ $business->description }}</p>
+                                    <p class="card-text text-truncate" style="margin-bottom: 10px;">{{ $business->description }}</p>
                                     <a href="{{ route('business.show', $business->slug) }}" class="btn btn-outline-primary btn-sm">عرض التفاصيل</a>
                                 </div>
                             </div>
