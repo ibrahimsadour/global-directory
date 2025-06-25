@@ -45,29 +45,9 @@
         </div>
         <div  class="col-lg-5 d-none d-lg-block col-md-8 search">
             <div class="search-row row no-margin">
-                <div x-data="" class="col-md-4 no-padding">
-                <form id="location" action="#" method="post">
-                    <input type="hidden" name="_token"  autocomplete="off">                           
-                    <select  name="location" id="bb" class="form-control rounded-start">
-                        <option value=""   </option>
-                        @if(!empty($governorates) && $governorates->count())
-                            @foreach($governorates as $governorate)
-                                <option value="{{ $governorate->id }}">{{ $governorate->name }}</option>
-                            @endforeach
-                        @else
-                            <option disabled selected>لا توجد محافظات متاحة</option>
-                        @endif
-                    </select>
-                </form>
-                </div>
-                <form class="display-contents" action="#" method="post">
-                <input type="hidden" name="_token" value="qbHoaClofDRMUj8Fr2MUCq0W5WYZC3Z5fVZspNFG" autocomplete="off">                        
-                <div class="col-md-7 no-padding">
-                    <input type="text" name="key" value="" required placeholder="Search Business" class="form-control ">
-                </div>
-                <div class="col-md-1  no-padding">
-                    <button type="submit" class="btn rounded-end btn-primary"><i class="bi bi-search"></i></button>
-                </div>
+                <form action="{{ route('user.search') }}" method="GET" class="d-flex">
+                    <input type="text" name="q" class="form-control" placeholder="ابحث عن نشاط..." value="{{ request('q') }}">
+                    <button style="width: 10%;" type="submit" class="btn rounded-end btn-primary"><i class="bi bi-search"></i></button>
                 </form>
             </div>
         </div>

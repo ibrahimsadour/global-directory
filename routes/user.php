@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\BusinessController;
+use App\Http\Controllers\User\SearchController;
+
 
 // Route::middleware(['web', 'auth', 'regular'])
 //     ->prefix('user')
@@ -36,6 +38,10 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'verified'])->group(fu
     Route::delete('/business/{id}', [BusinessController::class, 'destroy'])->name('business.destroy'); // حذف النشاط
 
     Route::get('/business/{id}', [BusinessController::class, 'show'])->name('business.show'); // عرض التفاصيل (اختياري)
+
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
+    
+
 
 });
 

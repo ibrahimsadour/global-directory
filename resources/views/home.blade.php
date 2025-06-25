@@ -36,45 +36,20 @@
                 <div class="col-lg-7 col-md-12 searchcol">
                     <h1 class="homepage-title">{{setting('site_title')}}</h1>
                     <p>{{setting('site_description')}}<p>
-                    <form action="#" method="post">
-                        <input type="hidden" name="_token" value="qbHoaClofDRMUj8Fr2MUCq0W5WYZC3Z5fVZspNFG" autocomplete="off" />
+                    <form action="{{ route('user.search') }}" method="GET" role="search"> 
+                        <input type="hidden" name="key" value="{{ request('key') }}" autocomplete="on" />
                         <div class="search-box-card no-margin row">
-                            <div class="col-md-3 no-padding">
-                                <select name="location" class="form-control selcmk">
-                                    <option value="">اختر المحافظة</option>
-                                    @if(!empty($governorates) && $governorates->count()) @foreach($governorates as $governorate)
-                                    <option value="{{ $governorate->id }}">{{ $governorate->name }}</option>
-                                    @endforeach @else
-                                    <option disabled selected>لا توجد محافظات متاحة</option>
-                                    @endif
-                                </select>
-                            </div>
-                            <div class="col-md-3 no-padding">
-                                <select name="cat" class="form-control selcmk">
-                                    <option value="">اختر الفئة</option>
-                                        @if($categories && $categories->count())
-                                            @foreach($categories as $category)
-                                                @if(is_null($category->parent_id))
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endif
-                                            @endforeach
-                                        @else
-                                            <option disabled selected>لا توجد فئات متاحة</option>
-                                        @endif
-                                </select>
-                            </div>
-                            <div class="col-md-6 no-padding">
+                            <div style="width: 100%;" class="col-md-6 no-padding">
                                 <div class="input-group">
                                     <input
                                         type="text"
                                         class="form-control"
                                         name="key"
                                         placeholder="ابحث عن المحلات التجارية والخدمات وما إلى ذلك..."
-                                        aria-label="ابحث عن المحلات التجارية والخدمات وما إلى ذلك..."
-                                        aria-describedby="basic-addon2"
+                                        value="{{ request('key') }}"
                                     />
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn rounded-end btn-primary"><i class="bi bi-search"></i></button>
+                                        <button style=" border-top-right-radius: 0%; border-bottom-right-radius: 0%; " type="submit" class="btn rounded-end btn-primary"><i class="bi bi-search"></i></button>
                                     </div>
                                 </div>
                             </div>

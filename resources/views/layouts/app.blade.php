@@ -6,7 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
         <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-
+        @if(request()->has('page') && request()->get('page') > 1)
+            <meta name="robots" content="noindex, follow">
+        @endif
         {{-- السيو --}}
         <x-seo />
         
