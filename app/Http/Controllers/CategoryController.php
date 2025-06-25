@@ -16,7 +16,10 @@ class CategoryController extends Controller
         $categories = Category::all();
 
         // جلب جميع النشاطات (اختياري)
-        $businesses = Business::latest()->paginate(15);
+        $businesses = Business::where('is_active', 1)
+        ->where('is_approved', 1)
+        ->latest()
+        ->paginate(3); // عدّل الرقم حسب عدد العناصر في كل صفحة
 
         // إرسالهم لنفس الصفحة أو صفحة منفصلة حسب تصميمك
         return view('category.index', [
@@ -32,8 +35,18 @@ class CategoryController extends Controller
         // جلب الفئة حسب الـslug
         $category = Category::where('slug', $slug)->firstOrFail();
 
-        // جلب الأنشطة المرتبطة بهذه الفئة
-        $businesses = $category->businesses()->latest()->paginate(15);
+        // جلب كل الفئات الفرعية التابعة لهذه الفئة
+        $childCategoryIds = $category->children()->pluck('id');
+
+        // دمج ID الفئة الأصلية مع الفئات الفرعية
+        $categoryIds = collect([$category->id])->merge($childCategoryIds)->toArray();
+
+        // جلب الأنشطة المرتبطة بهذه الفئات
+        $businesses = Business::whereIn('category_id', $categoryIds)
+            ->where('is_active', 1)
+            ->where('is_approved', 1)
+            ->latest()
+            ->paginate(10);
 
         // جلب كل الفئات (للفلتر الجانبي مثلاً)
         $categories = Category::all();

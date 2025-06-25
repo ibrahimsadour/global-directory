@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@section('title',$governorate->seo->meta_title)
-@section('seo_keyword',$governorate->seo->meta_keywords)
-@section('seo_description',$governorate->seo->meta_description)
+@section('title',$governorate->seo->meta_title ?? '')
+@section('seo_keyword',$governorate->seo->meta_keywords ?? '')
+@section('seo_description',$governorate->seo->meta_description  ?? '')
 @section('og:image', asset('storage/' . $governorate->image))
 @section('structured_data')
 <script type="application/ld+json">
@@ -254,10 +254,7 @@
                 </div>
                 </div>
             @endforeach
-
-            <div class="pagination listng-pagination row ">
-               <nav>
-               </nav>
+            {{ $businesses->withQueryString()->links('vendor.pagination.custom-bootstrap') }}
             </div>
          </div>
       </div>

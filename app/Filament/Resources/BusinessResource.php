@@ -384,8 +384,9 @@ class BusinessResource extends Resource
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('اسم النشاط')
+                    ->limit(20)
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(),                    
 
                 // ✅ عمود المستخدم
                 Tables\Columns\TextColumn::make('user.name')
@@ -417,17 +418,17 @@ class BusinessResource extends Resource
                     ->onColor('success')
                     ->offColor('danger'),
 
-                Tables\Columns\BadgeColumn::make('is_featured')
+                ToggleColumn::make('is_featured')
                     ->label('مميز')
-                    ->formatStateUsing(fn ($state) => $state ? 'مميز' : 'غير مميز')
-                    ->colors([
-                        'success' => fn ($state) => $state,
-                        'danger' => fn ($state) => !$state,
-                    ]),
+                    ->onIcon('heroicon-o-check-circle')
+                    ->offIcon('heroicon-o-x-circle')
+                    ->onColor('success')
+                    ->offColor('danger'),
+
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('تاريخ الإضافة')
-                    ->dateTime('Y-m-d H:i')
+                    ->dateTime('Y-m-d')
                     ->sortable(),
             ])
             ->filters([
@@ -452,16 +453,23 @@ class BusinessResource extends Resource
             ->actions([
 
                 \Filament\Tables\Actions\EditAction::make()
-                    ->label('تعديل')
+                    ->label('') // تعيين نص فارغ
                     ->icon('heroicon-o-pencil')
                     ->button()
                     ->color('info'),
 
                 \Filament\Tables\Actions\DeleteAction::make()
-                    ->label('حذف')
+                    ->label('') // تعيين نص فارغ
                     ->icon('heroicon-o-trash')
                     ->button()
                     ->color('danger'),
+                \Filament\Tables\Actions\Action::make('viewFrontend')
+                    ->label('') // بدون نص
+                    ->icon('heroicon-o-eye') // أيقونة "عين"
+                    ->button()
+                    ->url(fn ($record) => route('business.show', $record->slug))
+                    ->openUrlInNewTab()
+                    ->color('success'),
 
             ])
             ->bulkActions([

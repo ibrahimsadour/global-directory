@@ -26,22 +26,20 @@ class BusinessRepository
     }
 
     //  دالة لجلب الإعلانات المميزة داخل الريبوستري.
-    public function getFeaturedBusinesses($limit = 8)
+    public function getFeaturedBusinesses($perPage = 6)
     {
         return Business::where('is_active', 1)
             ->where('is_approved', 1)
             ->where('is_featured', 1)
             ->orderBy('created_at', 'desc')
-            ->take($limit)
-            ->get();
+            ->paginate($perPage);
     }
     //  دالة لجلب ااخر الاعلانات داخل الريبوستري.
-    public function getLatestBusinesses($limit = 10)
+    public function getLatestBusinessesPaginated($perPage = 6)
     {
         return Business::where('is_active', 1)
             ->where('is_approved', 1)
             ->orderBy('created_at', 'desc')
-            ->take($limit)
-            ->get();
+            ->paginate($perPage);
     }
 }

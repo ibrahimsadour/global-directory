@@ -32,8 +32,8 @@ public function __construct(
         $categories = $this->categoryService->getCategoriesForHome();
         $locations = $this->locationService->getAllLocations(); // نستخدمه لاحقاً إن أحببت
         $governorates = $this->governorateService->getAllGovernorates();
-        $featuredBusinesses = $this->businessService->getFeaturedBusinesses(8);
-        $latestBusinesses = $this->businessService->getLatestBusinesses(10);
+        $featuredBusinesses = $this->businessService->getFeaturedBusinesses();
+        $latestBusinesses = $this->businessService->getLatestBusinesses();
 
 
 

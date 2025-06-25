@@ -212,11 +212,7 @@
                 </div>
                 </div>
             @endforeach
-
-            <div class="pagination listng-pagination row ">
-               <nav>
-               </nav>
-            </div>
+            {{ $businesses->withQueryString()->links('vendor.pagination.custom-bootstrap') }}
          </div>
       </div>
    </div>

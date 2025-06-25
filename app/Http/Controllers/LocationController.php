@@ -23,7 +23,7 @@ class LocationController extends Controller
             ->where('is_approved', 1)
             ->select('id', 'name', 'slug', 'image', 'description')
             ->latest()
-            ->paginate(15);
+            ->paginate(10);
 
         // 3. جلب جميع المحافظات للقائمة الجانبية
         $governorates = Governorate::select('id', 'name', 'slug')

@@ -34,13 +34,18 @@ class GovernorateController extends Controller
             ->select('id', 'name', 'slug') // تحديد الحقول المطلوبة فقط
             ->firstOrFail();
 
+        $locationIds = \App\Models\Location::where('governorate_id', $governorate->id)->pluck('id');
+
         // 2. جلب الإعلانات النشطة والمقبولة للمحافظة
-        $businesses = Business::where('governorate_id', $governorate->id)
+        $businesses = Business::where(function ($query) use ($governorate, $locationIds) {
+                $query->where('governorate_id', $governorate->id)
+                    ->orWhereIn('location_id', $locationIds);
+            })
             ->where('is_active', 1)
             ->where('is_approved', 1)
-            ->select('id', 'name', 'slug', 'image', 'description') // تحديد الحقول المطلوبة
+            ->select('id', 'name', 'slug', 'image', 'description')
             ->latest()
-            ->paginate(15);
+            ->paginate(10);
 
         // 3. جلب جميع المحافظات للقائمة الجانبية
         $governorates = Governorate::select('id', 'name', 'slug')

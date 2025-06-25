@@ -54,14 +54,14 @@ class BusinessService
     }
 
     // لجلب الاعلانات المميزة
-    public function getFeaturedBusinesses($limit = 8)
+    public function getFeaturedBusinesses($perPage = 6)
     {
-        return $this->repository->getFeaturedBusinesses($limit);
+        return $this->repository->getFeaturedBusinesses($perPage);
     }
 
     // لجلب اخر 10 اعلانات تمت اضافتها
-    public function getLatestBusinesses($limit = 10)
+    public function getLatestBusinesses($perPage = 6)
     {
-        return $this->repository->getLatestBusinesses($limit);
+        return $this->repository->getLatestBusinessesPaginated($perPage);
     }
 }
