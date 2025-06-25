@@ -18,16 +18,16 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.html"><i class="bi bi-house-door"></i> الرئيسية</a>
+                            <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-house-door"></i> الرئيسية</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="login.html"><i class="bi bi-plus-square"></i> اضف موقعك</a>
+                            <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-plus-square"></i> اضف موقعك</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.html"><i class="bi bi-unlock"></i> تسجيل الدخول</a>
+                            <a class="nav-link" href="#"><i class="bi bi-unlock"></i> تسجيل الدخول</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="registration.html"><i class="bi bi-person-plus"></i> التسجيل</a>
+                            <a class="nav-link" href="#"><i class="bi bi-person-plus"></i> التسجيل</a>
                         </li>
                     </ul>
                     

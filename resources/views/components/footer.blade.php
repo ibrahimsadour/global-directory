@@ -43,7 +43,7 @@
                             @foreach($categories as $category)
                                 @if(is_null($category->parent_id))
                                     <li>
-                                        <a href="cat/restuarent123.html">
+                                        <a href="{{ route('categories.show', $category->slug) }}">
                                             <i class="bi bi-stop-circle"></i> {{ $category->name }}
                                         </a>
                                     </li>
@@ -65,8 +65,8 @@
 
                     <h2 class="fabh mt-3">حسابي</h2>
                     <ul class="topc">
-                        <li><a href="login.html"><i class="bi bi-stop-circle"></i> معلومات حسابي</a></li>
-                        <li><a href="login.html"><i class="bi bi-stop-circle"></i> قائمتي</a></li>
+                        <li><a href="{{ route('login') }}"><i class="bi bi-stop-circle"></i> معلومات حسابي</a></li>
+                        <li><a href="#"><i class="bi bi-stop-circle"></i> قائمتي</a></li>
                     </ul>
 
                     </div>
