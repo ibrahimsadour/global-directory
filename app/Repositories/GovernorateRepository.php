@@ -13,12 +13,15 @@ class GovernorateRepository
         $this->model = $model;
     }
 
-    public function getAllGovernorates()
-    {
-        return $this->model
-            ->where('is_active', 1)
-            ->orderBy('name', 'asc')
-            ->get();
-    }
+public function getAllGovernorates()
+{
+    return $this->model
+        ->with(['locations' => function ($query) {
+            $query->where('is_active', 1)->orderBy('area', 'asc');
+        }])
+        ->where('is_active', 1)
+        ->orderBy('name', 'asc')
+        ->get();
+}
 
 }

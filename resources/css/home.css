@@ -11980,7 +11980,7 @@ footer .subcrib .input-group-text i{
     font-size:.88rem
 }
 .side-card .user-menu ul li i{
-    margin-right:8px;
+    margin-left:8px;
     font-weight:600;
     font-size:1rem
 }
@@ -12092,7 +12092,7 @@ footer .subcrib .input-group-text i{
     font-weight:600
 }
 .authbg{
-    background-image:url(loginbg-BAPV9HbR.jpg);
+    background-image:url('/storage/site-settings/loginbg.webp');
     background-position:bottom;
     background-size:cover
 }

@@ -11,8 +11,6 @@ use App\Models\Location;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes

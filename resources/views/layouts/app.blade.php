@@ -1,12 +1,11 @@
 <!doctype html>
 <html dir="rtl" lang="ar">
-   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
     <head>
-        <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
         {{-- السيو --}}
         <x-seo />
@@ -67,5 +66,4 @@
         @stack('scripts')
 
     </body>
-
 </html>

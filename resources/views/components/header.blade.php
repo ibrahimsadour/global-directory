@@ -49,7 +49,7 @@
                 <form id="location" action="#" method="post">
                     <input type="hidden" name="_token"  autocomplete="off">                           
                     <select  name="location" id="bb" class="form-control rounded-start">
-                        <option value="">كل المحافظات</option>
+                        <option value=""   </option>
                         @if(!empty($governorates) && $governorates->count())
                             @foreach($governorates as $governorate)
                                 <option value="{{ $governorate->id }}">{{ $governorate->name }}</option>
@@ -73,8 +73,8 @@
         </div>
         <div class="col-lg-4 col-md-8 slink  d-none d-md-block  right">
             <ul class="float-end">
-                <li class="me-3"><a href="#"><button type="button" class="btn btn-outline-primary">إضافة عمل تجاري ✚</button></a></li>
-                <li ><a href="#"><button class="btn btn-primary ">إنشاء حساب جديد</button></a></li>
+                <li class="me-3"><a href="{{ route('register') }}"><button type="button" class="btn btn-outline-primary">إضافة عمل تجاري ✚</button></a></li>
+                <li ><a href="{{ route('register') }}"><button class="btn btn-primary ">إنشاء حساب جديد</button></a></li>
             </ul>
         </div>
     </div>

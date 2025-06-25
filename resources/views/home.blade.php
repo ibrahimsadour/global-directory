@@ -262,7 +262,7 @@
                                 <ul class="d-flex justify-content-between">
                                     <li class="user">
                                         @if($latestBusiness->user->profile_photo)
-                                        <img src="{{ asset('storage/' . $latestBusiness->user->profile_photo) }}" alt="{{ $latestBusiness->user?->name ?? 'غير معروف' }}" class="img-fluid" />
+                                            
                                         @endif
                                         <span>
                                             {{ $latestBusiness->user?->name ?? 'غير معروف' }} @if($latestBusiness->user?->is_verified)

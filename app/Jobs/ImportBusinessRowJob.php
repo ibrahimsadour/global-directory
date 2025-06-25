@@ -36,6 +36,8 @@ class ImportBusinessRowJob implements ShouldQueue
 
     public function handle()
     {
+            Log::info("🟢 بدأ تنفيذ Job لاستيراد النشاط: " . ($this->row['name'] ?? 'اسم غير معروف'));
+
         try {
             $row = $this->row;
 
