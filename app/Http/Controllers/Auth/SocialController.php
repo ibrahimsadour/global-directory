@@ -16,21 +16,31 @@ class SocialController extends Controller
     {
         return Socialite::driver('google')->stateless()->redirect();
     }
+
     public function callbackGoogle(Request $request)
     {
-        $socialUser = Socialite::driver('google')->stateless()->user();
-        return $this->handleSocialUser($socialUser, 'google', $request);
+        try {
+            $socialUser = Socialite::driver('google')->stateless()->user();
+            return $this->handleSocialUser($socialUser, 'google', $request);
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'فشل تسجيل الدخول عبر Google.');
+        }
     }
 
     // Twitter
     public function redirectTwitter()
     {
-        return Socialite::driver('twitter')->redirect(); // بدون stateless
+        return Socialite::driver('twitter')->redirect();
     }
+
     public function callbackTwitter(Request $request)
     {
-        $socialUser = Socialite::driver('twitter')->user(); // بدون stateless
-        return $this->handleSocialUser($socialUser, 'twitter', $request);
+        try {
+            $socialUser = Socialite::driver('twitter')->user();
+            return $this->handleSocialUser($socialUser, 'twitter', $request);
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'فشل تسجيل الدخول عبر Twitter.');
+        }
     }
 
     // Facebook
@@ -41,20 +51,12 @@ class SocialController extends Controller
 
     public function callbackFacebook(Request $request)
     {
-        $socialUser = Socialite::driver('facebook')->stateless()->user();
-        return $this->handleSocialUser($socialUser, 'facebook', $request);
-    }
-
-    // Linkden
-    public function redirectLinkedin()
-    {
-        return Socialite::driver('linkedin')->redirect();
-    }
-
-    public function callbackLinkedin(Request $request)
-    {
-        $socialUser = Socialite::driver('linkedin')->stateless()->user();
-        return $this->handleSocialUser($socialUser, 'linkedin', $request);
+        try {
+            $socialUser = Socialite::driver('facebook')->stateless()->user();
+            return $this->handleSocialUser($socialUser, 'facebook', $request);
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'فشل تسجيل الدخول عبر Facebook.');
+        }
     }
 
     private function handleSocialUser($socialUser, $provider, $request)

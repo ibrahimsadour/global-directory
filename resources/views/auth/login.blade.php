@@ -71,9 +71,6 @@
                             <a class="btn btn-outline-info" href="{{ route('social.redirect.twitter') }}">
                                 <i class="bi bi-twitter-x fs-4"></i>
                             </a>
-                            <a class="btn btn-outline-dark" href="{{ route('social.redirect.linkedin') }}">
-                                <i class="bi bi-linkedin fs-4"></i>
-                            </a>
                         </div>
 
                     </div>
