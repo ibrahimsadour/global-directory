@@ -45,6 +45,18 @@ class SocialController extends Controller
         return $this->handleSocialUser($socialUser, 'facebook', $request);
     }
 
+    // Linkden
+    public function redirectLinkedin()
+    {
+        return Socialite::driver('linkedin')->redirect();
+    }
+
+    public function callbackLinkedin(Request $request)
+    {
+        $socialUser = Socialite::driver('linkedin')->stateless()->user();
+        return $this->handleSocialUser($socialUser, 'linkedin', $request);
+    }
+
     private function handleSocialUser($socialUser, $provider, $request)
     {
         $email = $socialUser->getEmail();
