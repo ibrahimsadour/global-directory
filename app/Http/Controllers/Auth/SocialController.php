@@ -27,21 +27,38 @@ class SocialController extends Controller
     {
         return Socialite::driver('twitter')->redirect(); // بدون stateless
     }
-
     public function callbackTwitter(Request $request)
     {
         $socialUser = Socialite::driver('twitter')->user(); // بدون stateless
         return $this->handleSocialUser($socialUser, 'twitter', $request);
     }
 
+    // Facebook
+    public function redirectFacebook()
+    {
+        return Socialite::driver('facebook')->stateless()->redirect();
+    }
+
+    public function callbackFacebook(Request $request)
+    {
+        $socialUser = Socialite::driver('facebook')->stateless()->user();
+        return $this->handleSocialUser($socialUser, 'facebook', $request);
+    }
+
     private function handleSocialUser($socialUser, $provider, $request)
     {
-        $user = User::where('email', $socialUser->getEmail())->first();
+        $email = $socialUser->getEmail();
+
+        if (!$email) {
+            $email = $socialUser->getId() . "@{$provider}.local"; // مثال: 123456@facebook.local
+        }
+
+        $user = User::where('email', $email)->first();
 
         if (!$user) {
             $user = User::create([
                 'name'           => $socialUser->getName() ?? $socialUser->getNickname() ?? 'مستخدم جديد',
-                'email'          => $socialUser->getEmail(),
+                'email'          => $email,
                 'password'       => bcrypt(Str::random(16)),
                 "{$provider}_id" => $socialUser->getId(),
                 'provider'       => $provider,
@@ -62,6 +79,7 @@ class SocialController extends Controller
         Auth::login($user, true);
         return redirect()->route('user.dashboard');
     }
+
 
 
 }
