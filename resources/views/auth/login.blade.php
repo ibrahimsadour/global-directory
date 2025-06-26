@@ -1,81 +1,86 @@
-
 @extends('layouts.app')
 @section('content')
 
-<div id="app">
-    <div>
-        <div class="authbg">
-            <div class="container auth-container">
-<form method="POST" action="{{ route('login') }}">
-    @csrf
+<div class="authbg py-5">
+    <div class="container auth-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-10">
+                <div class="card shadow border-0 rounded-3 authcard">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-4">تسجيل دخول المستخدم</h2>
 
-    <div class="row" bis_skin_checked="1">
-        <div class="col-lg-6 col-md-10 mx-auto shadow authcard" bis_skin_checked="1">
-            <div class="titlecover" bis_skin_checked="1">
-                <h2>تسجيل دخول المستخدم</h2>
-            </div>
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
 
-            <!-- حقل الإيميل -->
-            <div class="row form-row" bis_skin_checked="1">
-                <div class="col-md-4" bis_skin_checked="1">
-                    <label for="email">البريد الإلكتروني</label><span class="spcol">:</span>
-                </div>
-                <div class="col-md-8" bis_skin_checked="1">
-                    <input id="email" type="email" name="email" class="form-control" placeholder="أدخل البريد الإلكتروني" value="{{ old('email') }}" required autocomplete="username">
-                    @error('email')
-                        <p class="text-danger mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
+                            <!-- البريد الإلكتروني -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label">البريد الإلكتروني</label>
+                                <input id="email" type="email" name="email" class="form-control" placeholder="أدخل البريد الإلكتروني" value="{{ old('email') }}" required>
+                                @error('email')
+                                    <p class="text-danger small mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-            <!-- حقل كلمة المرور -->
-            <div class="row form-row" bis_skin_checked="1">
-                <div class="col-md-4" bis_skin_checked="1">
-                    <label for="password">كلمة المرور</label><span class="spcol">:</span>
-                </div>
-                <div class="col-md-8" bis_skin_checked="1">
-                    <input id="password" type="password" name="password" class="form-control" placeholder="أدخل كلمة المرور" required autocomplete="current-password">
-                    @error('password')
-                        <p class="text-danger mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
+                            <!-- كلمة المرور -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label">كلمة المرور</label>
+                                <input id="password" type="password" name="password" class="form-control" placeholder="أدخل كلمة المرور" required>
+                                @error('password')
+                                    <p class="text-danger small mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-            <!-- تذكرني -->
-            <div class="row form-row" bis_skin_checked="1">
-                <div class="col-md-4"></div>
-                <div class="col-md-8 mb-3" bis_skin_checked="1">
-                    <label>
-                        <input name="remember" type="checkbox" class="form-check-input">
-                        تذكرني
-                    </label>
-                </div>
-            </div>
+                            <!-- تذكرني -->
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" name="remember" class="form-check-input" id="remember">
+                                <label class="form-check-label" for="remember">تذكرني</label>
+                            </div>
 
-            <!-- زر الدخول ورابط نسيان كلمة المرور -->
-            <div class="row form-row" bis_skin_checked="1">
-                <div class="col-md-4"></div>
-                <div class="col-md-8 fpswd" bis_skin_checked="1">
-                    <button type="submit" class="btn btn-primary px-4">تسجيل الدخول</button>
-                    @if (Route::has('password.request'))
-                        <a class="text-sm ms-3" href="{{ route('password.request') }}">هل نسيت كلمة المرور؟</a>
-                    @endif
-                </div>
-            </div>
+                            <!-- زر الدخول -->
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary">تسجيل الدخول</button>
+                            </div>
 
-            <!-- رابط التسجيل -->
-            <div class="row mt-4 text-center form-row" bis_skin_checked="1">
-                <p>
-                    لا تملك حساباً؟ 
-                    <a href="{{ route('register') }}" class="text-primary"><b>أنشئ حساب جديد</b></a>
-                </p>
-            </div>
-        </div>
-    </div>
-</form>
-                `
+                            <!-- رابط نسيان كلمة المرور -->
+                            @if (Route::has('password.request'))
+                                <div class="text-center mb-2">
+                                    <a href="{{ route('password.request') }}" class="text-decoration-none text-sm">هل نسيت كلمة المرور؟</a>
+                                </div>
+                            @endif
+
+                            <!-- رابط التسجيل -->
+                            <div class="text-center mt-3">
+                                <p>لا تملك حساباً؟ 
+                                    <a href="{{ route('register') }}" class="text-primary fw-bold">أنشئ حساب جديد</a>
+                                </p>
+                            </div>
+                        </form>
+
+                        <!-- تسجيل الدخول عبر وسائل التواصل -->
+                        <hr class="my-4">
+                        <div class="text-center mb-2">
+                            <span class="text-muted">أو سجل الدخول باستخدام</span>
+                        </div>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a class="btn btn-outline-secondary" href="{{ route('social.redirect', 'google') }}">
+                                <i class="bi bi-google fs-4"></i>
+                            </a>
+                            <a class="btn btn-outline-primary" href="{{ route('social.redirect', 'facebook') }}">
+                                <i class="bi bi-facebook fs-4"></i>
+                            </a>
+                            <a class="btn btn-outline-info" href="{{ route('social.redirect', 'twitter') }}">
+                                <i class="bi bi-twitter-x fs-4"></i>
+                            </a>
+                            <a class="btn btn-outline-dark" href="{{ route('social.redirect', 'linkedin') }}">
+                                <i class="bi bi-linkedin fs-4"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

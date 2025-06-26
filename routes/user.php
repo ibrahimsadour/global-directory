@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\BusinessController;
-use App\Http\Controllers\User\SearchController;
+use App\Http\Controllers\Auth\SocialController;
 
 
 // Route::middleware(['web', 'auth', 'regular'])
@@ -37,11 +37,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'verified'])->group(fu
 
     Route::delete('/business/{id}', [BusinessController::class, 'destroy'])->name('business.destroy'); // حذف النشاط
 
-    Route::get('/business/{id}', [BusinessController::class, 'show'])->name('business.show'); // عرض التفاصيل (اختياري)
-
-    Route::get('/search', [SearchController::class, 'index'])->name('search');
-    
-
+    Route::get('/business/{id}', [BusinessController::class, 'show'])->name('business.show'); // عرض التفاصيل (اختياري)    
 
 });
 
@@ -51,6 +47,11 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'verified'])->group(fu
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 // });
+
+
+Route::get('/auth/{provider}', [SocialController::class, 'redirect'])->name('social.redirect');
+Route::get('/auth/{provider}/callback', [SocialController::class, 'callback'])->name('social.callback');
+
 
 
 require __DIR__.'/auth.php';

@@ -29,7 +29,15 @@ class User extends Authenticatable
         'phone',
         'profile_photo',
         'bio',
+        'google_id',
+        'facebook_id',
+        'twitter_id',
+        'linkedin_id',
+        'provider',
+        'last_login_at',
+        'signup_ip',
         'is_verified',
+        'is_trusted',
         'status',
     ];
 

@@ -21,6 +21,7 @@ class AdminUserSeeder extends Seeder
                 'profile_photo' => null,
                 'bio' => 'مدير النظام',
                 'is_verified' => true,
+                'is_trusted' => true,
                 'status' => true,
             ]
         );

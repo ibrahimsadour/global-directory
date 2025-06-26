@@ -7,6 +7,7 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\GovernorateController;
 use App\Http\Controllers\LocationController;
 use App\Models\Location;
+use App\Http\Controllers\User\SearchController;
 
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
@@ -22,6 +23,9 @@ use Spatie\Sitemap\Tags\Url;
 |
 */
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+Route::get('/search', [SearchController::class, 'index'])->name('search');
+
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');

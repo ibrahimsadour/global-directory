@@ -36,7 +36,7 @@
                 <div class="col-lg-7 col-md-12 searchcol">
                     <h1 class="homepage-title">{{setting('site_title')}}</h1>
                     <p>{{setting('site_description')}}<p>
-                    <form action="{{ route('user.search') }}" method="GET" role="search"> 
+                    <form action="{{ route('search') }}" method="GET" role="search"> 
                         <input type="hidden" name="key" value="{{ request('key') }}" autocomplete="on" />
                         <div class="search-box-card no-margin row">
                             <div style="width: 100%;" class="col-md-6 no-padding">
@@ -268,7 +268,7 @@
                                             
                                         @endif
                                         <span>
-                                            {{ $latestBusiness->user?->name ?? 'غير معروف' }} @if($latestBusiness->user?->is_verified)
+                                            {{ $latestBusiness->user?->name ?? 'غير معروف' }} @if($latestBusiness->user?->is_trusted)
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                 <g clip-path="url(#clip0_3387_26479)">
                                                     <path

@@ -45,7 +45,7 @@
         </div>
         <div  class="col-lg-5 d-none d-lg-block col-md-8 search">
             <div class="search-row row no-margin">
-                <form action="{{ route('user.search') }}" method="GET" class="d-flex">
+                <form action="{{ route('search') }}" method="GET" class="d-flex">
                     <input type="text" name="key" class="form-control" placeholder="ابحث عن نشاط..." value="{{ request('key') }}">
                     <button style="width: 10%;" type="submit" class="btn rounded-end btn-primary"><i class="bi bi-search"></i></button>
                 </form>
