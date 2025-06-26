@@ -74,16 +74,16 @@
                             <span class="text-muted">أو سجل باستخدام</span>
                         </div>
                         <div class="d-flex justify-content-center gap-3">
-                            <a class="btn btn-outline-secondary" href="{{ route('social.redirect', 'google') }}">
+                            <a class="btn btn-outline-secondary" href="{{ route('social.redirect.google') }}">
                                 <i class="bi bi-google fs-4"></i>
                             </a>
-                            <a class="btn btn-outline-primary" href="{{ route('social.redirect', 'facebook') }}">
+                            <a class="btn btn-outline-primary" href="{{ route('social.redirect.facebook') }}">
                                 <i class="bi bi-facebook fs-4"></i>
                             </a>
-                            <a class="btn btn-outline-info" href="{{ route('social.redirect', 'twitter') }}">
+                            <a class="btn btn-outline-info" href="{{ route('social.redirect.twitter') }}">
                                 <i class="bi bi-twitter-x fs-4"></i>
                             </a>
-                            <a class="btn btn-outline-dark" href="{{ route('social.redirect', 'linkedin') }}">
+                            <a class="btn btn-outline-dark" href="{{ route('social.redirect.linkedin') }}">
                                 <i class="bi bi-linkedin fs-4"></i>
                             </a>
                         </div>

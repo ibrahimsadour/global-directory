@@ -7,46 +7,57 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class SocialController extends Controller
 {
-    public function redirect($provider)
+    // Google
+    public function redirectGoogle()
     {
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver('google')->stateless()->redirect();
+    }
+    public function callbackGoogle(Request $request)
+    {
+        $socialUser = Socialite::driver('google')->stateless()->user();
+        return $this->handleSocialUser($socialUser, 'google', $request);
     }
 
-    public function callback($provider)
+    // Twitter
+    public function redirectTwitter()
     {
-        $socialUser = Socialite::driver($provider)->stateless()->user();
+        return Socialite::driver('twitter')->redirect(); // بدون stateless
+    }
 
+    public function callbackTwitter(Request $request)
+    {
+        $socialUser = Socialite::driver('twitter')->user(); // بدون stateless
+        return $this->handleSocialUser($socialUser, 'twitter', $request);
+    }
+
+    private function handleSocialUser($socialUser, $provider, $request)
+    {
         $user = User::where('email', $socialUser->getEmail())->first();
 
         if (!$user) {
             $user = User::create([
                 'name'           => $socialUser->getName() ?? $socialUser->getNickname() ?? 'مستخدم جديد',
                 'email'          => $socialUser->getEmail(),
-                'password'       => bcrypt(Str::random(16)), // كلمة مرور عشوائية
-                'role'           => 'user',
-                'phone'          => null,
-                'profile_photo'  => $socialUser->getAvatar(), // لو متوفر صورة من جوجل/فيسبوك
-                'bio'            => null,
-
+                'password'       => bcrypt(Str::random(16)),
                 "{$provider}_id" => $socialUser->getId(),
                 'provider'       => $provider,
-                'last_login_at'  => now(),
-                'signup_ip'      => request()->ip(),
+                'profile_photo'  => $socialUser->getAvatar(),
+                'signup_ip'      => $request->ip(),
                 'is_verified'    => true,
-                'status'         => true,
-                'remember_token' => Str::random(60),
             ]);
         } else {
-            // تحديث بيانات الدخول فقط
             $user->update([
-                "{$provider}_id" => $user->getAttribute("{$provider}_id") ?? $socialUser->getId(),
-                'last_login_at'  => now(),
-                'provider'       => $provider,
+                "{$provider}_id" => $user["{$provider}_id"] ?? $socialUser->getId(),
+                'provider'       => $user->provider ?? $provider,
             ]);
         }
+
+        $user->last_login_at = now();
+        $user->save();
 
         Auth::login($user, true);
         return redirect()->route('user.dashboard');

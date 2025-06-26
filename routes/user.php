@@ -49,8 +49,17 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'verified'])->group(fu
 // });
 
 
-Route::get('/auth/{provider}', [SocialController::class, 'redirect'])->name('social.redirect');
-Route::get('/auth/{provider}/callback', [SocialController::class, 'callback'])->name('social.callback');
+Route::get('auth/google', [SocialController::class, 'redirectGoogle'])->name('social.redirect.google');
+Route::get('auth/google/callback', [SocialController::class, 'callbackGoogle']);
+
+Route::get('auth/twitter', [SocialController::class, 'redirectTwitter'])->name('social.redirect.twitter');
+Route::get('auth/twitter/callback', [SocialController::class, 'callbackTwitter']);
+
+Route::get('auth/facebook', [SocialController::class, 'redirectFacebook'])->name('social.redirect.facebook');
+Route::get('auth/facebook/callback', [SocialController::class, 'callbackFacebook']);
+
+Route::get('auth/linkedin', [SocialController::class, 'redirectLinkedin'])->name('social.redirect.linkedin');
+Route::get('auth/linkedin/callback', [SocialController::class, 'callbackLinkedin']);
 
 
 
