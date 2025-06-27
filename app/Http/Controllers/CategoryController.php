@@ -19,7 +19,7 @@ class CategoryController extends Controller
         $businesses = Business::where('is_active', 1)
         ->where('is_approved', 1)
         ->latest()
-        ->paginate(3); // عدّل الرقم حسب عدد العناصر في كل صفحة
+        ->paginate(15); // عدّل الرقم حسب عدد العناصر في كل صفحة
 
         // إرسالهم لنفس الصفحة أو صفحة منفصلة حسب تصميمك
         return view('category.index', [

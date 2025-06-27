@@ -1,5 +1,9 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .shado-1{
     box-shadow:0 2px 5px #00000029,0 2px 10px #0000001f
 }
@@ -103,7 +107,6 @@
     --bs-code-color: #d63384;
     --bs-highlight-color: #212529;
     --bs-highlight-bg: #fff3cd;
-    --bs-border-width: 1px;
     --bs-border-style: solid;
     --bs-border-color: #dee2e6;
     --bs-border-color-translucent: rgba(0, 0, 0, .175);
@@ -290,7 +293,7 @@ dt{
 }
 dd{
     margin-bottom:.5rem;
-    margin-left:0
+    margin-inline-start:0
 }
 blockquote{
     margin:0 0 1rem
@@ -378,7 +381,7 @@ caption{
     padding-top:.5rem;
     padding-bottom:.5rem;
     color:var(--bs-secondary-color);
-    text-align:right;
+    text-align: end;
 }
 th{
     text-align:inherit;
@@ -562,7 +565,7 @@ progress{
     display:inline-block
 }
 .list-inline-item:not(:last-child){
-    margin-right:.5rem
+    margin-inline-end:.5rem
 }
 .initialism{
     font-size:.875em;
@@ -613,8 +616,8 @@ progress{
     width:100%;
     padding-right:calc(var(--bs-gutter-x) * .5);
     padding-right:calc(var(--bs-gutter-x) * .5);
-    margin-right:auto;
-    margin-left:auto
+    margin-inline-end:auto;
+    margin-inline-start:auto
 }
 @media (min-width: 576px){
     .container-sm,.container{
@@ -655,15 +658,14 @@ progress{
     display:flex;
     flex-wrap:wrap;
     margin-top:calc(-1 * var(--bs-gutter-y));
-    margin-right:calc(-.5 * var(--bs-gutter-x));
-    margin-left:calc(-.5 * var(--bs-gutter-x))
+    margin-inline-end:calc(-.5 * var(--bs-gutter-x));
+    margin-inline-start:calc(-.5 * var(--bs-gutter-x))
 }
 .row>*{
     flex-shrink:0;
     width:100%;
     max-width:100%;
-    padding-right:calc(var(--bs-gutter-x) * .5);
-    padding-right:calc(var(--bs-gutter-x) * .5);
+    padding-inline-start: calc(var(--bs-gutter-x) * .5);
     margin-top:var(--bs-gutter-y)
 }
 .col{
@@ -750,37 +752,37 @@ progress{
     width:100%
 }
 .offset-1{
-    margin-left:8.33333333%
+    margin-inline-start:8.33333333%
 }
 .offset-2{
-    margin-left:16.66666667%
+    margin-inline-start:16.66666667%
 }
 .offset-3{
-    margin-left:25%
+    margin-inline-start:25%
 }
 .offset-4{
-    margin-left:33.33333333%
+    margin-inline-start:33.33333333%
 }
 .offset-5{
-    margin-left:41.66666667%
+    margin-inline-start:41.66666667%
 }
 .offset-6{
-    margin-left:50%
+    margin-inline-start:50%
 }
 .offset-7{
-    margin-left:58.33333333%
+    margin-inline-start:58.33333333%
 }
 .offset-8{
-    margin-left:66.66666667%
+    margin-inline-start:66.66666667%
 }
 .offset-9{
-    margin-left:75%
+    margin-inline-start:75%
 }
 .offset-10{
-    margin-left:83.33333333%
+    margin-inline-start:83.33333333%
 }
 .offset-11{
-    margin-left:91.66666667%
+    margin-inline-start:91.66666667%
 }
 .g-0,.gx-0{
     --bs-gutter-x: 0
@@ -903,40 +905,40 @@ progress{
         width:100%
     }
     .offset-sm-0{
-        margin-left:0
+        margin-inline-start:0
     }
     .offset-sm-1{
-        margin-left:8.33333333%
+        margin-inline-start:8.33333333%
     }
     .offset-sm-2{
-        margin-left:16.66666667%
+        margin-inline-start:16.66666667%
     }
     .offset-sm-3{
-        margin-left:25%
+        margin-inline-start:25%
     }
     .offset-sm-4{
-        margin-left:33.33333333%
+        margin-inline-start:33.33333333%
     }
     .offset-sm-5{
-        margin-left:41.66666667%
+        margin-inline-start:41.66666667%
     }
     .offset-sm-6{
-        margin-left:50%
+        margin-inline-start:50%
     }
     .offset-sm-7{
-        margin-left:58.33333333%
+        margin-inline-start:58.33333333%
     }
     .offset-sm-8{
-        margin-left:66.66666667%
+        margin-inline-start:66.66666667%
     }
     .offset-sm-9{
-        margin-left:75%
+        margin-inline-start:75%
     }
     .offset-sm-10{
-        margin-left:83.33333333%
+        margin-inline-start:83.33333333%
     }
     .offset-sm-11{
-        margin-left:91.66666667%
+        margin-inline-start:91.66666667%
     }
     .g-sm-0,.gx-sm-0{
         --bs-gutter-x: 0
@@ -1060,40 +1062,40 @@ progress{
         width:100%
     }
     .offset-md-0{
-        margin-left:0
+        margin-inline-start:0
     }
     .offset-md-1{
-        margin-left:8.33333333%
+        margin-inline-start:8.33333333%
     }
     .offset-md-2{
-        margin-left:16.66666667%
+        margin-inline-start:16.66666667%
     }
     .offset-md-3{
-        margin-left:25%
+        margin-inline-start:25%
     }
     .offset-md-4{
-        margin-left:33.33333333%
+        margin-inline-start:33.33333333%
     }
     .offset-md-5{
-        margin-left:41.66666667%
+        margin-inline-start:41.66666667%
     }
     .offset-md-6{
-        margin-left:50%
+        margin-inline-start:50%
     }
     .offset-md-7{
-        margin-left:58.33333333%
+        margin-inline-start:58.33333333%
     }
     .offset-md-8{
-        margin-left:66.66666667%
+        margin-inline-start:66.66666667%
     }
     .offset-md-9{
-        margin-left:75%
+        margin-inline-start:75%
     }
     .offset-md-10{
-        margin-left:83.33333333%
+        margin-inline-start:83.33333333%
     }
     .offset-md-11{
-        margin-left:91.66666667%
+        margin-inline-start:91.66666667%
     }
     .g-md-0,.gx-md-0{
         --bs-gutter-x: 0
@@ -1217,40 +1219,40 @@ progress{
         width:100%
     }
     .offset-lg-0{
-        margin-left:0
+        margin-inline-start:0
     }
     .offset-lg-1{
-        margin-left:8.33333333%
+        margin-inline-start:8.33333333%
     }
     .offset-lg-2{
-        margin-left:16.66666667%
+        margin-inline-start:16.66666667%
     }
     .offset-lg-3{
-        margin-left:25%
+        margin-inline-start:25%
     }
     .offset-lg-4{
-        margin-left:33.33333333%
+        margin-inline-start:33.33333333%
     }
     .offset-lg-5{
-        margin-left:41.66666667%
+        margin-inline-start:41.66666667%
     }
     .offset-lg-6{
-        margin-left:50%
+        margin-inline-start:50%
     }
     .offset-lg-7{
-        margin-left:58.33333333%
+        margin-inline-start:58.33333333%
     }
     .offset-lg-8{
-        margin-left:66.66666667%
+        margin-inline-start:66.66666667%
     }
     .offset-lg-9{
-        margin-left:75%
+        margin-inline-start:75%
     }
     .offset-lg-10{
-        margin-left:83.33333333%
+        margin-inline-start:83.33333333%
     }
     .offset-lg-11{
-        margin-left:91.66666667%
+        margin-inline-start:91.66666667%
     }
     .g-lg-0,.gx-lg-0{
         --bs-gutter-x: 0
@@ -1374,40 +1376,40 @@ progress{
         width:100%
     }
     .offset-xl-0{
-        margin-left:0
+        margin-inline-start:0
     }
     .offset-xl-1{
-        margin-left:8.33333333%
+        margin-inline-start:8.33333333%
     }
     .offset-xl-2{
-        margin-left:16.66666667%
+        margin-inline-start:16.66666667%
     }
     .offset-xl-3{
-        margin-left:25%
+        margin-inline-start:25%
     }
     .offset-xl-4{
-        margin-left:33.33333333%
+        margin-inline-start:33.33333333%
     }
     .offset-xl-5{
-        margin-left:41.66666667%
+        margin-inline-start:41.66666667%
     }
     .offset-xl-6{
-        margin-left:50%
+        margin-inline-start:50%
     }
     .offset-xl-7{
-        margin-left:58.33333333%
+        margin-inline-start:58.33333333%
     }
     .offset-xl-8{
-        margin-left:66.66666667%
+        margin-inline-start:66.66666667%
     }
     .offset-xl-9{
-        margin-left:75%
+        margin-inline-start:75%
     }
     .offset-xl-10{
-        margin-left:83.33333333%
+        margin-inline-start:83.33333333%
     }
     .offset-xl-11{
-        margin-left:91.66666667%
+        margin-inline-start:91.66666667%
     }
     .g-xl-0,.gx-xl-0{
         --bs-gutter-x: 0
@@ -1531,40 +1533,40 @@ progress{
         width:100%
     }
     .offset-xxl-0{
-        margin-left:0
+        margin-inline-start:0
     }
     .offset-xxl-1{
-        margin-left:8.33333333%
+        margin-inline-start:8.33333333%
     }
     .offset-xxl-2{
-        margin-left:16.66666667%
+        margin-inline-start:16.66666667%
     }
     .offset-xxl-3{
-        margin-left:25%
+        margin-inline-start:25%
     }
     .offset-xxl-4{
-        margin-left:33.33333333%
+        margin-inline-start:33.33333333%
     }
     .offset-xxl-5{
-        margin-left:41.66666667%
+        margin-inline-start:41.66666667%
     }
     .offset-xxl-6{
-        margin-left:50%
+        margin-inline-start:50%
     }
     .offset-xxl-7{
-        margin-left:58.33333333%
+        margin-inline-start:58.33333333%
     }
     .offset-xxl-8{
-        margin-left:66.66666667%
+        margin-inline-start:66.66666667%
     }
     .offset-xxl-9{
-        margin-left:75%
+        margin-inline-start:75%
     }
     .offset-xxl-10{
-        margin-left:83.33333333%
+        margin-inline-start:83.33333333%
     }
     .offset-xxl-11{
-        margin-left:91.66666667%
+        margin-inline-start:91.66666667%
     }
     .g-xxl-0,.gx-xxl-0{
         --bs-gutter-x: 0
@@ -2048,7 +2050,7 @@ textarea.form-control-lg{
 }
 .form-check .form-check-input{
     float:right;
-    margin-left:-1.5em
+    margin-inline-start:-1.5em
 }
 .form-check-reverse{
     padding-right:1.5em;
@@ -2057,8 +2059,8 @@ textarea.form-control-lg{
 }
 .form-check-reverse .form-check-input{
     float:right;
-    margin-right:-1.5em;
-    margin-left:0
+    margin-inline-end:-1.5em;
+    margin-inline-start:0
 }
 .form-check-input{
     --bs-form-check-bg: var(--bs-body-bg);
@@ -2123,7 +2125,7 @@ textarea.form-control-lg{
 .form-switch .form-check-input{
     --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
     width:2em;
-    margin-left:-2.5em;
+    margin-inline-start:-2.5em;
     background-image:var(--bs-form-switch-bg);
     background-position:right center;
     border-radius:2em;
@@ -2146,12 +2148,12 @@ textarea.form-control-lg{
     padding-right:0
 }
 .form-switch.form-check-reverse .form-check-input{
-    margin-right:-2.5em;
-    margin-left:0
+    margin-inline-end:-2.5em;
+    margin-inline-start:0
 }
 .form-check-inline{
     display:inline-block;
-    margin-right:1rem
+    margin-inline-end:1rem
 }
 .btn-check{
     position:absolute;
@@ -2388,7 +2390,7 @@ textarea.form-control-lg{
     border-bottom-left-radius:0
 }
 .input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
-    margin-left:calc(var(--bs-border-width) * -1);
+    margin-inline-start:calc(var(--bs-border-width) * -1);
     border-top-left-radius:0;
     border-bottom-left-radius:0
 }
@@ -2464,7 +2466,7 @@ textarea.form-control-lg{
     color:var(--bs-form-valid-color)
 }
 .form-check-inline .form-check-input~.valid-feedback{
-    margin-left:.5em
+    margin-inline-start:.5em
 }
 .was-validated .input-group>.form-control:not(:focus):valid,.input-group>.form-control:not(:focus).is-valid,.was-validated .input-group>.form-select:not(:focus):valid,.input-group>.form-select:not(:focus).is-valid,.was-validated .input-group>.form-floating:not(:focus-within):valid,.input-group>.form-floating:not(:focus-within).is-valid{
     z-index:3
@@ -2537,7 +2539,7 @@ textarea.form-control-lg{
     color:var(--bs-form-invalid-color)
 }
 .form-check-inline .form-check-input~.invalid-feedback{
-    margin-left:.5em
+    margin-inline-start:.5em
 }
 .was-validated .input-group>.form-control:not(:focus):invalid,.input-group>.form-control:not(:focus).is-invalid,.was-validated .input-group>.form-select:not(:focus):invalid,.input-group>.form-select:not(:focus).is-invalid,.was-validated .input-group>.form-floating:not(:focus-within):invalid,.input-group>.form-floating:not(:focus-within).is-invalid{
     z-index:4
@@ -2952,7 +2954,7 @@ textarea.form-control-lg{
 }
 .dropdown-toggle:after{
     display:inline-block;
-    margin-left:.255em;
+    margin-inline-start:.255em;
     vertical-align:.255em;
     content:"";
     border-top:.3em solid;
@@ -2961,7 +2963,7 @@ textarea.form-control-lg{
     border-left:.3em solid transparent
 }
 .dropdown-toggle:empty:after{
-    margin-left:0
+    margin-inline-start:0
 }
 .dropdown-menu{
     --bs-dropdown-zindex: 1000;
@@ -2998,7 +3000,7 @@ textarea.form-control-lg{
     margin:0;
     font-size:var(--bs-dropdown-font-size);
     color:var(--bs-dropdown-color);
-    text-align:right;
+    text-align: end;
     list-style:none;
     background-color:var(--bs-dropdown-bg);
     background-clip:padding-box;
@@ -3112,7 +3114,7 @@ textarea.form-control-lg{
 }
 .dropup .dropdown-toggle:after{
     display:inline-block;
-    margin-left:.255em;
+    margin-inline-start:.255em;
     vertical-align:.255em;
     content:"";
     border-top:0;
@@ -3121,18 +3123,18 @@ textarea.form-control-lg{
     border-left:.3em solid transparent
 }
 .dropup .dropdown-toggle:empty:after{
-    margin-left:0
+    margin-inline-start:0
 }
 .dropend .dropdown-menu[data-bs-popper]{
     top:0;
     right:auto;
     left:100%;
     margin-top:0;
-    margin-left:var(--bs-dropdown-spacer)
+    margin-inline-start:var(--bs-dropdown-spacer)
 }
 .dropend .dropdown-toggle:after{
     display:inline-block;
-    margin-left:.255em;
+    margin-inline-start:.255em;
     vertical-align:.255em;
     content:"";
     border-top:.3em solid transparent;
@@ -3141,7 +3143,7 @@ textarea.form-control-lg{
     border-left:.3em solid
 }
 .dropend .dropdown-toggle:empty:after{
-    margin-left:0
+    margin-inline-start:0
 }
 .dropend .dropdown-toggle:after{
     vertical-align:0
@@ -3151,11 +3153,11 @@ textarea.form-control-lg{
     right:100%;
     left:auto;
     margin-top:0;
-    margin-right:var(--bs-dropdown-spacer)
+    margin-inline-end:var(--bs-dropdown-spacer)
 }
 .dropstart .dropdown-toggle:after{
     display:inline-block;
-    margin-left:.255em;
+    margin-inline-start:.255em;
     vertical-align:.255em;
     content:""
 }
@@ -3164,7 +3166,7 @@ textarea.form-control-lg{
 }
 .dropstart .dropdown-toggle:before{
     display:inline-block;
-    margin-right:.255em;
+    margin-inline-end:.255em;
     vertical-align:.255em;
     content:"";
     border-top:.3em solid transparent;
@@ -3172,7 +3174,7 @@ textarea.form-control-lg{
     border-bottom:.3em solid transparent
 }
 .dropstart .dropdown-toggle:empty:after{
-    margin-left:0
+    margin-inline-start:0
 }
 .dropstart .dropdown-toggle:before{
     vertical-align:0
@@ -3266,7 +3268,7 @@ textarea.form-control-lg{
     border-radius:var(--bs-border-radius)
 }
 .btn-group>:not(.btn-check:first-child)+.btn,.btn-group>.btn-group:not(:first-child){
-    margin-left:calc(var(--bs-border-width) * -1)
+    margin-inline-start:calc(var(--bs-border-width) * -1)
 }
 .btn-group>.btn:not(:last-child):not(.dropdown-toggle),.btn-group>.btn.dropdown-toggle-split:first-child,.btn-group>.btn-group:not(:last-child)>.btn{
     border-top-left-radius:0;
@@ -3281,10 +3283,10 @@ textarea.form-control-lg{
     padding-right:.5625rem
 }
 .dropdown-toggle-split:after,.dropup .dropdown-toggle-split:after,.dropend .dropdown-toggle-split:after{
-    margin-left:0
+    margin-inline-start:0
 }
 .dropstart .dropdown-toggle-split:before{
-    margin-right:0
+    margin-inline-end:0
 }
 .btn-sm+.dropdown-toggle-split,.btn-group-sm>.btn+.dropdown-toggle-split{
     padding-right:.375rem;
@@ -3470,7 +3472,7 @@ textarea.form-control-lg{
 .navbar-brand{
     padding-top:var(--bs-navbar-brand-padding-y);
     padding-bottom:var(--bs-navbar-brand-padding-y);
-    margin-right:var(--bs-navbar-brand-margin-end);
+    margin-inline-end:var(--bs-navbar-brand-margin-end);
     font-size:var(--bs-navbar-brand-font-size);
     color:var(--bs-navbar-brand-color);
     text-decoration:none;
@@ -3874,8 +3876,8 @@ textarea.form-control-lg{
     border-radius:var(--bs-card-border-radius)
 }
 .card>hr{
-    margin-right:0;
-    margin-left:0
+    margin-inline-end:0;
+    margin-inline-start:0
 }
 .card>.list-group{
     border-top:inherit;
@@ -3912,7 +3914,7 @@ textarea.form-control-lg{
     margin-bottom:0
 }
 .card-link+.card-link{
-    margin-left:var(--bs-card-spacer-x)
+    margin-inline-start:var(--bs-card-spacer-x)
 }
 .card-header{
     padding:var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
@@ -3934,9 +3936,9 @@ textarea.form-control-lg{
     border-radius:0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius)
 }
 .card-header-tabs{
-    margin-right:calc(-.5 * var(--bs-card-cap-padding-x));
+    margin-inline-end:calc(-.5 * var(--bs-card-cap-padding-x));
     margin-bottom:calc(-1 * var(--bs-card-cap-padding-y));
-    margin-left:calc(-.5 * var(--bs-card-cap-padding-x));
+    margin-inline-start:calc(-.5 * var(--bs-card-cap-padding-x));
     border-bottom:0
 }
 .card-header-tabs .nav-link.active{
@@ -3944,8 +3946,8 @@ textarea.form-control-lg{
     border-bottom-color:var(--bs-card-bg)
 }
 .card-header-pills{
-    margin-right:calc(-.5 * var(--bs-card-cap-padding-x));
-    margin-left:calc(-.5 * var(--bs-card-cap-padding-x))
+    margin-inline-end:calc(-.5 * var(--bs-card-cap-padding-x));
+    margin-inline-start:calc(-.5 * var(--bs-card-cap-padding-x))
 }
 .card-img-overlay{
     position:absolute;
@@ -3980,7 +3982,7 @@ textarea.form-control-lg{
         margin-bottom:0
     }
     .card-group>.card+.card{
-        margin-left:0;
+        margin-inline-start:0;
         border-left:0
     }
     .card-group>.card:not(:last-child){
@@ -4035,7 +4037,7 @@ textarea.form-control-lg{
     padding:var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
     font-size:1rem;
     color:var(--bs-accordion-btn-color);
-    text-align:right;
+    text-align: end;
     background-color:var(--bs-accordion-btn-bg);
     border:0;
     border-radius:0;
@@ -4060,7 +4062,7 @@ textarea.form-control-lg{
     flex-shrink:0;
     width:var(--bs-accordion-btn-icon-width);
     height:var(--bs-accordion-btn-icon-width);
-    margin-left:auto;
+    margin-inline-start:auto;
     content:"";
     background-image:var(--bs-accordion-btn-icon);
     background-repeat:no-repeat;
@@ -4232,7 +4234,7 @@ textarea.form-control-lg{
     border-color:var(--bs-pagination-disabled-border-color)
 }
 .page-item:not(:first-child) .page-link{
-    margin-left:calc(var(--bs-border-width) * -1)
+    margin-inline-start:calc(var(--bs-border-width) * -1)
 }
 .page-item:first-child .page-link{
     border-top-left-radius:var(--bs-pagination-border-radius);
@@ -4518,7 +4520,7 @@ textarea.form-control-lg{
     border-left-width:0
 }
 .list-group-horizontal>.list-group-item+.list-group-item.active{
-    margin-left:calc(-1 * var(--bs-list-group-border-width));
+    margin-inline-start:calc(-1 * var(--bs-list-group-border-width));
     border-left-width:var(--bs-list-group-border-width)
 }
 @media (min-width: 576px){
@@ -4541,7 +4543,7 @@ textarea.form-control-lg{
         border-left-width:0
     }
     .list-group-horizontal-sm>.list-group-item+.list-group-item.active{
-        margin-left:calc(-1 * var(--bs-list-group-border-width));
+        margin-inline-start:calc(-1 * var(--bs-list-group-border-width));
         border-left-width:var(--bs-list-group-border-width)
     }
 }
@@ -4565,7 +4567,7 @@ textarea.form-control-lg{
         border-left-width:0
     }
     .list-group-horizontal-md>.list-group-item+.list-group-item.active{
-        margin-left:calc(-1 * var(--bs-list-group-border-width));
+        margin-inline-start:calc(-1 * var(--bs-list-group-border-width));
         border-left-width:var(--bs-list-group-border-width)
     }
 }
@@ -4589,7 +4591,7 @@ textarea.form-control-lg{
         border-left-width:0
     }
     .list-group-horizontal-lg>.list-group-item+.list-group-item.active{
-        margin-left:calc(-1 * var(--bs-list-group-border-width));
+        margin-inline-start:calc(-1 * var(--bs-list-group-border-width));
         border-left-width:var(--bs-list-group-border-width)
     }
 }
@@ -4613,7 +4615,7 @@ textarea.form-control-lg{
         border-left-width:0
     }
     .list-group-horizontal-xl>.list-group-item+.list-group-item.active{
-        margin-left:calc(-1 * var(--bs-list-group-border-width));
+        margin-inline-start:calc(-1 * var(--bs-list-group-border-width));
         border-left-width:var(--bs-list-group-border-width)
     }
 }
@@ -4637,7 +4639,7 @@ textarea.form-control-lg{
         border-left-width:0
     }
     .list-group-horizontal-xxl>.list-group-item+.list-group-item.active{
-        margin-left:calc(-1 * var(--bs-list-group-border-width));
+        margin-inline-start:calc(-1 * var(--bs-list-group-border-width));
         border-left-width:var(--bs-list-group-border-width)
     }
 }
@@ -4840,8 +4842,8 @@ textarea.form-control-lg{
     border-top-left-radius:calc(var(--bs-toast-border-radius) - var(--bs-toast-border-width))
 }
 .toast-header .btn-close{
-    margin-right:calc(-.5 * var(--bs-toast-padding-x));
-    margin-left:var(--bs-toast-padding-x)
+    margin-inline-end:calc(-.5 * var(--bs-toast-padding-x));
+    margin-inline-start:var(--bs-toast-padding-x)
 }
 .toast-body{
     padding:var(--bs-toast-padding-x);
@@ -4991,8 +4993,8 @@ textarea.form-control-lg{
     }
     .modal-dialog{
         max-width:var(--bs-modal-width);
-        margin-right:auto;
-        margin-left:auto
+        margin-inline-end:auto;
+        margin-inline-start:auto
     }
     .modal-sm{
         --bs-modal-width: 300px
@@ -5140,7 +5142,7 @@ textarea.form-control-lg{
     font-style:normal;
     font-weight:400;
     line-height:1.5;
-    text-align:right;
+    text-align: end;
     text-align:start;
     text-decoration:none;
     text-shadow:none;
@@ -5240,7 +5242,7 @@ textarea.form-control-lg{
     font-style:normal;
     font-weight:400;
     line-height:1.5;
-    text-align:right;
+    text-align: end;
     text-align:start;
     text-decoration:none;
     text-shadow:none;
@@ -5320,7 +5322,7 @@ textarea.form-control-lg{
     left:50%;
     display:block;
     width:var(--bs-popover-arrow-width);
-    margin-left:calc(-.5 * var(--bs-popover-arrow-width));
+    margin-inline-start:calc(-.5 * var(--bs-popover-arrow-width));
     content:"";
     border-bottom:var(--bs-popover-border-width) solid var(--bs-popover-header-bg)
 }
@@ -5378,7 +5380,7 @@ textarea.form-control-lg{
     display:none;
     float:right;
     width:100%;
-    margin-right:-100%;
+    margin-inline-end:-100%;
     backface-visibility:hidden;
     transition:transform .6s ease-in-out
 }
@@ -5472,9 +5474,9 @@ textarea.form-control-lg{
     display:flex;
     justify-content:center;
     padding:0;
-    margin-right:15%;
+    margin-inline-end:15%;
     margin-bottom:1rem;
-    margin-left:15%
+    margin-inline-start:15%
 }
 .carousel-indicators [data-bs-target]{
     box-sizing:content-box;
@@ -5482,8 +5484,8 @@ textarea.form-control-lg{
     width:30px;
     height:3px;
     padding:0;
-    margin-right:3px;
-    margin-left:3px;
+    margin-inline-end:3px;
+    margin-inline-start:3px;
     text-indent:-999px;
     cursor:pointer;
     background-color:#fff;
@@ -6955,32 +6957,32 @@ textarea.form-control-lg{
     margin:auto!important
 }
 .mx-0{
-    margin-right:0!important;
-    margin-left:0!important
+    margin-inline-end:0!important;
+    margin-inline-start:0!important
 }
 .mx-1{
-    margin-right:.25rem!important;
-    margin-left:.25rem!important
+    margin-inline-end:.25rem!important;
+    margin-inline-start:.25rem!important
 }
 .mx-2{
-    margin-right:.5rem!important;
-    margin-left:.5rem!important
+    margin-inline-end:.5rem!important;
+    margin-inline-start:.5rem!important
 }
 .mx-3{
-    margin-right:1rem!important;
-    margin-left:1rem!important
+    margin-inline-end:1rem!important;
+    margin-inline-start:1rem!important
 }
 .mx-4{
-    margin-right:1.5rem!important;
-    margin-left:1.5rem!important
+    margin-inline-end:1.5rem!important;
+    margin-inline-start:1.5rem!important
 }
 .mx-5{
-    margin-right:3rem!important;
-    margin-left:3rem!important
+    margin-inline-end:3rem!important;
+    margin-inline-start:3rem!important
 }
 .mx-auto{
-    margin-right:auto!important;
-    margin-left:auto!important
+    margin-inline-end:auto!important;
+    margin-inline-start:auto!important
 }
 .my-0{
     margin-top:0!important;
@@ -7032,25 +7034,25 @@ textarea.form-control-lg{
     margin-top:auto!important
 }
 .me-0{
-    margin-right:0!important
+    margin-inline-end:0!important
 }
 .me-1{
-    margin-right:.25rem!important
+    margin-inline-end:.25rem!important
 }
 .me-2{
-    margin-right:.5rem!important
+    margin-inline-end:.5rem!important
 }
 .me-3{
-    margin-right:1rem!important
+    margin-inline-end:1rem!important
 }
 .me-4{
-    margin-right:1.5rem!important
+    margin-inline-end:1.5rem!important
 }
 .me-5{
-    margin-right:3rem!important
+    margin-inline-end:3rem!important
 }
 .me-auto{
-    margin-right:auto!important
+    margin-inline-end:auto!important
 }
 .mb-0{
     margin-bottom:0!important
@@ -7074,25 +7076,25 @@ textarea.form-control-lg{
     margin-bottom:auto!important
 }
 .ms-0{
-    margin-left:0!important
+    margin-inline-start:0!important
 }
 .ms-1{
-    margin-left:.25rem!important
+    margin-inline-start:.25rem!important
 }
 .ms-2{
-    margin-left:.5rem!important
+    margin-inline-start:.5rem!important
 }
 .ms-3{
-    margin-left:1rem!important
+    margin-inline-start:1rem!important
 }
 .ms-4{
-    margin-left:1.5rem!important
+    margin-inline-start:1.5rem!important
 }
 .ms-5{
-    margin-left:3rem!important
+    margin-inline-start:3rem!important
 }
 .ms-auto{
-    margin-left:auto!important
+    margin-inline-start:auto!important
 }
 .p-0{
     padding:0!important
@@ -8086,32 +8088,32 @@ textarea.form-control-lg{
         margin:auto!important
     }
     .mx-sm-0{
-        margin-right:0!important;
-        margin-left:0!important
+        margin-inline-end:0!important;
+        margin-inline-start:0!important
     }
     .mx-sm-1{
-        margin-right:.25rem!important;
-        margin-left:.25rem!important
+        margin-inline-end:.25rem!important;
+        margin-inline-start:.25rem!important
     }
     .mx-sm-2{
-        margin-right:.5rem!important;
-        margin-left:.5rem!important
+        margin-inline-end:.5rem!important;
+        margin-inline-start:.5rem!important
     }
     .mx-sm-3{
-        margin-right:1rem!important;
-        margin-left:1rem!important
+        margin-inline-end:1rem!important;
+        margin-inline-start:1rem!important
     }
     .mx-sm-4{
-        margin-right:1.5rem!important;
-        margin-left:1.5rem!important
+        margin-inline-end:1.5rem!important;
+        margin-inline-start:1.5rem!important
     }
     .mx-sm-5{
-        margin-right:3rem!important;
-        margin-left:3rem!important
+        margin-inline-end:3rem!important;
+        margin-inline-start:3rem!important
     }
     .mx-sm-auto{
-        margin-right:auto!important;
-        margin-left:auto!important
+        margin-inline-end:auto!important;
+        margin-inline-start:auto!important
     }
     .my-sm-0{
         margin-top:0!important;
@@ -8163,25 +8165,25 @@ textarea.form-control-lg{
         margin-top:auto!important
     }
     .me-sm-0{
-        margin-right:0!important
+        margin-inline-end:0!important
     }
     .me-sm-1{
-        margin-right:.25rem!important
+        margin-inline-end:.25rem!important
     }
     .me-sm-2{
-        margin-right:.5rem!important
+        margin-inline-end:.5rem!important
     }
     .me-sm-3{
-        margin-right:1rem!important
+        margin-inline-end:1rem!important
     }
     .me-sm-4{
-        margin-right:1.5rem!important
+        margin-inline-end:1.5rem!important
     }
     .me-sm-5{
-        margin-right:3rem!important
+        margin-inline-end:3rem!important
     }
     .me-sm-auto{
-        margin-right:auto!important
+        margin-inline-end:auto!important
     }
     .mb-sm-0{
         margin-bottom:0!important
@@ -8205,25 +8207,25 @@ textarea.form-control-lg{
         margin-bottom:auto!important
     }
     .ms-sm-0{
-        margin-left:0!important
+        margin-inline-start:0!important
     }
     .ms-sm-1{
-        margin-left:.25rem!important
+        margin-inline-start:.25rem!important
     }
     .ms-sm-2{
-        margin-left:.5rem!important
+        margin-inline-start:.5rem!important
     }
     .ms-sm-3{
-        margin-left:1rem!important
+        margin-inline-start:1rem!important
     }
     .ms-sm-4{
-        margin-left:1.5rem!important
+        margin-inline-start:1.5rem!important
     }
     .ms-sm-5{
-        margin-left:3rem!important
+        margin-inline-start:3rem!important
     }
     .ms-sm-auto{
-        margin-left:auto!important
+        margin-inline-start:auto!important
     }
     .p-sm-0{
         padding:0!important
@@ -8636,32 +8638,32 @@ textarea.form-control-lg{
         margin:auto!important
     }
     .mx-md-0{
-        margin-right:0!important;
-        margin-left:0!important
+        margin-inline-end:0!important;
+        margin-inline-start:0!important
     }
     .mx-md-1{
-        margin-right:.25rem!important;
-        margin-left:.25rem!important
+        margin-inline-end:.25rem!important;
+        margin-inline-start:.25rem!important
     }
     .mx-md-2{
-        margin-right:.5rem!important;
-        margin-left:.5rem!important
+        margin-inline-end:.5rem!important;
+        margin-inline-start:.5rem!important
     }
     .mx-md-3{
-        margin-right:1rem!important;
-        margin-left:1rem!important
+        margin-inline-end:1rem!important;
+        margin-inline-start:1rem!important
     }
     .mx-md-4{
-        margin-right:1.5rem!important;
-        margin-left:1.5rem!important
+        margin-inline-end:1.5rem!important;
+        margin-inline-start:1.5rem!important
     }
     .mx-md-5{
-        margin-right:3rem!important;
-        margin-left:3rem!important
+        margin-inline-end:3rem!important;
+        margin-inline-start:3rem!important
     }
     .mx-md-auto{
-        margin-right:auto!important;
-        margin-left:auto!important
+        margin-inline-end:auto!important;
+        margin-inline-start:auto!important
     }
     .my-md-0{
         margin-top:0!important;
@@ -8713,25 +8715,25 @@ textarea.form-control-lg{
         margin-top:auto!important
     }
     .me-md-0{
-        margin-right:0!important
+        margin-inline-end:0!important
     }
     .me-md-1{
-        margin-right:.25rem!important
+        margin-inline-end:.25rem!important
     }
     .me-md-2{
-        margin-right:.5rem!important
+        margin-inline-end:.5rem!important
     }
     .me-md-3{
-        margin-right:1rem!important
+        margin-inline-end:1rem!important
     }
     .me-md-4{
-        margin-right:1.5rem!important
+        margin-inline-end:1.5rem!important
     }
     .me-md-5{
-        margin-right:3rem!important
+        margin-inline-end:3rem!important
     }
     .me-md-auto{
-        margin-right:auto!important
+        margin-inline-end:auto!important
     }
     .mb-md-0{
         margin-bottom:0!important
@@ -8755,25 +8757,25 @@ textarea.form-control-lg{
         margin-bottom:auto!important
     }
     .ms-md-0{
-        margin-left:0!important
+        margin-inline-start:0!important
     }
     .ms-md-1{
-        margin-left:.25rem!important
+        margin-inline-start:.25rem!important
     }
     .ms-md-2{
-        margin-left:.5rem!important
+        margin-inline-start:.5rem!important
     }
     .ms-md-3{
-        margin-left:1rem!important
+        margin-inline-start:1rem!important
     }
     .ms-md-4{
-        margin-left:1.5rem!important
+        margin-inline-start:1.5rem!important
     }
     .ms-md-5{
-        margin-left:3rem!important
+        margin-inline-start:3rem!important
     }
     .ms-md-auto{
-        margin-left:auto!important
+        margin-inline-start:auto!important
     }
     .p-md-0{
         padding:0!important
@@ -9186,32 +9188,32 @@ textarea.form-control-lg{
         margin:auto!important
     }
     .mx-lg-0{
-        margin-right:0!important;
-        margin-left:0!important
+        margin-inline-end:0!important;
+        margin-inline-start:0!important
     }
     .mx-lg-1{
-        margin-right:.25rem!important;
-        margin-left:.25rem!important
+        margin-inline-end:.25rem!important;
+        margin-inline-start:.25rem!important
     }
     .mx-lg-2{
-        margin-right:.5rem!important;
-        margin-left:.5rem!important
+        margin-inline-end:.5rem!important;
+        margin-inline-start:.5rem!important
     }
     .mx-lg-3{
-        margin-right:1rem!important;
-        margin-left:1rem!important
+        margin-inline-end:1rem!important;
+        margin-inline-start:1rem!important
     }
     .mx-lg-4{
-        margin-right:1.5rem!important;
-        margin-left:1.5rem!important
+        margin-inline-end:1.5rem!important;
+        margin-inline-start:1.5rem!important
     }
     .mx-lg-5{
-        margin-right:3rem!important;
-        margin-left:3rem!important
+        margin-inline-end:3rem!important;
+        margin-inline-start:3rem!important
     }
     .mx-lg-auto{
-        margin-right:auto!important;
-        margin-left:auto!important
+        margin-inline-end:auto!important;
+        margin-inline-start:auto!important
     }
     .my-lg-0{
         margin-top:0!important;
@@ -9263,25 +9265,25 @@ textarea.form-control-lg{
         margin-top:auto!important
     }
     .me-lg-0{
-        margin-right:0!important
+        margin-inline-end:0!important
     }
     .me-lg-1{
-        margin-right:.25rem!important
+        margin-inline-end:.25rem!important
     }
     .me-lg-2{
-        margin-right:.5rem!important
+        margin-inline-end:.5rem!important
     }
     .me-lg-3{
-        margin-right:1rem!important
+        margin-inline-end:1rem!important
     }
     .me-lg-4{
-        margin-right:1.5rem!important
+        margin-inline-end:1.5rem!important
     }
     .me-lg-5{
-        margin-right:3rem!important
+        margin-inline-end:3rem!important
     }
     .me-lg-auto{
-        margin-right:auto!important
+        margin-inline-end:auto!important
     }
     .mb-lg-0{
         margin-bottom:0!important
@@ -9305,25 +9307,25 @@ textarea.form-control-lg{
         margin-bottom:auto!important
     }
     .ms-lg-0{
-        margin-left:0!important
+        margin-inline-start:0!important
     }
     .ms-lg-1{
-        margin-left:.25rem!important
+        margin-inline-start:.25rem!important
     }
     .ms-lg-2{
-        margin-left:.5rem!important
+        margin-inline-start:.5rem!important
     }
     .ms-lg-3{
-        margin-left:1rem!important
+        margin-inline-start:1rem!important
     }
     .ms-lg-4{
-        margin-left:1.5rem!important
+        margin-inline-start:1.5rem!important
     }
     .ms-lg-5{
-        margin-left:3rem!important
+        margin-inline-start:3rem!important
     }
     .ms-lg-auto{
-        margin-left:auto!important
+        margin-inline-start:auto!important
     }
     .p-lg-0{
         padding:0!important
@@ -9736,32 +9738,32 @@ textarea.form-control-lg{
         margin:auto!important
     }
     .mx-xl-0{
-        margin-right:0!important;
-        margin-left:0!important
+        margin-inline-end:0!important;
+        margin-inline-start:0!important
     }
     .mx-xl-1{
-        margin-right:.25rem!important;
-        margin-left:.25rem!important
+        margin-inline-end:.25rem!important;
+        margin-inline-start:.25rem!important
     }
     .mx-xl-2{
-        margin-right:.5rem!important;
-        margin-left:.5rem!important
+        margin-inline-end:.5rem!important;
+        margin-inline-start:.5rem!important
     }
     .mx-xl-3{
-        margin-right:1rem!important;
-        margin-left:1rem!important
+        margin-inline-end:1rem!important;
+        margin-inline-start:1rem!important
     }
     .mx-xl-4{
-        margin-right:1.5rem!important;
-        margin-left:1.5rem!important
+        margin-inline-end:1.5rem!important;
+        margin-inline-start:1.5rem!important
     }
     .mx-xl-5{
-        margin-right:3rem!important;
-        margin-left:3rem!important
+        margin-inline-end:3rem!important;
+        margin-inline-start:3rem!important
     }
     .mx-xl-auto{
-        margin-right:auto!important;
-        margin-left:auto!important
+        margin-inline-end:auto!important;
+        margin-inline-start:auto!important
     }
     .my-xl-0{
         margin-top:0!important;
@@ -9813,25 +9815,25 @@ textarea.form-control-lg{
         margin-top:auto!important
     }
     .me-xl-0{
-        margin-right:0!important
+        margin-inline-end:0!important
     }
     .me-xl-1{
-        margin-right:.25rem!important
+        margin-inline-end:.25rem!important
     }
     .me-xl-2{
-        margin-right:.5rem!important
+        margin-inline-end:.5rem!important
     }
     .me-xl-3{
-        margin-right:1rem!important
+        margin-inline-end:1rem!important
     }
     .me-xl-4{
-        margin-right:1.5rem!important
+        margin-inline-end:1.5rem!important
     }
     .me-xl-5{
-        margin-right:3rem!important
+        margin-inline-end:3rem!important
     }
     .me-xl-auto{
-        margin-right:auto!important
+        margin-inline-end:auto!important
     }
     .mb-xl-0{
         margin-bottom:0!important
@@ -9855,25 +9857,25 @@ textarea.form-control-lg{
         margin-bottom:auto!important
     }
     .ms-xl-0{
-        margin-left:0!important
+        margin-inline-start:0!important
     }
     .ms-xl-1{
-        margin-left:.25rem!important
+        margin-inline-start:.25rem!important
     }
     .ms-xl-2{
-        margin-left:.5rem!important
+        margin-inline-start:.5rem!important
     }
     .ms-xl-3{
-        margin-left:1rem!important
+        margin-inline-start:1rem!important
     }
     .ms-xl-4{
-        margin-left:1.5rem!important
+        margin-inline-start:1.5rem!important
     }
     .ms-xl-5{
-        margin-left:3rem!important
+        margin-inline-start:3rem!important
     }
     .ms-xl-auto{
-        margin-left:auto!important
+        margin-inline-start:auto!important
     }
     .p-xl-0{
         padding:0!important
@@ -10286,32 +10288,32 @@ textarea.form-control-lg{
         margin:auto!important
     }
     .mx-xxl-0{
-        margin-right:0!important;
-        margin-left:0!important
+        margin-inline-end:0!important;
+        margin-inline-start:0!important
     }
     .mx-xxl-1{
-        margin-right:.25rem!important;
-        margin-left:.25rem!important
+        margin-inline-end:.25rem!important;
+        margin-inline-start:.25rem!important
     }
     .mx-xxl-2{
-        margin-right:.5rem!important;
-        margin-left:.5rem!important
+        margin-inline-end:.5rem!important;
+        margin-inline-start:.5rem!important
     }
     .mx-xxl-3{
-        margin-right:1rem!important;
-        margin-left:1rem!important
+        margin-inline-end:1rem!important;
+        margin-inline-start:1rem!important
     }
     .mx-xxl-4{
-        margin-right:1.5rem!important;
-        margin-left:1.5rem!important
+        margin-inline-end:1.5rem!important;
+        margin-inline-start:1.5rem!important
     }
     .mx-xxl-5{
-        margin-right:3rem!important;
-        margin-left:3rem!important
+        margin-inline-end:3rem!important;
+        margin-inline-start:3rem!important
     }
     .mx-xxl-auto{
-        margin-right:auto!important;
-        margin-left:auto!important
+        margin-inline-end:auto!important;
+        margin-inline-start:auto!important
     }
     .my-xxl-0{
         margin-top:0!important;
@@ -10363,25 +10365,25 @@ textarea.form-control-lg{
         margin-top:auto!important
     }
     .me-xxl-0{
-        margin-right:0!important
+        margin-inline-end:0!important
     }
     .me-xxl-1{
-        margin-right:.25rem!important
+        margin-inline-end:.25rem!important
     }
     .me-xxl-2{
-        margin-right:.5rem!important
+        margin-inline-end:.5rem!important
     }
     .me-xxl-3{
-        margin-right:1rem!important
+        margin-inline-end:1rem!important
     }
     .me-xxl-4{
-        margin-right:1.5rem!important
+        margin-inline-end:1.5rem!important
     }
     .me-xxl-5{
-        margin-right:3rem!important
+        margin-inline-end:3rem!important
     }
     .me-xxl-auto{
-        margin-right:auto!important
+        margin-inline-end:auto!important
     }
     .mb-xxl-0{
         margin-bottom:0!important
@@ -10405,25 +10407,25 @@ textarea.form-control-lg{
         margin-bottom:auto!important
     }
     .ms-xxl-0{
-        margin-left:0!important
+        margin-inline-start:0!important
     }
     .ms-xxl-1{
-        margin-left:.25rem!important
+        margin-inline-start:.25rem!important
     }
     .ms-xxl-2{
-        margin-left:.5rem!important
+        margin-inline-start:.5rem!important
     }
     .ms-xxl-3{
-        margin-left:1rem!important
+        margin-inline-start:1rem!important
     }
     .ms-xxl-4{
-        margin-left:1.5rem!important
+        margin-inline-start:1.5rem!important
     }
     .ms-xxl-5{
-        margin-left:3rem!important
+        margin-inline-start:3rem!important
     }
     .ms-xxl-auto{
-        margin-left:auto!important
+        margin-inline-start:auto!important
     }
     .p-xxl-0{
         padding:0!important
@@ -10958,7 +10960,7 @@ header .search .search-row .btn{
 header .slink ul li{
     padding-top:2px;
     float:right;
-    margin-right: 10px;
+    margin-inline-end: 10px;
 }
 header .slink ul li a{
     font-weight:600;
@@ -10999,7 +11001,7 @@ header .small-menu{
 }
 .home-mobile-menu .offcanvas-body ul li i{
     font-weight:600;
-    margin-left:9px;
+    margin-inline-start:9px;
     font-size:1rem
 }
 .home-mobile-menu .offcanvas-body ul li a{
@@ -11013,7 +11015,7 @@ header .small-menu{
 }
 .login-options img{
     width:40px;
-    margin-right:3px;
+    margin-inline-end:3px;
     box-shadow:0 2px 6px #dadafda6,0 2px 6px #ceceee8a;
     border-radius:50px;
     background-color:#fff;
@@ -11031,8 +11033,8 @@ header .small-menu{
 }
 .login-options .dropdown-menu .dropdown-item i{
     width:20px;
-    text-align:right;
-    margin-right:3px
+    text-align: end;
+    margin-inline-end:3px
 }
 .login-options .dropdown-toggle{
     display:flex;
@@ -11041,7 +11043,7 @@ header .small-menu{
 }
 .login-options .dropdown-toggle span{
     padding-top:9px;
-    margin-left:5px
+    margin-inline-start:5px
 }
 .login-options .dropdown-toggle:after{
     margin-top:18px
@@ -11402,12 +11404,12 @@ footer .footer-bottom .topc li a{
     color:#fff
 }
 footer .footer-bottom .topc li i{
-    margin-left:4px;
+    margin-inline-start:4px;
     font-size:.7rem;
     color:#8bbaff
 }
 footer .footer-bottom .soc-link{
-    margin-left:20px;
+    margin-inline-start:20px;
     margin-top:-5px
 }
 footer .footer-bottom .soc-link li{
@@ -11519,7 +11521,7 @@ footer .subcrib .input-group-text i{
     font-weight:500
 }
 .business-listing .detail-col .bofy-col ul li i{
-    margin-right:3px
+    margin-inline-end:3px
 }
 .business-listing .detail-col .footcover{
     border-top:1px solid rgba(204,204,204,.44);
@@ -11554,14 +11556,14 @@ footer .subcrib .input-group-text i{
 .business-listing .detail-col .footcover .save i{
     color:#f73f50;
     font-size:.9rem;
-    margin-right:0
+    margin-inline-end:0
 }
 .business-listing .detail-col .footcover .save .bi-heart{
     color:#444
 }
 @media screen and (max-width: 767.98px){
     .listpagin .page-item .page-link{
-        margin-left:0!important
+        margin-inline-start:0!important
     }
 }
 .listng-pagination .page-link{
@@ -11592,7 +11594,7 @@ footer .subcrib .input-group-text i{
     margin-bottom:7px
 }
 .filter-col .category-filterr .filter-body ul li input{
-    margin-right:5px
+    margin-inline-end:5px
 }
 .rev{
     float:right;
@@ -11645,7 +11647,7 @@ footer .subcrib .input-group-text i{
     padding:4px
 }
 .businesscover .more-info ul li i{
-    margin-left:4px
+    margin-inline-start:4px
 }
 .businesscover .more-info ul li a{
     color:#6f6f6f
@@ -11669,7 +11671,7 @@ footer .subcrib .input-group-text i{
 .businesscover .footcover .save i{
     color:#f73f50;
     font-size:.9rem;
-    margin-right:0
+    margin-inline-end:0
 }
 .businesscover .footcover .save .bi-heart{
     color:#444
@@ -11805,7 +11807,7 @@ footer .subcrib .input-group-text i{
 .review-box .reviewrow .rcolm small,.review-box .reviewrow .rcolm .small{
     float:right;
     margin-top:-50px;
-    margin-right:18px
+    margin-inline-end:18px
 }
 .review-box .reviewrow .rcolm .review-text{
     margin-top:5px
@@ -11814,7 +11816,7 @@ footer .subcrib .input-group-text i{
     padding-bottom:20px
 }
 .add-reviwcol .rev i{
-    margin-right:5px;
+    margin-inline-end:5px;
     font-size:1.1rem
 }
 .add-reviwcol .rev label span{
@@ -11896,7 +11898,7 @@ footer .subcrib .input-group-text i{
     font-size:.9rem
 }
 .social-link li i{
-    margin-right:3px
+    margin-inline-end:3px
 }
 .cateul{
     padding-bottom:10px
@@ -11909,12 +11911,12 @@ footer .subcrib .input-group-text i{
     float:right
 }
 .cateul li span svg{
-    margin-right:5px;
+    margin-inline-end:5px;
     fill:#00000080!important
 }
 .cateul li span img{
     max-width:30px!important;
-    margin-left:10px
+    margin-inline-start:10px
 }
 .form-cover{
     padding:15px
@@ -11925,7 +11927,7 @@ footer .subcrib .input-group-text i{
 }
 @media screen and (max-width: 767px){
     .user-page-nav .row{
-        margin-left:0
+        margin-inline-start:0
     }
 }
 .user-page-nav .row ul li{
@@ -11987,7 +11989,7 @@ footer .subcrib .input-group-text i{
     font-size:.88rem
 }
 .side-card .user-menu ul li i{
-    margin-left:8px;
+    margin-inline-start:8px;
     font-weight:600;
     font-size:1rem
 }
@@ -12063,7 +12065,7 @@ footer .subcrib .input-group-text i{
 }
 .actionlist button{
     float:right;
-    margin-left:10px;
+    margin-inline-start:10px;
     margin-top:-2px
 }
 .alert-user i{
@@ -12129,7 +12131,7 @@ footer .subcrib .input-group-text i{
 }
 .fpswd a{
     float:right;
-    text-align:right;
+    text-align: end;
     padding-top:8px
 }
 .fpswd a:hover{
@@ -12161,7 +12163,7 @@ footer .subcrib .input-group-text i{
 }
 .pricecard .card-body ul li{
     width:100%;
-    text-align:right;
+    text-align: end;
     font-size:1rem;
     font-weight:400;
     padding:10px

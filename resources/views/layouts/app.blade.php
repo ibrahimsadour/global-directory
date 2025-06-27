@@ -58,6 +58,7 @@
 
         {{-- الفوتر --}}
         <x-footer />
+        <x-bottom-navigation />
 
 
         {{-- المودال --}}
