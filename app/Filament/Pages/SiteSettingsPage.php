@@ -11,8 +11,9 @@ class SiteSettingsPage extends Page
 {
     use WithFileUploads;
 
+    protected static ?string $navigationGroup = '⚙️ الإعدادات';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationGroup = 'Settings';
+    protected static ?string $navigationLabel = 'إعدادات عامة'; // يظهر في السايدبار بهذا الاسم
     protected static bool $isLivewire = true;
     protected static string $view = 'filament.pages.site-settings-page';
 

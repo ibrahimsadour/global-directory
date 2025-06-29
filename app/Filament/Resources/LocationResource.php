@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
 class LocationResource extends Resource
 {
     protected static ?string $model = Location::class;
+    protected static ?string $navigationLabel = 'المدن'; // يظهر في السايدبار بهذا الاسم
 
     protected static ?string $navigationIcon = 'heroicon-o-map-pin';
 

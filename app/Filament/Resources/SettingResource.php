@@ -18,11 +18,10 @@ class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
 
-        protected static ?string $navigationGroup = 'Settings';
 
-    protected static ?string $navigationLabel = 'Advanced Settings '; // يظهر في السايدبار بهذا الاسم
+    protected static ?string $navigationLabel = 'أدوات'; // يظهر في السايدبار بهذا الاسم
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
     public static function form(Form $form): Form
     {

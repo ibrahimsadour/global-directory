@@ -10,8 +10,9 @@ class SEOSettingsPage extends Page
 {
     use WithFileUploads;
 
+    protected static ?string $navigationGroup = '⚙️ الإعدادات';
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
-    protected static ?string $navigationGroup = 'Settings';
+    protected static ?string $navigationLabel = 'اعدادات السيو';
     protected static bool $isLivewire = true;
     protected static string $view = 'filament.pages.seo-settings-page';
 

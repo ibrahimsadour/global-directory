@@ -8,9 +8,11 @@ use App\Http\Controllers\GovernorateController;
 use App\Http\Controllers\LocationController;
 use App\Models\Location;
 use App\Http\Controllers\User\SearchController;
-
+use App\Models\Redirect;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------

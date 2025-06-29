@@ -34,7 +34,8 @@ class BusinessResource extends Resource
     protected static ?string $model = Business::class;
 
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-megaphone';
+    protected static ?string $navigationLabel = 'الإعلانات'; // يظهر في السايدبار بهذا الاسم
 
     public static function form(Form $form): Form
     {

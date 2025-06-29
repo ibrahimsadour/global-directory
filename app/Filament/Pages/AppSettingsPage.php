@@ -6,9 +6,10 @@ use App\Models\Setting;
 use Filament\Pages\Page;
 
 class AppSettingsPage extends Page
-{
+{    
+    protected static ?string $navigationGroup = '⚙️ الإعدادات';
     protected static ?string $navigationIcon = 'heroicon-o-cog';
-    protected static ?string $navigationGroup = 'Settings';
+    protected static ?string $navigationLabel = 'اعدادات متقدمة';
     protected static bool $isLivewire = true;
     protected static string $view = 'filament.pages.app-settings-page';
 

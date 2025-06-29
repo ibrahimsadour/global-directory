@@ -27,6 +27,7 @@ class GovernorateResource extends Resource
     protected static ?string $model = Governorate::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
+    protected static ?string $navigationLabel = 'المحافظات'; // يظهر في السايدبار بهذا الاسم
 
 
 
