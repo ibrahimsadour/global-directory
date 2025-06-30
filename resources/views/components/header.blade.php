@@ -60,7 +60,14 @@
             <div class="col-lg-4 col-md-8 slink d-none d-md-block login-options right">
                 <div class="dropdown">
                     <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ Auth::user()->resize }}" alt="" />
+                        <img 
+                            src="{{ auth()->user()->profile_photo 
+                                ? (Str::startsWith(auth()->user()->profile_photo, 'http') 
+                                    ? auth()->user()->profile_photo 
+                                    : asset('storage/' . auth()->user()->profile_photo)) 
+                                : asset('storage/profile-photos/default.webp') }}" 
+                            alt=""
+                        >
                         <span class="d-none d-lg-block">{{Auth::user()->name}}</span>
                     </a>
 

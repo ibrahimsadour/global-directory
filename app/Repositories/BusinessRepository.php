@@ -28,7 +28,9 @@ class BusinessRepository
     //  دالة لجلب الإعلانات المميزة داخل الريبوستري.
     public function getFeaturedBusinesses($perPage = 6)
     {
-        return Business::where('is_active', 1)
+        return Business::withCount('reviews')
+            ->withAvg('reviews', 'rating')
+            ->where('is_active', 1)
             ->where('is_approved', 1)
             ->where('is_featured', 1)
             ->orderBy('created_at', 'desc')

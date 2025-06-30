@@ -97,31 +97,31 @@
             </ul>
         </div>
     </div>
-<div class="footcover" x-data="review" x-init="loadReviews()">
-    <ul>
-        <li class="rev d-flex align-items-center">
-            <template x-for="s in [1,2,3,4,5]">
-                <i
-                    class="bi"
-                    :class="{
-                        'bi-star-fill act': s <= Math.floor(avg),
-                        'bi-star-half act': s === Math.ceil(avg) && avg % 1 >= 0.5 && s > Math.floor(avg),
-                        'bi-star-fill': s > avg && !(s === Math.ceil(avg) && avg % 1 >= 0.5)
-                    }"
-                ></i>
-            </template>
-            <small class="ms-2" x-text="avg + ' (' + total + ' تقييم)'"></small>
-        </li>
+    <div class="footcover" x-data="review" x-init="loadReviews()">
+        <ul>
+            <li class="rev d-flex align-items-center">
+                <template x-for="s in [1,2,3,4,5]">
+                    <i
+                        class="bi"
+                        :class="{
+                            'bi-star-fill act': s <= Math.floor(avg),
+                            'bi-star-half act': s === Math.ceil(avg) && avg % 1 >= 0.5 && s > Math.floor(avg),
+                            'bi-star-fill': s > avg && !(s === Math.ceil(avg) && avg % 1 >= 0.5)
+                        }"
+                    ></i>
+                </template>
+                <small class="ms-2" x-text="avg + ' (' + total + ' تقييم)'"></small>
+            </li>
 
-        <li>
-            <div class="save">
-                <a data-bs-toggle="modal" data-bs-target="#loginAlert">
-                    <i class="bi bi-heart"></i>
-                </a>
-            </div>
-        </li>
-    </ul>
-</div>
+            <li>
+                <div class="save">
+                    <a data-bs-toggle="modal" data-bs-target="#loginAlert">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
 
 
 

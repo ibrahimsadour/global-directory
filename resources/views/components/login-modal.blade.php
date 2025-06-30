@@ -8,10 +8,10 @@
         </div>
         <center>
         <div class="modal-footer">
-            <a href="#">
+            <a href="{{ route('login') }}">
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">تسجيل الدخول</button>
             </a>
-            <a href="#">
+            <a href="{{ route('register') }}">
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal"> انشاء حساب جديد</button>
             </a>
         </div>

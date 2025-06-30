@@ -1,16 +1,4 @@
 @extends('layouts.app')
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-<div
-    x-data="{ show: true }"
-    x-init="setTimeout(() => show = false, 4000)"
-    x-show="show"
-    x-transition
-    class="fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-center px-6 py-4 rounded-lg shadow-lg z-50 w-full max-w-md"
-    style="display: none;"
->
-    {{ session('success') ?? session('error') ?? '' }}
-</div>
-
 @section('title', 'لوحة تحكم المستخدم')
 
 @section('content')
@@ -27,23 +15,6 @@
         </div>
     </section>
 
-    @if(session('success') || session('error'))
-        <div
-            x-data="{ show: true }"
-            x-init="setTimeout(() => show = false, 4000)"
-            x-show="show"
-            x-transition
-            class="fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-white text-gray-800 border border-green-500 shadow-lg text-center px-6 py-4 rounded-lg z-50 w-full max-w-md"
-            style="display: none;"
-        >
-            <div class="font-bold text-lg mb-2">
-                {{ session('success') ? '✅ نجاح' : '❌ خطأ' }}
-            </div>
-            <div>
-                {{ session('success') ?? session('error') }}
-            </div>
-        </div>
-    @endif
 
     <div class="container-fluid user-container">
        <div class="container">
@@ -61,7 +32,7 @@
                                 </div>
                                 <div class="detail">
                                 <h6>12,453</h6>
-                                <p>Total Active Listing</p>
+                                <p>عدد الاعلانات النشطة</p>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +43,7 @@
                                 </div>
                                 <div class="detail">
                                 <h6>8,453</h6>
-                                <p>Total Reviews</p>
+                                <p>إجمالي عدد التقيمات</p>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +55,7 @@
                                 </div>
                                 <div class="detail">
                                 <h6>153</h6>
-                                <p>New Messages</p>
+                                <p>عدد الرسائل</p>
                                 </div>
                             </div>
                         </div>
