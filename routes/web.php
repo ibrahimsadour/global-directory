@@ -134,6 +134,4 @@ Route::get('/robots.txt', function () {
         ->header('Content-Type', 'text/plain');
 });
 
-Route::get('/test-bottomnav', function () {
-    return view('components.bottom-navigation');
-});
+

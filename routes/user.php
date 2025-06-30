@@ -5,6 +5,7 @@ use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\BusinessController;
 use App\Http\Controllers\Auth\SocialController;
+use App\Http\Controllers\User\ReviewController;
 
 
 // Route::middleware(['web', 'auth', 'regular'])
@@ -60,5 +61,11 @@ Route::get('auth/facebook/callback', [SocialController::class, 'callbackFacebook
 
 
 
+Route::prefix('user')->middleware(['auth'])->group(function () {
+    Route::post('/rating', [ReviewController::class, 'store']);
+    Route::put('/updaterating/{review}', [ReviewController::class, 'update']);
+    Route::delete('/deleterating/{review}', [ReviewController::class, 'destroy']);
+});
+Route::get('/getMoreReviews/{id}/{offset?}', [ReviewController::class, 'getMore']);
 
 require __DIR__.'/auth.php';

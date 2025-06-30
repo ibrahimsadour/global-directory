@@ -107,6 +107,7 @@
     --bs-code-color: #d63384;
     --bs-highlight-color: #212529;
     --bs-highlight-bg: #fff3cd;
+    --bs-border-width: 1px;
     --bs-border-style: solid;
     --bs-border-color: #dee2e6;
     --bs-border-color-translucent: rgba(0, 0, 0, .175);
@@ -11788,7 +11789,7 @@ footer .subcrib .input-group-text i{
     padding-right:0
 }
 .review-box .reviewrow .rcolm .review i{
-    font-size:.8rem;
+    font-size:1.3rem;
     color:#908f8f
 }
 .review-box .reviewrow .rcolm .review span{

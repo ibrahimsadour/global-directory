@@ -8,6 +8,11 @@
                 <div class="card shadow border-0 rounded-3 authcard">
                     <div class="card-body p-4">
                         <h2 class="text-center mb-4">تسجيل دخول المستخدم</h2>
+                        @if (session('error'))
+                            <div class="mb-4 text-sm text-red-600 bg-red-100 p-3 rounded">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
                         <form method="POST" action="{{ route('login') }}">
                             @csrf

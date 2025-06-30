@@ -78,11 +78,26 @@ class Business extends Model
     {
         return $this->belongsTo(\App\Models\Governorate::class);
     }
+    
+    // ##################################################
     // التقييمات
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
     }
+    // عدد التقييمات
+    public function getReviewsCountAttribute(): int
+    {
+        return $this->reviews()->count();
+    }
+
+    // متوسط التقييم
+    public function getAverageRatingAttribute(): float
+    {
+        return round($this->reviews()->avg('rating'), 1) ?? 0;
+    }
+    // ##################################################
+
 
     // أوقات العمل
     public function hours(): HasMany

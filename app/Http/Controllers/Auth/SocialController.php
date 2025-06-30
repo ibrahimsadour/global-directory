@@ -64,28 +64,30 @@ class SocialController extends Controller
         $email = $socialUser->getEmail();
 
         if (!$email) {
-            $email = $socialUser->getId() . "@{$provider}.local"; // مثال: 123456@facebook.local
+            $email = $socialUser->getId() . "@{$provider}.local";
         }
 
         $user = User::where('email', $email)->first();
 
         if (!$user) {
-            $user = User::create([
-                'name'           => $socialUser->getName() ?? $socialUser->getNickname() ?? 'مستخدم جديد',
-                'email'          => $email,
-                'password'       => bcrypt(Str::random(16)),
-                "{$provider}_id" => $socialUser->getId(),
-                'provider'       => $provider,
-                'profile_photo'  => $socialUser->getAvatar(),
-                'signup_ip'      => $request->ip(),
-                'is_verified'    => true,
-            ]);
-        } else {
-            $user->update([
-                "{$provider}_id" => $user["{$provider}_id"] ?? $socialUser->getId(),
-                'provider'       => $user->provider ?? $provider,
-            ]);
+            return redirect()->route('login')->with('error', 'هذا الحساب غير مسموح له بالدخول.');
         }
+
+        // التحقق من أن المستخدم مفعل ومحقق
+        if ($user->status != 1) {
+            return redirect()->route('login')->with('error', 'تم تعطيل حسابك من قبل الإدارة. يرجى التواصل مع الدعم');
+        }
+
+        if ($user->is_verified == false) {
+            return redirect()->route('login')->with('error', 'يجب التحقق من البريد الإلكتروني أولاً.');
+        }
+
+        // تحديث بيانات الشبكة الاجتماعية
+        $user->update([
+            "{$provider}_id" => $user["{$provider}_id"] ?? $socialUser->getId(),
+            'provider'       => $user->provider ?? $provider,
+            'profile_photo'  => $user->profile_photo ?? $socialUser->getAvatar(),
+        ]);
 
         $user->last_login_at = now();
         $user->save();
@@ -93,7 +95,4 @@ class SocialController extends Controller
         Auth::login($user, true);
         return redirect()->route('user.dashboard');
     }
-
-
-
 }

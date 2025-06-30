@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Review extends Model
 {
     protected $guarded = [];
+    
+    protected $casts = [
+    'approved' => 'boolean',
+    ];
 
     public function user(): BelongsTo
     {
