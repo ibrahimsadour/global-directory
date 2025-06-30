@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');      // المراجع
             $table->foreignId('business_id')->constrained()->onDelete('cascade');  // النشاط
             $table->tinyInteger('rating');      // من 1 إلى 5 مثلاً
-            $table->text('comment')->nullable(); // تعليق المستخدم
+            $table->text('message')->nullable(); // تعليق المستخدم
             $table->boolean('is_approved')->default(false); // موافقة المشرف
             $table->timestamps();
         });
