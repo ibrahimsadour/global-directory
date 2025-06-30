@@ -280,7 +280,7 @@ address{
     line-height:inherit
 }
 ol,ul{
-    padding-right:2rem
+    padding-inline-end:2rem
 }
 ol,ul,dl{
     margin-top:0;
@@ -559,7 +559,7 @@ progress{
     }
 }
 .list-unstyled,.list-inline{
-    padding-right:0;
+    padding-inline-end:0;
     list-style:none
 }
 .list-inline-item{
@@ -615,8 +615,8 @@ progress{
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
     width:100%;
-    padding-right:calc(var(--bs-gutter-x) * .5);
-    padding-right:calc(var(--bs-gutter-x) * .5);
+    padding-inline-end:calc(var(--bs-gutter-x) * 0.5);
+    padding-inline-start: calc(var(--bs-gutter-x) * 0.5);
     margin-inline-end:auto;
     margin-inline-start:auto
 }
@@ -667,6 +667,8 @@ progress{
     width:100%;
     max-width:100%;
     padding-inline-start: calc(var(--bs-gutter-x) * .5);
+    padding-inline-end: calc(var(--bs-gutter-x) * .5);
+
     margin-top:var(--bs-gutter-y)
 }
 .col{
@@ -1928,8 +1930,8 @@ progress{
     outline:0
 }
 .form-control-plaintext.form-control-sm,.form-control-plaintext.form-control-lg{
-    padding-right:0;
-    padding-right:0
+    padding-inline-end:0;
+    padding-inline-end:0
 }
 .form-control-sm{
     min-height:calc(1.5em + .5rem + calc(var(--bs-border-width) * 2));
@@ -2016,7 +2018,7 @@ textarea.form-control-lg{
     box-shadow:0 0 0 .25rem #0062ff40
 }
 .form-select[multiple],.form-select[size]:not([size="1"]){
-    padding-right:.75rem;
+    padding-inline-end:.75rem;
     background-image:none
 }
 .form-select:disabled{
@@ -2029,14 +2031,14 @@ textarea.form-control-lg{
 .form-select-sm{
     padding-top:.25rem;
     padding-bottom:.25rem;
-    padding-right:.5rem;
+    padding-inline-end:.5rem;
     font-size:.875rem;
     border-radius:var(--bs-border-radius-sm)
 }
 .form-select-lg{
     padding-top:.5rem;
     padding-bottom:.5rem;
-    padding-right:1rem;
+    padding-inline-end:1rem;
     font-size:1.25rem;
     border-radius:var(--bs-border-radius-lg)
 }
@@ -2046,7 +2048,7 @@ textarea.form-control-lg{
 .form-check{
     display:block;
     min-height:1.5rem;
-    padding-right:1.5em;
+    padding-inline-end:1.5em;
     margin-bottom:.125rem
 }
 .form-check .form-check-input{
@@ -2054,8 +2056,8 @@ textarea.form-control-lg{
     margin-inline-start:-1.5em
 }
 .form-check-reverse{
-    padding-right:1.5em;
-    padding-right:0;
+    padding-inline-end:1.5em;
+    padding-inline-end:0;
     text-align:right
 }
 .form-check-reverse .form-check-input{
@@ -2121,7 +2123,7 @@ textarea.form-control-lg{
     opacity:.5
 }
 .form-switch{
-    padding-right:2.5em
+    padding-inline-end:2.5em
 }
 .form-switch .form-check-input{
     --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
@@ -2145,8 +2147,8 @@ textarea.form-control-lg{
     --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e")
 }
 .form-switch.form-check-reverse{
-    padding-right:2.5em;
-    padding-right:0
+    padding-inline-end:2.5em;
+    padding-inline-end:0
 }
 .form-switch.form-check-reverse .form-check-input{
     margin-inline-end:-2.5em;
@@ -2380,7 +2382,7 @@ textarea.form-control-lg{
     border-radius:var(--bs-border-radius-sm)
 }
 .input-group-lg>.form-select,.input-group-sm>.form-select{
-    padding-right:3rem
+    padding-inline-end:3rem
 }
 .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control,.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select{
     border-top-left-radius:0;
@@ -2424,7 +2426,7 @@ textarea.form-control-lg{
 }
 .was-validated .form-control:valid,.form-control.is-valid{
     border-color:var(--bs-form-valid-border-color);
-    padding-right:calc(1.5em + .75rem);
+    padding-inline-end:calc(1.5em + .75rem);
     background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
     background-repeat:no-repeat;
     background-position:right calc(.375em + .1875rem) center;
@@ -2435,7 +2437,7 @@ textarea.form-control-lg{
     box-shadow:0 0 0 .25rem rgba(var(--bs-success-rgb),.25)
 }
 .was-validated textarea.form-control:valid,textarea.form-control.is-valid{
-    padding-right:calc(1.5em + .75rem);
+    padding-inline-end:calc(1.5em + .75rem);
     background-position:top calc(.375em + .1875rem) right calc(.375em + .1875rem)
 }
 .was-validated .form-select:valid,.form-select.is-valid{
@@ -2443,7 +2445,7 @@ textarea.form-control-lg{
 }
 .was-validated .form-select:valid:not([multiple]):not([size]),.was-validated .form-select:valid:not([multiple])[size="1"],.form-select.is-valid:not([multiple]):not([size]),.form-select.is-valid:not([multiple])[size="1"]{
     --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
-    padding-right:4.125rem;
+    padding-inline-end:4.125rem;
     background-position:right .75rem center,center right 2.25rem;
     background-size:16px 12px,calc(.75em + .375rem) calc(.75em + .375rem)
 }
@@ -2497,7 +2499,7 @@ textarea.form-control-lg{
 }
 .was-validated .form-control:invalid,.form-control.is-invalid{
     border-color:var(--bs-form-invalid-border-color);
-    padding-right:calc(1.5em + .75rem);
+    padding-inline-end:calc(1.5em + .75rem);
     background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
     background-repeat:no-repeat;
     background-position:right calc(.375em + .1875rem) center;
@@ -2508,7 +2510,7 @@ textarea.form-control-lg{
     box-shadow:0 0 0 .25rem rgba(var(--bs-danger-rgb),.25)
 }
 .was-validated textarea.form-control:invalid,textarea.form-control.is-invalid{
-    padding-right:calc(1.5em + .75rem);
+    padding-inline-end:calc(1.5em + .75rem);
     background-position:top calc(.375em + .1875rem) right calc(.375em + .1875rem)
 }
 .was-validated .form-select:invalid,.form-select.is-invalid{
@@ -2516,7 +2518,7 @@ textarea.form-control-lg{
 }
 .was-validated .form-select:invalid:not([multiple]):not([size]),.was-validated .form-select:invalid:not([multiple])[size="1"],.form-select.is-invalid:not([multiple]):not([size]),.form-select.is-invalid:not([multiple])[size="1"]{
     --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-    padding-right:4.125rem;
+    padding-inline-end:4.125rem;
     background-position:right .75rem center,center right 2.25rem;
     background-size:16px 12px,calc(.75em + .375rem) calc(.75em + .375rem)
 }
@@ -3280,8 +3282,8 @@ textarea.form-control-lg{
     border-bottom-left-radius:0
 }
 .dropdown-toggle-split{
-    padding-right:.5625rem;
-    padding-right:.5625rem
+    padding-inline-end:.5625rem;
+    padding-inline-end:.5625rem
 }
 .dropdown-toggle-split:after,.dropup .dropdown-toggle-split:after,.dropend .dropdown-toggle-split:after{
     margin-inline-start:0
@@ -3290,12 +3292,12 @@ textarea.form-control-lg{
     margin-inline-end:0
 }
 .btn-sm+.dropdown-toggle-split,.btn-group-sm>.btn+.dropdown-toggle-split{
-    padding-right:.375rem;
-    padding-right:.375rem
+    padding-inline-end:.375rem;
+    padding-inline-end:.375rem
 }
 .btn-lg+.dropdown-toggle-split,.btn-group-lg>.btn+.dropdown-toggle-split{
-    padding-right:.75rem;
-    padding-right:.75rem
+    padding-inline-end:.75rem;
+    padding-inline-end:.75rem
 }
 .btn-group-vertical{
     flex-direction:column;
@@ -3325,7 +3327,7 @@ textarea.form-control-lg{
     --bs-nav-link-disabled-color: var(--bs-secondary-color);
     display:flex;
     flex-wrap:wrap;
-    padding-right:0;
+    padding-inline-end:0;
     margin-bottom:0;
     list-style:none
 }
@@ -3406,8 +3408,8 @@ textarea.form-control-lg{
     gap:var(--bs-nav-underline-gap)
 }
 .nav-underline .nav-link{
-    padding-right:0;
-    padding-right:0;
+    padding-inline-end:0;
+    padding-inline-end:0;
     border-bottom:var(--bs-nav-underline-border-width) solid transparent
 }
 .nav-underline .nav-link:hover,.nav-underline .nav-link:focus{
@@ -3491,7 +3493,7 @@ textarea.form-control-lg{
     --bs-nav-link-disabled-color: var(--bs-navbar-disabled-color);
     display:flex;
     flex-direction:column;
-    padding-right:0;
+    padding-inline-end:0;
     margin-bottom:0;
     list-style:none
 }
@@ -3563,8 +3565,8 @@ textarea.form-control-lg{
         position:absolute
     }
     .navbar-expand-sm .navbar-nav .nav-link{
-        padding-right:var(--bs-navbar-nav-link-padding-x);
-        padding-right:var(--bs-navbar-nav-link-padding-x)
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x);
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x)
     }
     .navbar-expand-sm .navbar-nav-scroll{
         overflow:visible
@@ -3610,8 +3612,8 @@ textarea.form-control-lg{
         position:absolute
     }
     .navbar-expand-md .navbar-nav .nav-link{
-        padding-right:var(--bs-navbar-nav-link-padding-x);
-        padding-right:var(--bs-navbar-nav-link-padding-x)
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x);
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x)
     }
     .navbar-expand-md .navbar-nav-scroll{
         overflow:visible
@@ -3657,8 +3659,8 @@ textarea.form-control-lg{
         position:absolute
     }
     .navbar-expand-lg .navbar-nav .nav-link{
-        padding-right:var(--bs-navbar-nav-link-padding-x);
-        padding-right:var(--bs-navbar-nav-link-padding-x)
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x);
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x)
     }
     .navbar-expand-lg .navbar-nav-scroll{
         overflow:visible
@@ -3704,8 +3706,8 @@ textarea.form-control-lg{
         position:absolute
     }
     .navbar-expand-xl .navbar-nav .nav-link{
-        padding-right:var(--bs-navbar-nav-link-padding-x);
-        padding-right:var(--bs-navbar-nav-link-padding-x)
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x);
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x)
     }
     .navbar-expand-xl .navbar-nav-scroll{
         overflow:visible
@@ -3751,8 +3753,8 @@ textarea.form-control-lg{
         position:absolute
     }
     .navbar-expand-xxl .navbar-nav .nav-link{
-        padding-right:var(--bs-navbar-nav-link-padding-x);
-        padding-right:var(--bs-navbar-nav-link-padding-x)
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x);
+        padding-inline-end:var(--bs-navbar-nav-link-padding-x)
     }
     .navbar-expand-xxl .navbar-nav-scroll{
         overflow:visible
@@ -3797,8 +3799,8 @@ textarea.form-control-lg{
     position:absolute
 }
 .navbar-expand .navbar-nav .nav-link{
-    padding-right:var(--bs-navbar-nav-link-padding-x);
-    padding-right:var(--bs-navbar-nav-link-padding-x)
+    padding-inline-end:var(--bs-navbar-nav-link-padding-x);
+    padding-inline-end:var(--bs-navbar-nav-link-padding-x)
 }
 .navbar-expand .navbar-nav-scroll{
     overflow:visible
@@ -4157,11 +4159,11 @@ textarea.form-control-lg{
     border-radius:var(--bs-breadcrumb-border-radius)
 }
 .breadcrumb-item+.breadcrumb-item{
-    padding-right:var(--bs-breadcrumb-item-padding-x)
+    padding-inline-end:var(--bs-breadcrumb-item-padding-x)
 }
 .breadcrumb-item+.breadcrumb-item:before{
     float:right;
-    padding-right:var(--bs-breadcrumb-item-padding-x);
+    padding-inline-end:var(--bs-breadcrumb-item-padding-x);
     color:var(--bs-breadcrumb-divider-color);
     content:var(--bs-breadcrumb-divider, "../../index.html")
 }
@@ -4190,7 +4192,7 @@ textarea.form-control-lg{
     --bs-pagination-disabled-bg: var(--bs-secondary-bg);
     --bs-pagination-disabled-border-color: var(--bs-border-color);
     display:flex;
-    padding-right:0;
+    padding-inline-end:0;
     list-style:none
 }
 .page-link{
@@ -4308,7 +4310,7 @@ textarea.form-control-lg{
     color:var(--bs-alert-link-color)
 }
 .alert-dismissible{
-    padding-right:3rem
+    padding-inline-end:3rem
 }
 .alert-dismissible .btn-close{
     position:absolute;
@@ -4440,7 +4442,7 @@ textarea.form-control-lg{
     --bs-list-group-active-border-color: #0062ff;
     display:flex;
     flex-direction:column;
-    padding-right:0;
+    padding-inline-end:0;
     margin-bottom:0;
     border-radius:var(--bs-list-group-border-radius)
 }
@@ -7116,28 +7118,28 @@ textarea.form-control-lg{
     padding:3rem!important
 }
 .px-0{
-    padding-right:0!important;
-    padding-right:0!important
+    padding-inline-end:0!important;
+    padding-inline-end:0!important
 }
 .px-1{
-    padding-right:.25rem!important;
-    padding-right:.25rem!important
+    padding-inline-end:.25rem!important;
+    padding-inline-end:.25rem!important
 }
 .px-2{
-    padding-right:.5rem!important;
-    padding-right:.5rem!important
+    padding-inline-end:.5rem!important;
+    padding-inline-end:.5rem!important
 }
 .px-3{
-    padding-right:1rem!important;
-    padding-right:1rem!important
+    padding-inline-end:1rem!important;
+    padding-inline-end:1rem!important
 }
 .px-4{
-    padding-right:1.5rem!important;
-    padding-right:1.5rem!important
+    padding-inline-end:1.5rem!important;
+    padding-inline-end:1.5rem!important
 }
 .px-5{
-    padding-right:3rem!important;
-    padding-right:3rem!important
+    padding-inline-end:3rem!important;
+    padding-inline-end:3rem!important
 }
 .py-0{
     padding-top:0!important;
@@ -7182,22 +7184,22 @@ textarea.form-control-lg{
     padding-top:3rem!important
 }
 .pe-0{
-    padding-right:0!important
+    padding-inline-end:0!important
 }
 .pe-1{
-    padding-right:.25rem!important
+    padding-inline-end:.25rem!important
 }
 .pe-2{
-    padding-right:.5rem!important
+    padding-inline-end:.5rem!important
 }
 .pe-3{
-    padding-right:1rem!important
+    padding-inline-end:1rem!important
 }
 .pe-4{
-    padding-right:1.5rem!important
+    padding-inline-end:1.5rem!important
 }
 .pe-5{
-    padding-right:3rem!important
+    padding-inline-end:3rem!important
 }
 .pb-0{
     padding-bottom:0!important
@@ -7218,22 +7220,22 @@ textarea.form-control-lg{
     padding-bottom:3rem!important
 }
 .ps-0{
-    padding-right:0!important
+    padding-inline-end:0!important
 }
 .ps-1{
-    padding-right:.25rem!important
+    padding-inline-end:.25rem!important
 }
 .ps-2{
-    padding-right:.5rem!important
+    padding-inline-end:.5rem!important
 }
 .ps-3{
-    padding-right:1rem!important
+    padding-inline-end:1rem!important
 }
 .ps-4{
-    padding-right:1.5rem!important
+    padding-inline-end:1.5rem!important
 }
 .ps-5{
-    padding-right:3rem!important
+    padding-inline-end:3rem!important
 }
 .gap-0{
     gap:0!important
@@ -8247,28 +8249,28 @@ textarea.form-control-lg{
         padding:3rem!important
     }
     .px-sm-0{
-        padding-right:0!important;
-        padding-right:0!important
+        padding-inline-end:0!important;
+        padding-inline-end:0!important
     }
     .px-sm-1{
-        padding-right:.25rem!important;
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important;
+        padding-inline-end:.25rem!important
     }
     .px-sm-2{
-        padding-right:.5rem!important;
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important;
+        padding-inline-end:.5rem!important
     }
     .px-sm-3{
-        padding-right:1rem!important;
-        padding-right:1rem!important
+        padding-inline-end:1rem!important;
+        padding-inline-end:1rem!important
     }
     .px-sm-4{
-        padding-right:1.5rem!important;
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important;
+        padding-inline-end:1.5rem!important
     }
     .px-sm-5{
-        padding-right:3rem!important;
-        padding-right:3rem!important
+        padding-inline-end:3rem!important;
+        padding-inline-end:3rem!important
     }
     .py-sm-0{
         padding-top:0!important;
@@ -8313,22 +8315,22 @@ textarea.form-control-lg{
         padding-top:3rem!important
     }
     .pe-sm-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .pe-sm-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .pe-sm-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .pe-sm-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .pe-sm-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .pe-sm-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .pb-sm-0{
         padding-bottom:0!important
@@ -8349,22 +8351,22 @@ textarea.form-control-lg{
         padding-bottom:3rem!important
     }
     .ps-sm-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .ps-sm-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .ps-sm-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .ps-sm-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .ps-sm-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .ps-sm-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .gap-sm-0{
         gap:0!important
@@ -8797,28 +8799,28 @@ textarea.form-control-lg{
         padding:3rem!important
     }
     .px-md-0{
-        padding-right:0!important;
-        padding-right:0!important
+        padding-inline-end:0!important;
+        padding-inline-end:0!important
     }
     .px-md-1{
-        padding-right:.25rem!important;
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important;
+        padding-inline-end:.25rem!important
     }
     .px-md-2{
-        padding-right:.5rem!important;
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important;
+        padding-inline-end:.5rem!important
     }
     .px-md-3{
-        padding-right:1rem!important;
-        padding-right:1rem!important
+        padding-inline-end:1rem!important;
+        padding-inline-end:1rem!important
     }
     .px-md-4{
-        padding-right:1.5rem!important;
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important;
+        padding-inline-end:1.5rem!important
     }
     .px-md-5{
-        padding-right:3rem!important;
-        padding-right:3rem!important
+        padding-inline-end:3rem!important;
+        padding-inline-end:3rem!important
     }
     .py-md-0{
         padding-top:0!important;
@@ -8863,22 +8865,22 @@ textarea.form-control-lg{
         padding-top:3rem!important
     }
     .pe-md-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .pe-md-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .pe-md-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .pe-md-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .pe-md-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .pe-md-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .pb-md-0{
         padding-bottom:0!important
@@ -8899,22 +8901,22 @@ textarea.form-control-lg{
         padding-bottom:3rem!important
     }
     .ps-md-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .ps-md-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .ps-md-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .ps-md-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .ps-md-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .ps-md-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .gap-md-0{
         gap:0!important
@@ -9347,28 +9349,28 @@ textarea.form-control-lg{
         padding:3rem!important
     }
     .px-lg-0{
-        padding-right:0!important;
-        padding-right:0!important
+        padding-inline-end:0!important;
+        padding-inline-end:0!important
     }
     .px-lg-1{
-        padding-right:.25rem!important;
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important;
+        padding-inline-end:.25rem!important
     }
     .px-lg-2{
-        padding-right:.5rem!important;
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important;
+        padding-inline-end:.5rem!important
     }
     .px-lg-3{
-        padding-right:1rem!important;
-        padding-right:1rem!important
+        padding-inline-end:1rem!important;
+        padding-inline-end:1rem!important
     }
     .px-lg-4{
-        padding-right:1.5rem!important;
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important;
+        padding-inline-end:1.5rem!important
     }
     .px-lg-5{
-        padding-right:3rem!important;
-        padding-right:3rem!important
+        padding-inline-end:3rem!important;
+        padding-inline-end:3rem!important
     }
     .py-lg-0{
         padding-top:0!important;
@@ -9413,22 +9415,22 @@ textarea.form-control-lg{
         padding-top:3rem!important
     }
     .pe-lg-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .pe-lg-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .pe-lg-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .pe-lg-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .pe-lg-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .pe-lg-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .pb-lg-0{
         padding-bottom:0!important
@@ -9449,22 +9451,22 @@ textarea.form-control-lg{
         padding-bottom:3rem!important
     }
     .ps-lg-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .ps-lg-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .ps-lg-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .ps-lg-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .ps-lg-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .ps-lg-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .gap-lg-0{
         gap:0!important
@@ -9897,28 +9899,28 @@ textarea.form-control-lg{
         padding:3rem!important
     }
     .px-xl-0{
-        padding-right:0!important;
-        padding-right:0!important
+        padding-inline-end:0!important;
+        padding-inline-end:0!important
     }
     .px-xl-1{
-        padding-right:.25rem!important;
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important;
+        padding-inline-end:.25rem!important
     }
     .px-xl-2{
-        padding-right:.5rem!important;
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important;
+        padding-inline-end:.5rem!important
     }
     .px-xl-3{
-        padding-right:1rem!important;
-        padding-right:1rem!important
+        padding-inline-end:1rem!important;
+        padding-inline-end:1rem!important
     }
     .px-xl-4{
-        padding-right:1.5rem!important;
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important;
+        padding-inline-end:1.5rem!important
     }
     .px-xl-5{
-        padding-right:3rem!important;
-        padding-right:3rem!important
+        padding-inline-end:3rem!important;
+        padding-inline-end:3rem!important
     }
     .py-xl-0{
         padding-top:0!important;
@@ -9963,22 +9965,22 @@ textarea.form-control-lg{
         padding-top:3rem!important
     }
     .pe-xl-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .pe-xl-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .pe-xl-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .pe-xl-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .pe-xl-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .pe-xl-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .pb-xl-0{
         padding-bottom:0!important
@@ -9999,22 +10001,22 @@ textarea.form-control-lg{
         padding-bottom:3rem!important
     }
     .ps-xl-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .ps-xl-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .ps-xl-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .ps-xl-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .ps-xl-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .ps-xl-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .gap-xl-0{
         gap:0!important
@@ -10447,28 +10449,28 @@ textarea.form-control-lg{
         padding:3rem!important
     }
     .px-xxl-0{
-        padding-right:0!important;
-        padding-right:0!important
+        padding-inline-end:0!important;
+        padding-inline-end:0!important
     }
     .px-xxl-1{
-        padding-right:.25rem!important;
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important;
+        padding-inline-end:.25rem!important
     }
     .px-xxl-2{
-        padding-right:.5rem!important;
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important;
+        padding-inline-end:.5rem!important
     }
     .px-xxl-3{
-        padding-right:1rem!important;
-        padding-right:1rem!important
+        padding-inline-end:1rem!important;
+        padding-inline-end:1rem!important
     }
     .px-xxl-4{
-        padding-right:1.5rem!important;
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important;
+        padding-inline-end:1.5rem!important
     }
     .px-xxl-5{
-        padding-right:3rem!important;
-        padding-right:3rem!important
+        padding-inline-end:3rem!important;
+        padding-inline-end:3rem!important
     }
     .py-xxl-0{
         padding-top:0!important;
@@ -10513,22 +10515,22 @@ textarea.form-control-lg{
         padding-top:3rem!important
     }
     .pe-xxl-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .pe-xxl-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .pe-xxl-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .pe-xxl-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .pe-xxl-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .pe-xxl-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .pb-xxl-0{
         padding-bottom:0!important
@@ -10549,22 +10551,22 @@ textarea.form-control-lg{
         padding-bottom:3rem!important
     }
     .ps-xxl-0{
-        padding-right:0!important
+        padding-inline-end:0!important
     }
     .ps-xxl-1{
-        padding-right:.25rem!important
+        padding-inline-end:.25rem!important
     }
     .ps-xxl-2{
-        padding-right:.5rem!important
+        padding-inline-end:.5rem!important
     }
     .ps-xxl-3{
-        padding-right:1rem!important
+        padding-inline-end:1rem!important
     }
     .ps-xxl-4{
-        padding-right:1.5rem!important
+        padding-inline-end:1.5rem!important
     }
     .ps-xxl-5{
-        padding-right:3rem!important
+        padding-inline-end:3rem!important
     }
     .gap-xxl-0{
         gap:0!important
@@ -10694,7 +10696,7 @@ a:hover{
 }
 ul,ol{
     margin-bottom:0;
-    padding-right:0
+    padding-inline-end:0
 }
 a:hover,a:focus,input,textarea{
     text-decoration:none;
@@ -10792,15 +10794,15 @@ img{
 @media screen and (max-width: 576px){
     .breadcrumb{
         padding-top:100px;
-        padding-right:20px;
-        padding-right:20px
+        padding-inline-end:20px;
+        padding-inline-end:20px
     }
 }
 @media screen and (max-width: 356px){
     .breadcrumb{
         padding-top:100px;
-        padding-right:20px;
-        padding-right:20px
+        padding-inline-end:20px;
+        padding-inline-end:20px
     }
 }
 .breadcrumb h2,.breadcrumb .h2{
@@ -10867,8 +10869,8 @@ img{
 }
 .container{
     max-width:1170px;
-    padding-right:15px;
-    padding-right:15px
+    padding-inline-end:15px;
+    padding-inline-end:15px
 }
 @media screen and (max-width: 575px){
     .container{
@@ -11030,7 +11032,7 @@ header .small-menu{
     margin-top:15px
 }
 .login-options .dropdown-menu .dropdown-item{
-    padding-right:13px
+    padding-inline-end:13px
 }
 .login-options .dropdown-menu .dropdown-item i{
     width:20px;
@@ -11351,7 +11353,7 @@ footer .footer-top .footer-card .input-group-append .input-group-text{
 }
 footer .footer-top .footer-card .icdetail{
     margin:auto 0;
-    padding-right:10px
+    padding-inline-end:10px
 }
 footer .footer-top .footer-card .icdetail h2,footer .footer-top .footer-card .icdetail .h2{
     font-size:1rem;
@@ -11393,7 +11395,7 @@ footer .footer-bottom .loca-ro .icon i{
     color:#8bbaff
 }
 footer .footer-bottom .loca-ro .detail{
-    padding-right:10px;
+    padding-inline-end:10px;
     font-size:.85rem
 }
 footer .footer-bottom .topc li{
@@ -11610,12 +11612,12 @@ footer .subcrib .input-group-text i{
 }
 @media screen and (max-width: 911px){
     .sidecl{
-        padding-right:0
+        padding-inline-end:0
     }
 }
 @media screen and (max-width: 767px){
     .sidecl{
-        padding-right:10px
+        padding-inline-end:10px
     }
 }
 .single-container{
@@ -11786,7 +11788,7 @@ footer .subcrib .input-group-text i{
     background-color:#ff9800
 }
 .review-box .reviewrow .rcolm{
-    padding-right:0
+    padding-inline-end:0
 }
 .review-box .reviewrow .rcolm .review i{
     font-size:1.3rem;
@@ -11823,8 +11825,8 @@ footer .subcrib .input-group-text i{
 .add-reviwcol .rev label span{
     width:30px;
     text-align:center;
-    padding-right:10px;
-    padding-right:10px
+    padding-inline-end:10px;
+    padding-inline-end:10px
 }
 .productcol{
     padding:6px
@@ -11936,8 +11938,8 @@ footer .subcrib .input-group-text i{
     color:#7a7a7a
 }
 .user-page-nav .row ul li i{
-    padding-right:10px;
-    padding-right:10px;
+    padding-inline-end:10px;
+    padding-inline-end:10px;
     font-size:.9rem
 }
 .user-page-nav .row ul li a{
@@ -11962,7 +11964,7 @@ footer .subcrib .input-group-text i{
     box-shadow:0 2px 6px #dadafda6,0 2px 6px #ceceee8a
 }
 .side-card .user-prof .detail{
-    padding-right:8px;
+    padding-inline-end:8px;
     margin:auto
 }
 .side-card .user-prof .detail h6,.side-card .user-prof .detail .h6{
@@ -12046,7 +12048,7 @@ footer .subcrib .input-group-text i{
 }
 .user-info .user-widg .detail{
     padding-top:12px;
-    padding-right:2px
+    padding-inline-end:2px
 }
 .user-info .user-widg .detail h6,.user-info .user-widg .detail .h6{
     font-weight:700;
@@ -12079,8 +12081,8 @@ footer .subcrib .input-group-text i{
 @media screen and (max-width: 767.98px){
     .auth-container{
         padding-top:180px;
-        padding-right:25px;
-        padding-right:25px
+        padding-inline-end:25px;
+        padding-inline-end:25px
     }
 }
 .auth-container .authcard{
@@ -12177,7 +12179,7 @@ footer .subcrib .input-group-text i{
 }
 .pricecard .card-footer ul li{
     float:right;
-    padding-right:25px;
+    padding-inline-end:25px;
     cursor:pointer;
     color:#6a6a6a
 }
@@ -12208,7 +12210,7 @@ footer .subcrib .input-group-text i{
 }
 .actionreview li{
     float:right;
-    padding-right:10px;
+    padding-inline-end:10px;
     cursor:pointer
 }
 .timeform input{
