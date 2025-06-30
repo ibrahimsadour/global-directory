@@ -70,7 +70,24 @@ class SocialController extends Controller
         $user = User::where('email', $email)->first();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'هذا الحساب غير مسموح له بالدخول.');
+            $user = User::create([
+                'name'           => $socialUser->getName() ?? $socialUser->getNickname() ?? 'مستخدم جديد',
+                'email'          => $email,
+                'password'       => bcrypt(Str::random(16)),
+                "{$provider}_id" => $socialUser->getId(),
+                'provider'       => $provider,
+                'profile_photo'  => $socialUser->getAvatar(),
+                'signup_ip'      => $request->ip(),
+                'is_verified'    => true,
+                'status' => 1,
+            ]);        
+        } else {
+                    // تحديث بيانات الشبكة الاجتماعية
+            $user->update([
+                "{$provider}_id" => $user["{$provider}_id"] ?? $socialUser->getId(),
+                'provider'       => $user->provider ?? $provider,
+                'profile_photo'  => $user->profile_photo ?? $socialUser->getAvatar(),
+            ]);
         }
 
         // التحقق من أن المستخدم مفعل ومحقق
@@ -82,17 +99,11 @@ class SocialController extends Controller
             return redirect()->route('login')->with('error', 'يجب التحقق من البريد الإلكتروني أولاً.');
         }
 
-        // تحديث بيانات الشبكة الاجتماعية
-        $user->update([
-            "{$provider}_id" => $user["{$provider}_id"] ?? $socialUser->getId(),
-            'provider'       => $user->provider ?? $provider,
-            'profile_photo'  => $user->profile_photo ?? $socialUser->getAvatar(),
-        ]);
-
         $user->last_login_at = now();
         $user->save();
 
         Auth::login($user, true);
-        return redirect()->route('user.dashboard');
+        return redirect()->route('user.dashboard')->with('success', 'مرحباً بك! تم تسجيل الدخول بنجاح 🎉');
+
     }
 }

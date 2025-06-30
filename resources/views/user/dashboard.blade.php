@@ -1,21 +1,50 @@
 @extends('layouts.app')
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<div
+    x-data="{ show: true }"
+    x-init="setTimeout(() => show = false, 4000)"
+    x-show="show"
+    x-transition
+    class="fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-center px-6 py-4 rounded-lg shadow-lg z-50 w-full max-w-md"
+    style="display: none;"
+>
+    {{ session('success') ?? session('error') ?? '' }}
+</div>
 
 @section('title', 'لوحة تحكم المستخدم')
 
 @section('content')
-<section class="nav-container user-page-nav container-fluid">
-  <div class="container">
+    <section class="nav-container user-page-nav container-fluid">
+        <div class="container">
 
-    {{-- breadcrumb --}}
-    <div class="row">
-      <ul class="path">
-        <li><a href="{{ route('user.dashboard') }}">الرئيسية <i class="bi bi-arrow-left-short"></i></a></li>
-        <li> لوحة التحكم </li>
-      </ul>
-    </div>
-    
-  </div>
-</section>
+            {{-- breadcrumb --}}
+            <div class="row">
+                <ul class="path">
+                    <li><a href="{{ route('user.dashboard') }}">الرئيسية <i class="bi bi-arrow-left-short"></i></a></li>
+                    <li> لوحة التحكم </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    @if(session('success') || session('error'))
+        <div
+            x-data="{ show: true }"
+            x-init="setTimeout(() => show = false, 4000)"
+            x-show="show"
+            x-transition
+            class="fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-white text-gray-800 border border-green-500 shadow-lg text-center px-6 py-4 rounded-lg z-50 w-full max-w-md"
+            style="display: none;"
+        >
+            <div class="font-bold text-lg mb-2">
+                {{ session('success') ? '✅ نجاح' : '❌ خطأ' }}
+            </div>
+            <div>
+                {{ session('success') ?? session('error') }}
+            </div>
+        </div>
+    @endif
+
     <div class="container-fluid user-container">
        <div class="container">
             <div class="row">
