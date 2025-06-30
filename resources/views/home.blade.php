@@ -56,7 +56,7 @@
     .category-icon {
         width: 70px;
         height: 70px;
-        background: #f1f1f1;
+        background: none;
         display: flex;
         align-items: center;
         justify-content: center;
