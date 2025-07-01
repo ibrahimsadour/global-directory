@@ -3,9 +3,7 @@
     .category-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* افتراضيًا 3 فئات */
-        gap: 1rem;
-        padding: 1rem;
-    }
+        gap: 1rem;    }
 
     @media (min-width: 992px) {
         .category-grid {
