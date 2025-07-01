@@ -14,6 +14,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Support\Enums\IconSize;
+use Filament\Resources\Pages\Page;
 
 class UserResource extends Resource
 {
@@ -34,11 +35,19 @@ class UserResource extends Resource
             Forms\Components\TextInput::make('phone'),
             Forms\Components\FileUpload::make('profile_photo')->image(),
             Forms\Components\Textarea::make('bio'),
+            Forms\Components\TextInput::make('password')
+                ->password()
+                ->label('كلمة المرور')
+                ->dehydrated(fn ($state) => filled($state))
+                ->required(fn (Page $livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
+                ->minLength(8)
+                ->autocomplete('new-password'),
             Forms\Components\Toggle::make('is_verified')->label('تم التحقق؟'),
             Forms\Components\Toggle::make('is_trusted')->label('موثوق؟'),
             Forms\Components\Toggle::make('status')->label('نشط؟'),
         ]);
     }
+
 
     public static function table(Table $table): Table
     {
