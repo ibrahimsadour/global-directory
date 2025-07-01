@@ -132,7 +132,7 @@ class ImportBusinessRowJob implements ShouldQueue
     {
         try {
             $siteAddress = setting('site_address');
-            $prompt = "اكتب وصفًا تسويقيًا واضحًا باللغة العربية لخدمة اسمها \"{$name}\"، وتخدم منطقة \"{$siteAddress}\". لا يتجاوز 50 كلمة.";
+            $prompt = "اكتب وصفًا تسويقيًا واضحًا باللغة العربية حيث يستهدف السوق المحلي في الكويت فقط لخدمة اسمها \"{$name}\"، وتخدم منطقة \"{$siteAddress}\". لا يتجاوز 60 كلمة.";
             $response = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [['role' => 'user', 'content' => $prompt]],
@@ -153,7 +153,7 @@ class ImportBusinessRowJob implements ShouldQueue
     private function generateSeo($name): array
     {
         try {
-            $prompt = "أعطني Meta Title و Meta Description و Meta Keywords باللغة العربية لنشاط اسمه '{$name}'.";
+            $prompt = "أعطني Meta Title و Meta Description و Meta Keywords باللغة العربية حيث يستهدف السوق المحلي في الكويت فقط لنشاط اسمه '{$name}'.";
             $response = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [['role' => 'user', 'content' => $prompt]],
