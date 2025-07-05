@@ -57,20 +57,38 @@ class GooglePlacesService
     {
         $latitude = $location->latitude;
         $longitude = $location->longitude;
+        $nearbyUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
 
-        $nearbyUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json'; // ❗بدّلنا إلى textsearch ليدعم keyword فقط
-        $response = Http::retry(3, 100)->get($nearbyUrl, [
-            'query' => $keyword,
-            'location' => "$latitude,$longitude",
-            'key' => $this->apiKey,
-            'language' => 'ar',
-        ]);
+        $places = collect();
+        $page = 0;
+        $nextPageToken = null;
 
-        if ($response->failed()) {
-            throw new \Exception('فشل في الاتصال بـ Google Places API');
-        }
+        do {
+            $params = [
+                'query'    => $keyword,
+                'location' => "$latitude,$longitude",
+                'key'      => $this->apiKey,
+                'language' => 'ar',
+            ];
 
-        $places = collect($response->json('results'));
+            if ($nextPageToken) {
+                $params['pagetoken'] = $nextPageToken;
+                sleep(2); // Google requires a short delay before using the next page token
+            }
+
+            $response = Http::retry(3, 100)->get($nearbyUrl, $params);
+
+            if ($response->failed()) {
+                throw new \Exception('فشل في الاتصال بـ Google Places API');
+            }
+
+            $results = collect($response->json('results') ?? []);
+            $places = $places->merge($results);
+
+            $nextPageToken = $response->json('next_page_token') ?? null;
+            $page++;
+
+        } while ($nextPageToken && $page < 3); // Google API يدعم فقط 3 صفحات كحد أقصى (20 × 3 = 60 نتيجة)
 
         // ✅ تحميل مضلع المدينة من قاعدة البيانات
         $polygon = json_decode($location->polygon, true)['coordinates'] ?? null;
@@ -106,7 +124,6 @@ class GooglePlacesService
                 'types'         => $result['types'] ?? [],
             ];
         });
-
     }
 
     protected function getPlaceDetails(string $placeId): array
