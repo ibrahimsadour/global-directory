@@ -152,72 +152,74 @@ class LocationResource extends Resource
         ]); // نهاية schema
     }
 
-public static function table(Table $table): Table
-{
-    return $table
-        ->columns([
-            TextColumn::make('id')
-                ->label('ID')
-                ->sortable(),
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
 
-            TextColumn::make('governorate_and_area')
-                ->label('الموقع (المحافظة / المدينة)')
-                ->getStateUsing(function ($record) {
-                    return "{$record->governorate->name} / {$record->area}";
-                })
-                ->searchable()
-                ->sortable(),
+                TextColumn::make('governorate.name')
+                    ->label('المحافظة')
+                    ->sortable()
+                    ->searchable(),
 
-            TextColumn::make('image')
-                ->label('الصورة')
-                ->formatStateUsing(function ($state, $record) {
-                    if ($state && is_string($state)) {
-                        $url = asset('storage/' . ltrim($state, '/'));
-                        return '<img src="' . $url . '" title="' . $record->area . '" style="width:60px; height:60px; border-radius:50%; object-fit:cover;" />';
-                    }
-                    return 'لا توجد صورة';
-                })
-                ->html(),
+                TextColumn::make('area')
+                    ->label('المدينة')
+                    ->sortable()
+                    ->searchable(),
 
-            TextColumn::make('businesses_count')
-                ->label('عدد النشاطات')
-                ->counts('businesses')
-                ->sortable(),
+                TextColumn::make('image')
+                    ->label('الصورة')
+                    ->formatStateUsing(function ($state, $record) {
+                        if ($state && is_string($state)) {
+                            $url = asset('storage/' . ltrim($state, '/'));
+                            return '<img src="' . $url . '" title="' . $record->area . '" style="width:60px; height:60px; border-radius:50%; object-fit:cover;" />';
+                        }
+                        return 'لا توجد صورة';
+                    })
+                    ->html(),
 
-            ToggleColumn::make('is_active')
-                ->label('مفعل؟')
-                ->onIcon('heroicon-o-check-circle')
-                ->offIcon('heroicon-o-x-circle')
-                ->onColor('success')
-                ->offColor('danger'),
-        ])
-        ->filters([
-            SelectFilter::make('governorate_id')
-                ->label('المحافظة')
-                ->relationship('governorate', 'name')
-                ->searchable()
-                ->preload(),
-        ])
-        ->actions([
-            Tables\Actions\EditAction::make()
-                ->label('تعديل')
-                ->icon('heroicon-o-pencil')
-                ->button()
-                ->color('info'),
+                TextColumn::make('businesses_count')
+                    ->label('عدد النشاطات')
+                    ->counts('businesses')
+                    ->sortable(),
 
-            Tables\Actions\DeleteAction::make()
-                ->label('حذف')
-                ->icon('heroicon-o-trash')
-                ->button()
-                ->color('danger'),
-        ])
-        ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make()
-                ->label('حذف المحدد')
-                ->color('danger'),
-        ])
-        ->defaultSort('id', 'desc');
-}
+                ToggleColumn::make('is_active')
+                    ->label('مفعل؟')
+                    ->onIcon('heroicon-o-check-circle')
+                    ->offIcon('heroicon-o-x-circle')
+                    ->onColor('success')
+                    ->offColor('danger'),
+            ])
+            ->filters([
+                SelectFilter::make('governorate_id')
+                    ->label('المحافظة')
+                    ->relationship('governorate', 'name')
+                    ->searchable()
+                    ->preload(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->label('تعديل')
+                    ->icon('heroicon-o-pencil')
+                    ->button()
+                    ->color('info'),
+
+                Tables\Actions\DeleteAction::make()
+                    ->label('حذف')
+                    ->icon('heroicon-o-trash')
+                    ->button()
+                    ->color('danger'),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->label('حذف المحدد')
+                    ->color('danger'),
+            ])
+            ->defaultSort('id', 'desc');
+    }
 
 
     public static function getPages(): array
