@@ -82,6 +82,14 @@ class LocationResource extends Resource
                         ->rows(4)
                         ->placeholder('يمكنك كتابة وصف تعريفي عن هذه المنطقة لتحسين ظهورها في محركات البحث (SEO).'),
 
+                    Toggle::make('is_active')
+                        ->label('مفعل؟')
+                        ->default(true),
+
+                ]), // نهاية Tab البيانات الأساسية
+                
+                Tab::make('العنوان')->schema([
+
                     TextInput::make('latitude')
                         ->label('خط العرض (Latitude)')
                         ->numeric()
@@ -91,13 +99,20 @@ class LocationResource extends Resource
                         ->label('خط الطول (Longitude)')
                         ->numeric()
                         ->placeholder('مثلاً: 47.9774'),
+                    Textarea::make('polygon')
+                        ->label('إحداثيات المضلع (Polygon)')
+                        ->placeholder('مثلاً: [[29.3759, 47.9774], [29.3760, 47.9780], [29.3755, 47.9785]]')
+                        ->rows(8) // زيادة الحجم العمودي
+                        ->columnSpanFull()
+                        ->helperText('أدخل النقاط بصيغة JSON أو كقائمة من الإحداثيات [lat, lng]')
+                        ->extraAttributes([
+                            'dir' => 'ltr',           // اتجاه النص من اليسار لليمين
+                            'style' => 'font-family: monospace; font-size: 14px;', // خط موحد لتسهيل القراءة
+                        ]),
 
-                    Toggle::make('is_active')
-                        ->label('مفعل؟')
-                        ->default(true),
-
-                ]), // نهاية Tab البيانات الأساسية
-
+                ]), 
+                
+                // نهاية Tab البيانات الأساسية
                 Tab::make('إعدادات SEO')->schema([
 
                     Fieldset::make('بيانات السيو')
