@@ -33,9 +33,31 @@
                             @endif
 
                             <a href="{{ route('business.show', $featuredBusiness->slug) }}">
-                                @if($featuredBusiness->image)
-                                    <img class="business-img" src="{{ asset('storage/' . $featuredBusiness->image) }}" alt="{{ $featuredBusiness->name }}" title="{{ $featuredBusiness->name }}" />
-                                @endif
+                                @php
+                                    $image = $featuredBusiness->image;
+
+                                    if (empty($image)) {
+                                        $imageUrl = asset('storage/business_photos/default.webp');
+                                    } elseif (Str::startsWith($image, 'http')) {
+                                        $imageUrl = $image;
+                                    } elseif (Str::contains($image, '/')) {
+                                        $imageUrl = asset('storage/' . $image);
+                                    } else {
+                                        $imageUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' 
+                                            . $image . '&key=' . config('services.google.maps_api_key');
+                                    }
+
+                                    $altText = 'صورة نشاط ' . $featuredBusiness->name . ' في ' . optional($featuredBusiness->location)->name;
+                                @endphp
+
+                                <img 
+                                    src="{{ $imageUrl }}" 
+                                    class="business-img" 
+                                    alt="{{ $altText }}" 
+                                    title="{{ $altText }}" 
+                                    loading="lazy"
+                                >
+
                             </a>
 
                             @if($featuredBusiness->image)

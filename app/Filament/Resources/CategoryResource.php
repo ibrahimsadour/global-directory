@@ -25,7 +25,11 @@ use Illuminate\Support\Str;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\Action;
-
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Actions\DeleteBulkAction;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
@@ -33,7 +37,6 @@ class CategoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
     protected static ?string $navigationLabel = 'التصنيفات'; // يظهر في السايدبار بهذا الاسم
-
 
 
 
@@ -128,83 +131,111 @@ class CategoryResource extends Resource
             ]),
         ]);
     }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('id')
-                    ->label('معرّف الفئة')
+                    ->label('ID')
                     ->sortable(),
 
                 TextColumn::make('image')
-                    ->label('صورة الفئة')
+                    ->label('الصورة')
                     ->formatStateUsing(function ($state) {
                         if ($state && is_string($state)) {
                             $url = asset('storage/' . ltrim($state, '/'));
-                            return '<img src="' . $url . '" style="width:60px; height:60px; border-radius:50%; object-fit:cover;" />';
+                            return '<img src="' . $url . '" style="width:60px; height:60px; border-radius:10%; object-fit:cover;" />';
                         }
                         return 'لا توجد صورة';
                     })
                     ->html(),
 
                 TextColumn::make('name')
-                    ->label('اسم الفئة')
+                    ->label('العنوان')
                     ->formatStateUsing(function ($state, $record) {
-                        // بناء التدرج Hierarchy
-                        $prefix = '';
-                        $parent = $record->parent;
-                        while ($parent) {
-                            $prefix = $parent->name . ' → ' . $prefix;
-                            $parent = $parent->parent;
-                        }
-                        return $prefix . $state;
+                        return $record->parent ? '↳ ' . $state : $state;
                     })
                     ->searchable()
                     ->sortable(),
-                \Filament\Tables\Columns\BadgeColumn::make('parent_id')
-                    ->label('نوع الفئة')
-                    ->getStateUsing(function ($record) {
-                        if ($record->parent) {
-                            return 'فرعية - ' . $record->parent->name;
-                        }
-                        return 'فئة رئيسية';
-                    })
+
+                TextColumn::make('parent.name')
+                    ->label('تابعة لـ')
+                    ->placeholder('—')
+                    ->sortable()
+                    ->default('-'),
+
+                BadgeColumn::make('parent_id')
+                    ->label('النوع')
+                    ->getStateUsing(fn ($record) => 
+                        $record->parent ? 'فرعية - ' . $record->parent->name : 'فئة رئيسية'
+                    )
                     ->colors([
-                        'success' => fn ($state) => $state === 'فئة رئيسية',
-                        'warning' => fn ($state) => str_starts_with($state, 'فرعية'),
-                    ]), 
-                    
-                // زر Switch بدل أيقونة
-                \Filament\Tables\Columns\ToggleColumn::make('is_active')
+                        'success' => fn ($state) => str_contains($state, 'رئيسية'),
+                        'warning' => fn ($state) => str_contains($state, 'فرعية'),
+                    ]),
+
+                TextColumn::make('children_count')
+                    ->label('عدد الفئات الفرعية')
+                    ->counts('children')
+                    ->sortable(),
+
+                TextColumn::make('businesses_count')
+                    ->label('عدد النشاطات')
+                    ->counts('businesses')
+                    ->sortable(),
+
+                ToggleColumn::make('is_active')
                     ->label('مفعل؟')
                     ->onIcon('heroicon-o-check-circle')
                     ->offIcon('heroicon-o-x-circle')
                     ->onColor('success')
                     ->offColor('danger'),
             ])
-            ->actions([
 
-                \Filament\Tables\Actions\EditAction::make()
+            ->filters([
+                SelectFilter::make('parent_id')
+                    ->label('فلترة حسب الفئة الأم')
+                    ->options(fn () => \App\Models\Category::whereNull('parent_id')->pluck('name', 'id'))
+                    ->query(function (Builder $query, array $data) {
+                        if (!empty($data['value'])) {
+                            return $query->where('parent_id', $data['value']);
+                        }
+                        return $query; // Return unfiltered query if no value is selected
+                    }),
+            ])
+
+            ->actions([
+                EditAction::make()
                     ->label('تعديل')
                     ->icon('heroicon-o-pencil')
                     ->button()
                     ->color('info'),
 
-                \Filament\Tables\Actions\DeleteAction::make()
+                DeleteAction::make()
                     ->label('حذف')
                     ->icon('heroicon-o-trash')
                     ->button()
                     ->color('danger'),
             ])
+
             ->bulkActions([
-                \Filament\Tables\Actions\DeleteBulkAction::make()
+                DeleteBulkAction::make()
                     ->label('حذف المحدد')
                     ->color('danger'),
             ])
-            ->defaultSort('id', 'desc'); // ترتيب افتراضي اختياري (آخر فئة أولاً)
+
+            ->defaultSort('id', 'desc');
     }
 
 
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withCount('businesses') // تحميل العدد مسبقًا
+            ->with('parent'); // لتفادي مشاكل N+1
+    }
 
 
     public static function getPages(): array

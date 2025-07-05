@@ -33,13 +33,18 @@ return new class extends Migration
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
 
+            // بيانات تاتي من استيراد Google maps
+            $table->string('place_id')->unique()->comment('معرّف المكان من Google Places');
+            $table->decimal('rating', 3, 2)->nullable()->comment('متوسط التقييم من Google');
+            $table->unsignedInteger('reviews_count')->nullable()->comment('عدد التقييمات من Google');
+
             // حالة النشاط
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_active')->default(true);
 
             // صورة النشاط
-            $table->string('image')->nullable();
+            $table->text('image')->nullable();
 
             // معرض الصور
             $table->json('gallery')->nullable();

@@ -21,9 +21,31 @@
 
 <div class="businesscover shadow-sm ">
     <div class="imagecover text-center p-2">
-        @if(!empty($business->image))
-            <img src="{{ asset('storage/' . $business->image) }}" alt="{{ $business->name }}">
-        @endif
+        @php
+            $image = $business->image;
+
+            if (empty($image)) {
+                $imageUrl = asset('storage/business_photos/default.webp'); // صورة افتراضية
+            } elseif (Str::startsWith($image, 'http')) {
+                $imageUrl = $image; // رابط خارجي مباشر
+            } elseif (Str::contains($image, '/')) {
+                $imageUrl = asset('storage/' . $image); // صورة من السيرفر
+            } else {
+                $imageUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' 
+                    . $image . '&key=' . config('services.google.maps_api_key');
+            }
+        @endphp
+
+        <div style="aspect-ratio: 4 / 3; width: 100%; max-width: 400px; overflow: hidden; border-radius: 10px;">
+            <img 
+                src="{{ $imageUrl }}" 
+                alt="{{ $business->name }}" 
+                title="{{ $business->name }}" 
+                style="width: 100%; height: 100%; object-fit: cover;" 
+                loading="lazy"
+            >
+        </div>
+
     </div>
     <div class="business-info">
 

@@ -31,6 +31,11 @@ class Business extends Model
         'whatsapp',
         'description',
 
+        // بياانات Google maps
+        'place_id',
+        'rating',
+        'reviews_count',
+
 
         // الحالة
         'is_featured',

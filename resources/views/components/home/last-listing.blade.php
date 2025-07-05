@@ -13,9 +13,31 @@
                     <div class="featurdlist rounded-sm shado-sm">
                         <div class="image-cover">
                             <a href="{{ route('business.show', $latestBusiness->slug) }}">
-                                @if($latestBusiness->image)
-                                <img src="{{ asset('storage/' . $latestBusiness->image) }}" class="business-img" title="{{ $latestBusiness->name ?? '-' }}" alt="{{ $latestBusiness->name ?? '-' }}" />
-                                @endif
+                                @php
+                                    $image = $latestBusiness->image;
+
+                                    if (empty($image)) {
+                                        $imageUrl = asset('storage/business_photos/default.webp');
+                                    } elseif (Str::startsWith($image, 'http')) {
+                                        $imageUrl = $image;
+                                    } elseif (Str::contains($image, '/')) {
+                                        $imageUrl = asset('storage/' . $image);
+                                    } else {
+                                        $imageUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' 
+                                            . $image . '&key=' . config('services.google.maps_api_key');
+                                    }
+
+                                    $altText = 'صورة نشاط ' . $latestBusiness->name . ' في ' . optional($latestBusiness->location)->name;
+                                @endphp
+
+                                <img 
+                                    src="{{ $imageUrl }}" 
+                                    class="business-img" 
+                                    alt="{{ $altText }}" 
+                                    title="{{ $altText }}" 
+                                    loading="lazy"
+                                >
+
                             </a>
                             @if($latestBusiness->image)
                             <div class="cat-cover">

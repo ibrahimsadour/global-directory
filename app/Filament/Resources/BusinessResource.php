@@ -104,7 +104,7 @@ class BusinessResource extends Resource
                                         }),
 
                                     Select::make('location_id')
-                                        ->label('المدينة / المنطقة')
+                                        ->label('المدينة / المحافظة')
                                         ->options(function (callable $get) {
                                             $governorate = $get('governorate_id');
                                             $governorateId = is_object($governorate) ? $governorate?->id : $governorate;
@@ -369,39 +369,66 @@ class BusinessResource extends Resource
             ->columns([
 
                 Tables\Columns\TextColumn::make('id')
-                    ->label('معرّف النشاط')
+                    ->label(' ID')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('image')
                     ->label('صورة')
-                    ->formatStateUsing(function ($state) {
-                        if ($state && is_string($state)) {
-                            $url = asset('storage/' . ltrim($state, '/'));
-                            return '<img src="' . $url . '" style="width:60px; height:60px; border-radius:50%; object-fit:cover;" />';
+                    ->formatStateUsing(function ($state, $record) {
+                        if (empty($state)) {
+                            $imageUrl = asset('storage/business_photos/default.webp');
+                        } elseif (Str::startsWith($state, 'http')) {
+                            $imageUrl = $state;
+                        } elseif (Str::contains($state, '/')) {
+                            $imageUrl = asset('storage/' . ltrim($state, '/'));
+                        } else {
+                            $imageUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' 
+                                . $state . '&key=' . config('services.google.maps_api_key');
                         }
-                        return 'لا توجد صورة';
+
+                        return '<img src="' . $imageUrl . '" style="width:60px; height:60px; border-radius:5%; object-fit:cover;" />';
                     })
                     ->html(),
 
                 Tables\Columns\TextColumn::make('name')
-                    ->label('اسم النشاط')
+                    ->label('العنوان')
                     ->limit(20)
                     ->searchable()
                     ->sortable(),                    
 
                 // ✅ عمود المستخدم
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('صاحب النشاط')
+                    ->label('المستخدم')
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('الفئة')
+                    ->formatStateUsing(function ($state, $record) {
+                        $category = $record->category;
+                        if (!$category) return '—';
+
+                        $parentName = $category->parent?->name;
+                        return $parentName
+                            ? "{$parentName} / {$category->name}"
+                            : $category->name;
+                    })
+                    ->color(function ($record) {
+                        $category = $record->category;
+                        if (!$category) return 'gray';
+
+                        return $category->parent ? 'success' : 'primary';
+                    })
                     ->sortable()
                     ->badge(),
 
                 Tables\Columns\TextColumn::make('location.area')
-                    ->label('المدينة / المنطقة')
+                    ->label('المحافظة / المدينة')
+                    ->formatStateUsing(function ($state, $record) {
+                        $governorate = $record->governorate?->name ?? ($record->location->governorate?->name ?? '—');
+                        $area = $record->location?->area ?? '—';
+                        return "{$governorate} / {$area}";
+                    })
                     ->sortable()
                     ->badge(),
 
@@ -428,7 +455,7 @@ class BusinessResource extends Resource
 
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإضافة')
+                    ->label('التاريخ')
                     ->dateTime('Y-m-d')
                     ->sortable(),
             ])
@@ -438,7 +465,7 @@ class BusinessResource extends Resource
                     ->relationship('category', 'name'),
 
                 Tables\Filters\SelectFilter::make('location_id')
-                    ->label('فلتر حسب المدينة / المنطقة')
+                    ->label('فلتر حسب المدينة / المحافظة')
                     ->relationship('location', 'area'),
 
                 Tables\Filters\SelectFilter::make('user_id')
