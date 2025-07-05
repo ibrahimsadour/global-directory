@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
-            $table->longText('polygon')->nullable()->collation('utf8mb4_bin')->comment('حدود المدينة بصيغة GeoJSON');
+            $table->longText('polygon')->nullable()->collation('utf8mb4_unicode_ci')->comment('حدود المدينة بصيغة GeoJSON');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

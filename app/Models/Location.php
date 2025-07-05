@@ -16,6 +16,7 @@ class Location extends Model
         'description',
         'latitude',
         'longitude',
+        'polygon',
         'governorate_id',
         'is_active',
     ];
