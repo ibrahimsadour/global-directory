@@ -120,7 +120,7 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
 
                                 foreach ($parents as $parent) {
                                     // أضف الفئة الرئيسية
-                                    $options[$parent->id] = $parent->name;
+                                    $options[$parent->id] = '📁 ' . $parent->name;
 
                                     // أضف الفئات الفرعية مع بادئة مرئية
                                     foreach ($parent->children as $child) {

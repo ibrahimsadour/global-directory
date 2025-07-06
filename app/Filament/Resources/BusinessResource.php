@@ -477,6 +477,9 @@ class BusinessResource extends Resource
 
                 Tables\Filters\TernaryFilter::make('is_approved')
                     ->label('فلتر حسب حالة القبول'),
+
+                Tables\Filters\TernaryFilter::make('is_featured')
+                    ->label('فلتر حسب حالة القبول'),
             ])
             ->actions([
 
