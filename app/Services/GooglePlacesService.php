@@ -53,54 +53,57 @@ class GooglePlacesService
         $this->apiKey = config('services.google_maps.key');
     }
 
-    public function fetchFullPlacesDetails(string $keyword, Location $location): Collection
+    public function fetchFullPlacesDetails(array|string $keyword, Location $location): Collection
     {
         $latitude = $location->latitude;
         $longitude = $location->longitude;
         $nearbyUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
 
         $places = collect();
-        $page = 0;
-        $nextPageToken = null;
+        $keywords = is_array($keyword) ? $keyword : explode(' ', $keyword);
 
-        do {
-            $params = [
-                'query'    => $keyword,
-                'location' => "$latitude,$longitude",
-                'key'      => $this->apiKey,
-                'language' => 'ar',
-            ];
+        foreach ($keywords as $kw) {
+            $page = 0;
+            $nextPageToken = null;
 
-            if ($nextPageToken) {
-                $params['pagetoken'] = $nextPageToken;
-                sleep(2); // Google requires a short delay before using the next page token
-            }
+            do {
+                $params = [
+                    'query'    => $kw,
+                    'location' => "$latitude,$longitude",
+                    'key'      => $this->apiKey,
+                    'language' => 'ar',
+                ];
 
-            $response = Http::retry(3, 100)->get($nearbyUrl, $params);
+                if ($nextPageToken) {
+                    $params['pagetoken'] = $nextPageToken;
+                    sleep(2);
+                }
 
-            if ($response->failed()) {
-                throw new \Exception('فشل في الاتصال بـ Google Places API');
-            }
+                $response = Http::retry(3, 100)->get($nearbyUrl, $params);
 
-            $results = collect($response->json('results') ?? []);
-            $places = $places->merge($results);
+                if ($response->failed()) {
+                    continue;
+                }
 
-            $nextPageToken = $response->json('next_page_token') ?? null;
-            $page++;
+                $results = collect($response->json('results') ?? []);
+                $places = $places->merge($results);
 
-        } while ($nextPageToken && $page < 3); // Google API يدعم فقط 3 صفحات كحد أقصى (20 × 3 = 60 نتيجة)
+                $nextPageToken = $response->json('next_page_token') ?? null;
+                $page++;
 
-        // ✅ تحميل مضلع المدينة من قاعدة البيانات
+            } while ($nextPageToken && $page < 3);
+        }
+
+        $places = $places->unique('place_id')->values();
+
+        // فلترة النتائج داخل المضلع
         $polygon = json_decode($location->polygon, true)['coordinates'] ?? null;
 
         if ($polygon) {
             $places = $places->filter(function ($place) use ($polygon) {
                 $lat = $place['geometry']['location']['lat'] ?? null;
                 $lng = $place['geometry']['location']['lng'] ?? null;
-
-                if (!$lat || !$lng) return false;
-
-                return $this->pointInPolygon($lng, $lat, $polygon);
+                return $lat && $lng && $this->pointInPolygon($lng, $lat, $polygon);
             })->values();
         }
 
@@ -245,7 +248,7 @@ class GooglePlacesService
             'user_id'       => auth()->id(),
             'city_id'       => $meta['location_id'],
             'category_id'   => $meta['category_id'],
-            'keyword'       => $meta['keyword'],
+            'keyword' => is_array($meta['keyword']) ? implode(', ', $meta['keyword']) : $meta['keyword'],
             'imported_at'   => now(),
             'total_fetched' => $places->count(),
             'new_saved'     => $saved,

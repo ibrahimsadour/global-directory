@@ -72,8 +72,8 @@
                                 <h4>{{ $featuredBusiness->name ?? '-' }}</h4>
                                 <p class="text-truncate">{{ $featuredBusiness->description ?? '-' }}</p>
                                 <ul>
-                                    <li><i class="bi bi-telephone"></i> {{ $featuredBusiness->phone ?? '-' }}</li>
-                                    <li><i class="bi bi-geo-alt"></i> {{ $featuredBusiness->governorate->name ?? '-' }}</li>
+                                    <li><i class="bi bi-telephone"></i> {{ $featuredBusiness->phone ?? '------' }}</li>
+                                    <li><i class="bi bi-geo-alt"></i> {{ $featuredBusiness->location->area ?? '-' }} - {{ $featuredBusiness->governorate->name ?? '-' }}</li>
                                 </ul>
                             </a>
                         </div>

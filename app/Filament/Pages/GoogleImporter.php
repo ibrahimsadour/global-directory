@@ -28,7 +28,7 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
     protected static ?string $navigationLabel = 'استيراد من Google Maps';
     protected static ?string $title = 'استيراد أنشطة من Google Maps';
     public ?int $category_id = null;
-    public ?string $keyword = null;
+    public array $keyword = [];
     public ?int $radius = 5;
     public array $savedPlaces = [];
     public ?int $governorate_id = null;
@@ -137,9 +137,14 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
 
                     ]),
 
-                    TextInput::make('keyword')
-                        ->label('الكلمة المفتاحية')
-                        ->required(),
+                        \Filament\Forms\Components\TagsInput::make('keyword')
+                            ->label('الكلمات المفتاحية')
+                            ->placeholder('اكتب كلمة واضغط Enter لإضافتها')
+                            ->hint('أدخل كلمة أو أكثر مثل: كراج، كهرباء، بنشر')
+                            ->required()
+                            ->separator(' ')
+                            ->suggestions(['كراج', 'بنشر', 'كهرباء', 'مكانيكي', 'بطارية']),
+
 
                 ])
         ];

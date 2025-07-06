@@ -50,8 +50,8 @@
                                 <h4>{{ $latestBusiness->name ?? '-' }}</h4>
                                 <p class="text-truncate">{{ $latestBusiness->description ?? '-' }}</p>
                                 <ul>
-                                    <li><i class="bi bi-telephone"></i> {{ $latestBusiness->phone ?? '-' }}</li>
-                                    <li><i class="bi bi-geo-alt"></i> {{ $latestBusiness->governorate->name ?? '-' }}</li>
+                                    <li><i class="bi bi-telephone"></i> {{ $latestBusiness->phone ?? '------' }}</li>
+                                    <li><i class="bi bi-geo-alt"></i> {{ $latestBusiness->location->area ?? '-' }} - {{ $latestBusiness->governorate->name ?? '-' }} </li>
                                 </ul>
                             </a>
                         </div>
