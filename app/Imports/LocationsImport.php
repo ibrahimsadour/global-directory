@@ -25,6 +25,7 @@ class LocationsImport implements ToModel, WithHeadingRow
             'description'   => $row['description'] ?? null,
             'latitude'      => $row['latitude'] ?? null,
             'longitude'     => $row['longitude'] ?? null,
+            'polygon'     => $row['polygon'] ?? null,
             'governorate_id'=> $governorate->id,
             'is_active'     => true,
         ]);

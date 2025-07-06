@@ -38,6 +38,32 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
     public ?string $categoryName = null;    // 🆕 لعرض اسم التصنيف
     public Collection $results;
 
+    protected function normalizeTime(string $time): string
+    {
+        // استبدال الرموز العربية والاختصارات لتسهيل التحليل
+        $replacements = [
+            'ص' => 'AM',
+            'م' => 'PM',
+            'ص.' => 'AM',
+            'م.' => 'PM',
+            '–' => '-', // في حال ظهرت داخل الوقت
+            '٫' => ':', // نقطة عربية
+            ' ' => ' ', // مسافات خاصة
+            ' ' => ' ', // مسافات نحيلة
+        ];
+
+        $normalized = strtr($time, $replacements);
+
+        // تأكد أن الساعة تحتوي على AM أو PM
+        if (!Str::contains($normalized, ['AM', 'PM'])) {
+            // إذا لم يكن بها AM/PM نحاول تحديدها بناءً على الرقم (افتراضي قبل 12 ظهرًا AM)
+            $hour = (int)trim(Str::before($normalized, ':'));
+            $normalized .= $hour < 12 ? ' AM' : ' PM';
+        }
+
+        return trim($normalized);
+    }
+
     public function mount()
     {
         $this->form->fill();
@@ -253,45 +279,44 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
             'meta_keywords'    => $seo['meta_keywords'] ?? $name,
         ]);
 
-        // ✅ حفظ أوقات العمل إن وُجدت
-        if (!empty($place['opening_hours']) && is_array($place['opening_hours'])) {
-            foreach ($place['opening_hours'] as $entry) {
-                // مثال: "السبت: 7:00 ص – 11:00 م"
-                if (preg_match('/^(.+?):\s*(.+)$/u', $entry, $matches)) {
-                    $day = trim($matches[1]);
-                    $hours = trim($matches[2]);
+            // ✅ حفظ أوقات العمل إن وُجدت
+            if (!empty($place['opening_hours']) && is_array($place['opening_hours'])) {
+                foreach ($place['opening_hours'] as $entry) {
+                    // مثال: "السبت: 7:00 ص – 11:00 م"
+                    if (preg_match('/^(.+?):\s*(.+)$/u', $entry, $matches)) {
+                        $day = trim($matches[1]);
+                        $hours = trim($matches[2]);
 
-                    try {
-                        if (Str::contains($hours, ['Open 24 hours', 'نعمل على مدار 24 ساعة'])) {
-                            // 🟢 دوام كامل
-                            BusinessHour::create([
-                                'business_id' => $business->id,
-                                'day'         => $day,
-                                'open_time'   => '00:00:00',
-                                'close_time'  => '23:59:59',
-                            ]);
-                        } elseif (Str::contains($hours, ['–', '-'])) {
-                            // 🕒 تنسيق وقت مفتوح
-                            [$open, $close] = preg_split('/–|-/', $hours);
+                        try {
+                            if (Str::contains($hours, ['Open 24 hours', 'نعمل على مدار 24 ساعة'])) {
+                                // 🟢 دوام كامل
+                                BusinessHour::create([
+                                    'business_id' => $business->id,
+                                    'day'         => $day,
+                                    'open_time'   => '00:00:00',
+                                    'close_time'  => '23:59:59',
+                                ]);
+                            } elseif (Str::contains($hours, ['–', '-'])) {
+                                // 🕒 تنسيق وقت مفتوح
+                                [$open, $close] = preg_split('/–|-/', $hours);
 
-                            // ✅ تحويل الوقت العربي إلى إنجليزي لتفادي أخطاء parsing
-                            $open = $this->normalizeTime(trim($open));
-                            $close = $this->normalizeTime(trim($close));
+                                // ✅ تحويل الوقت العربي إلى إنجليزي لتفادي أخطاء parsing
+                                $open = $this->normalizeTime(trim($open));
+                                $close = $this->normalizeTime(trim($close));
 
-                            BusinessHour::create([
-                                'business_id' => $business->id,
-                                'day'         => $day,
-                                'open_time'   => Carbon::parse($open)->format('H:i:s'),
-                                'close_time'  => Carbon::parse($close)->format('H:i:s'),
-                            ]);
+                                BusinessHour::create([
+                                    'business_id' => $business->id,
+                                    'day'         => $day,
+                                    'open_time'   => Carbon::parse($open)->format('H:i:s'),
+                                    'close_time'  => Carbon::parse($close)->format('H:i:s'),
+                                ]);
+                            }
+                        } catch (\Exception $e) {
+                            Log::warning("فشل في حفظ وقت الدوام لـ {$day} في النشاط {$business->name}: {$hours}");
                         }
-                    } catch (\Exception $e) {
-                        Log::warning("فشل في حفظ وقت الدوام لـ {$day} في النشاط {$business->name}: {$hours}");
                     }
                 }
             }
-        }
-
 
         $this->savedPlaces[] = $placeId;
 
