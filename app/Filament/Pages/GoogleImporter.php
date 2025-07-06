@@ -107,10 +107,34 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
                         // ✅ حقل الفئات (التصنيفات)
                         Select::make('category_id')
                             ->label('التصنيف')
-                            ->options(\App\Models\Category::pluck('name', 'id'))
+                            ->options(function () {
+                                $options = [];
+
+                                // جلب الفئات الرئيسية مرتبة حسب الاسم
+                                $parents = \App\Models\Category::with(['children' => function ($query) {
+                                        $query->orderBy('name');
+                                    }])
+                                    ->whereNull('parent_id')
+                                    ->orderBy('name')
+                                    ->get();
+
+                                foreach ($parents as $parent) {
+                                    // أضف الفئة الرئيسية
+                                    $options[$parent->id] = $parent->name;
+
+                                    // أضف الفئات الفرعية مع بادئة مرئية
+                                    foreach ($parent->children as $child) {
+                                        $options[$child->id] = '⤶ ' . $child->name; // رمز جميل للتفرع
+
+                                    }
+                                }
+
+                                return $options;
+                            })
                             ->searchable()
                             ->preload()
                             ->required(),
+
                     ]),
 
                     TextInput::make('keyword')
