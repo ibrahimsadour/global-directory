@@ -154,6 +154,19 @@
             </div>
             @foreach($businesses as $business)  
                 <div class="row shadow-sm list-row border rounded">
+                  @php
+                     $image = $business->image;
+                     if (empty($image)) {
+                        $imageUrl = asset('storage/business_photos/default.webp'); // صورة افتراضية
+                     } elseif (Str::startsWith($image, 'http')) {
+                        $imageUrl = $image; // رابط خارجي مباشر
+                     } elseif (Str::contains($image, '/')) {
+                        $imageUrl = asset('storage/' . $image); // صورة من السيرفر
+                     } else {
+                        $imageUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' 
+                           . $image . '&key=' . config('services.google.maps_api_key');
+                     }
+                   @endphp
                   @if($business->image)
                      <div class="col-lg-4  pe-0 img-col">
                         <a href="{{ url('business/' . $business->slug) }}">

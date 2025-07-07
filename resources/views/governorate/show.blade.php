@@ -72,52 +72,52 @@
 
                   <div id="cfilter" class="filter-body">
                      <ul>
-@foreach($governorates as $governorate)
-   @php
-      $locations = $governorate->locations;
-      $isActiveGovernorate = request()->is('governorates/'.$governorate->slug);
-      $hasActiveLocation = $locations->contains(fn ($loc) => request()->is('locations/'.$loc->slug));
-      $shouldOpen = $isActiveGovernorate || $hasActiveLocation;
-   @endphp
+                        @foreach($governorates as $governorate)
+                           @php
+                              $locations = $governorate->locations;
+                              $isActiveGovernorate = request()->is('governorates/'.$governorate->slug);
+                              $hasActiveLocation = $locations->contains(fn ($loc) => request()->is('locations/'.$loc->slug));
+                              $shouldOpen = $isActiveGovernorate || $hasActiveLocation;
+                           @endphp
 
-   <li class="cp">
-      @if($locations->count())
-         <span 
-            onclick="toggleSubcategories(this)" 
-            style="cursor: pointer; {{ $isActiveGovernorate ? 'font-weight: bold;' : '' }}"
-            class="{{ $isActiveGovernorate ? 'active-category' : '' }}"
-         >
-            <span class="toggle-icon" style="color: #0062ff;">
-               {{ $shouldOpen ? '⯆' : '⯈' }}
-            </span> 
-            {{ $governorate->name }}
-            <span style="color: #0062ff;">({{ $locations->count() }})</span>
-         </span>
+                           <li class="cp">
+                              @if($locations->count())
+                                 <span 
+                                    onclick="toggleSubcategories(this)" 
+                                    style="cursor: pointer; {{ $isActiveGovernorate ? 'font-weight: bold;' : '' }}"
+                                    class="{{ $isActiveGovernorate ? 'active-category' : '' }}"
+                                 >
+                                    <span class="toggle-icon" style="color: #0062ff;">
+                                       {{ $shouldOpen ? '⯆' : '⯈' }}
+                                    </span> 
+                                    {{ $governorate->name }}
+                                    <span style="color: #0062ff;">({{ $locations->count() }})</span>
+                                 </span>
 
-         <ul class="ms-4 {{ $shouldOpen ? '' : 'd-none' }}">
-            @foreach($locations as $location)
-               <li class="cp">
-                  <a 
-                     href="{{ route('locations.show', $location->slug) }}" 
-                     style="margin-right: 10px; {{ request()->is('locations/'.$location->slug) ? 'font-weight: bold;' : '' }}"
-                     class="{{ request()->is('locations/'.$location->slug) ? 'active-category' : '' }}"
-                  >
-                     - {{ $location->area }}
-                  </a>
-               </li>
-            @endforeach
-         </ul>
-      @else
-         <a 
-            href="{{ route('governorates.show', $governorate->slug) }}" 
-            style="{{ $isActiveGovernorate ? 'font-weight: bold;' : '' }}" 
-            class="{{ $isActiveGovernorate ? 'active-category' : '' }}"
-         >
-            {{ $governorate->name }}
-         </a>
-      @endif
-   </li>
-@endforeach
+                                 <ul class="ms-4 {{ $shouldOpen ? '' : 'd-none' }}">
+                                    @foreach($locations as $location)
+                                       <li class="cp">
+                                          <a 
+                                             href="{{ route('locations.show', $location->slug) }}" 
+                                             style="margin-right: 10px; {{ request()->is('locations/'.$location->slug) ? 'font-weight: bold;' : '' }}"
+                                             class="{{ request()->is('locations/'.$location->slug) ? 'active-category' : '' }}"
+                                          >
+                                             - {{ $location->area }}
+                                          </a>
+                                       </li>
+                                    @endforeach
+                                 </ul>
+                              @else
+                                 <a 
+                                    href="{{ route('governorates.show', $governorate->slug) }}" 
+                                    style="{{ $isActiveGovernorate ? 'font-weight: bold;' : '' }}" 
+                                    class="{{ $isActiveGovernorate ? 'active-category' : '' }}"
+                                 >
+                                    {{ $governorate->name }}
+                                 </a>
+                              @endif
+                           </li>
+                        @endforeach
 
 
                      </ul>
@@ -195,64 +195,83 @@
                </div>
             </div>
             @foreach($businesses as $business)  
-                <div class="row shadow-sm list-row border rounded">
-                  @if($business->image)
-                     <div class="col-lg-4  pe-0 img-col">
-                        <a href="{{ url('business/' . $business->slug) }}">
-                           <img  class="rounded" src="{{ asset('storage/' . $business->image) }}"  title="{{ $business->name ?? '-' }}" alt="{{ $business->name ?? '-' }}" />
-                        </a>
-                     </div>
-                  @endif
-                <div class="col-lg-8 detail-col">
-                    <a href="{{ url('business/' . $business->slug) }}">
-                        <div class="bofy-col">
-                           @if(!empty($business->name))
-                              <h2 class="text-truncate">{{ $business->name }} 
-                           @endif
-                            </i>
-                            </h2>
-                            @if(!empty($business->description))
-                            <p class="text-truncate">{{ $business->description }}</p>
-                            @endif
-                           <ul class="row ms-1">
-                              @if(!empty($business->phone))
-                              <li class="col-md-4"><i class="bi bi-telephone"></i> {{ $business->phone }}</li>
+               <div class="row shadow-sm list-row border rounded">
+                  @php
+                        $image = $business->image;
+
+                        if (empty($image)) {
+                           $imageUrl = asset('storage/business_photos/default.webp'); // صورة افتراضية
+                        } elseif (Str::startsWith($image, 'http')) {
+                           $imageUrl = $image; // رابط خارجي مباشر
+                        } elseif (Str::contains($image, '/')) {
+                           $imageUrl = asset('storage/' . $image); // صورة من السيرفر
+                        } else {
+                           $imageUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' 
+                              . $image . '&key=' . config('services.google.maps_api_key');
+                        }
+                  @endphp
+                  <div class="col-lg-4  pe-0 img-col">
+                     <a href="{{ url('business/' . $business->slug) }}" alt="{{ $business->name }}">
+                        <img 
+                           src="{{ $imageUrl }}" 
+                           alt="{{ $business->name }}" 
+                           title="{{ $business->name }}" 
+                           loading="lazy"
+                           class="rounded"
+                           style="height=;height: 200px;width: 100%;"
+                        >
+                     </a>
+                  </div>
+                  <div class="col-lg-8 detail-col">
+                     <a href="{{ url('business/' . $business->slug) }}">
+                           <div class="bofy-col">
+                              @if(!empty($business->name))
+                                 <h2 class="text-truncate">{{ $business->name }} 
                               @endif
-                              @if(!empty($business->email))
-                              <li class="col-md-8"><i class="bi bi-envelope"></i> {{ $business->email }}</li>
+                              </i>
+                              </h2>
+                              @if(!empty($business->description))
+                              <p class="text-truncate">{{ $business->description }}</p>
                               @endif
-                              </ul>
                               <ul class="row ms-1">
-                              @if(!empty($business->governorate->name))
-                              <li class="col-md-4"> <i class="bi bi-map"></i> {{ $business->governorate->name ?? '' }}</li>
-                              @endif
-                              @if(!empty($business->address))
-                              <li class="col-md-8">
-                                 <p class="text-truncate"><i class="bi bi-geo-alt"></i>{{ $business->address }}</p>
+                                 @if(!empty($business->phone))
+                                 <li class="col-md-4"><i class="bi bi-telephone"></i> {{ $business->phone }}</li>
+                                 @endif
+                                 @if(!empty($business->email))
+                                 <li class="col-md-8"><i class="bi bi-envelope"></i> {{ $business->email }}</li>
+                                 @endif
+                                 </ul>
+                                 <ul class="row ms-1">
+                                 @if(!empty($business->governorate->name))
+                                 <li class="col-md-4"> <i class="bi bi-map"></i> {{ $business->governorate->name ?? '' }}</li>
+                                 @endif
+                                 @if(!empty($business->address))
+                                 <li class="col-md-8">
+                                    <p class="text-truncate"><i class="bi bi-geo-alt"></i>{{ $business->address }}</p>
+                                 </li>
+                                 @endif
+                              </ul>
+                           </div>
+                     </a>
+                     <div  class="footcover">
+                           <ul>
+                              <li class="rev">
+                              <i class="bi  bi-star-fill"></i>
+                              <i class="bi  bi-star-fill"></i>
+                              <i class="bi  bi-star-fill"></i>
+                              <i class="bi  bi-star-fill"></i>
+                              <i class="bi  bi-star-fill"></i>
+                              <small>{{ $business->rating ?? '0.0' }} ({{ $business->reviews_count ?? 0 }} Reviews)</small>
                               </li>
-                              @endif
-                            </ul>
-                        </div>
-                    </a>
-                    <div  class="footcover">
-                        <ul>
-                            <li class="rev">
-                            <i class="bi  bi-star-fill"></i>
-                            <i class="bi  bi-star-fill"></i>
-                            <i class="bi  bi-star-fill"></i>
-                            <i class="bi  bi-star-fill"></i>
-                            <i class="bi  bi-star-fill"></i>
-                            <small>{{ $business->rating ?? '0.0' }} ({{ $business->reviews_count ?? 0 }} Reviews)</small>
-                            </li>
-                            <li class="">
-                            <div class="save">
-                                <a data-bs-toggle="modal" data-bs-target="#loginAlert"><i class="bi bi-heart"></i></a>
-                            </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                </div>
+                              <li class="">
+                              <div class="save">
+                                 <a data-bs-toggle="modal" data-bs-target="#loginAlert"><i class="bi bi-heart"></i></a>
+                              </div>
+                              </li>
+                           </ul>
+                     </div>
+                  </div>
+               </div>
             @endforeach
             {{ $businesses->withQueryString()->links('vendor.pagination.custom-bootstrap') }}
             </div>

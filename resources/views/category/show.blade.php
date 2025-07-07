@@ -207,13 +207,34 @@
             </div>
             @foreach($businesses as $business)  
                 <div class="row shadow-sm list-row border rounded">
-                  @if($business->image)
-                     <div class="col-lg-4  pe-0 img-col">
-                        <a href="{{ url('business/' . $business->slug) }}">
-                           <img  class="rounded" src="{{ asset('storage/' . $business->image) }}"  title="{{ $business->name ?? '-' }}" alt="{{ $business->name ?? '-' }}" />
-                        </a>
-                     </div>
-                  @endif
+
+                  @php
+                        $image = $business->image;
+
+                        if (empty($image)) {
+                           $imageUrl = asset('storage/business_photos/default.webp'); // صورة افتراضية
+                        } elseif (Str::startsWith($image, 'http')) {
+                           $imageUrl = $image; // رابط خارجي مباشر
+                        } elseif (Str::contains($image, '/')) {
+                           $imageUrl = asset('storage/' . $image); // صورة من السيرفر
+                        } else {
+                           $imageUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' 
+                              . $image . '&key=' . config('services.google.maps_api_key');
+                        }
+                  @endphp
+                  <div class="col-lg-4  pe-0 img-col">
+                     <a href="{{ url('business/' . $business->slug) }}" alt="{{ $business->name }}">
+                        <img 
+                           src="{{ $imageUrl }}" 
+                           alt="{{ $business->name }}" 
+                           title="{{ $business->name }}" 
+                           loading="lazy"
+                           class="rounded"
+                           style="height=;height: 200px;width: 100%;"
+                        >
+                     </a>
+                  </div>
+
                 <div class="col-lg-8 detail-col">
                     <a href="{{ url('business/' . $business->slug) }}">
                         <div class="bofy-col">
