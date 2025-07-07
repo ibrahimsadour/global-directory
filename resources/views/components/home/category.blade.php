@@ -2,31 +2,33 @@
 <style>
     .category-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* افتراضيًا 3 فئات */
-        gap: 1rem;    }
+        grid-template-columns: repeat(4, 1fr); /* افتراضيًا 4 فئات */
+        gap: 0.5rem;    
+    }
 
     @media (min-width: 992px) {
         .category-grid {
             grid-template-columns: repeat(6, 1fr); /* على الشاشات الكبيرة 6 فئات */
         }
+
     }
 
     .category-card {
         background: #fff;
-        border-radius: 5px;
-        box-shadow: 0 4px 14px rgb(0 0 0 / 19%);
+        /* border-radius: 5px; */
+        /* box-shadow: 0 4px 14px rgb(0 0 0 / 19%); */
         text-align: center;
         padding: 5px;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-decoration: none;
-        color: inherit;
+        color: #1c274c;
     }
 
     .category-icon {
-        width: 70px;
-        height: 70px;
+        width: 55px;
+        height: 55px;
         background: none;
         display: flex;
         align-items: center;

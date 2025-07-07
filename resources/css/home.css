@@ -11059,7 +11059,7 @@ header .small-menu{
 .slider-contaienr{
     background-image:url('/storage/site-settings/slider-contaienr.webp');
     background-repeat:no-repeat;
-    padding:150px 90px 90px
+    padding:150px 90px 20px
 }
 @media screen and (max-width: 1240.98px){
     .slider-contaienr{
@@ -11073,7 +11073,7 @@ header .small-menu{
 }
 @media screen and (max-width: 767.98px){
     .slider-contaienr{
-        padding:60px 20px 40px
+        padding:60px 10px 15px
     }
 }
 .slider-contaienr .searchcol{
