@@ -7,10 +7,15 @@ use App\Models\Governorate;
 use App\Services\GooglePlacesService;
 use Filament\Forms;
 use Filament\Pages\Page;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
+use Filament\Forms\Components\{
+    Section,
+    Grid,
+    Select,
+    TextInput,
+    TagsInput,
+    Actions,
+    Actions\Action
+};
 use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -19,6 +24,7 @@ use Carbon\Carbon;
 use App\Models\BusinessHour;
 use Illuminate\Support\Facades\Http;
 use App\helpers;
+
 class GoogleImporter extends Page implements Forms\Contracts\HasForms
 {
     use Forms\Concerns\InteractsWithForms;
@@ -104,7 +110,6 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
                             ->visible(fn (callable $get) => filled($get('governorate_id')))
                             ->hint(fn (callable $get) => !$get('governorate_id') ? 'اختر المحافظة أولاً' : null),
 
-                        // ✅ حقل الفئات (التصنيفات)
                         Select::make('category_id')
                             ->label('التصنيف')
                             ->options(function () {
@@ -119,10 +124,7 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
                                     ->get();
 
                                 foreach ($parents as $parent) {
-                                    // أضف الفئة الرئيسية
                                     $options[$parent->id] = '📁 ' . $parent->name;
-
-                                    // أضف الفئات الفرعية مع بادئة مرئية
                                     foreach ($parent->children as $child) {
                                         $options[$child->id] = '⤶ ' . $child->name; // رمز جميل للتفرع
 
@@ -134,15 +136,14 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
                             ->searchable()
                             ->preload()
                             ->required(),
-
                     ]),
 
                         \Filament\Forms\Components\TagsInput::make('keyword')
                             ->label('الكلمات المفتاحية')
                             ->placeholder('اكتب كلمة واضغط Enter لإضافتها')
-                            ->hint('أدخل كلمة أو أكثر مثل: كراج، كهرباء، بنشر')
+                            ->hint('أدخل كلمة أو أكثر مثل: كراج  بنشر متنقل  تبديل بطارية  كهربائي')
                             ->required()
-                            ->separator(' ')
+                            ->splitKeys(['  ']) // ✅ فقط للإدخال اليدوي
                             ->suggestions(['كراج', 'بنشر', 'كهرباء', 'مكانيكي', 'بطارية']),
 
 
