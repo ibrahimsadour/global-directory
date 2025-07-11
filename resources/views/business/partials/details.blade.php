@@ -55,6 +55,29 @@
 
         @if(!empty($business->description))
             <p>{{ $business->description }}</p>
+
+            <div class="d-flex justify-content-between align-items-center mt-3 border-top pt-2 small text-muted">
+
+                {{-- 👁️ عدد المشاهدات + تاريخ النشر --}}
+                <div class="d-flex align-items-center gap-3">
+                    <span><i class="bi bi-eye"></i> {{ $business->views()->count() }} مشاهدة</span>
+                    <span><i class="bi bi-clock"></i> {{ $business->created_at->diffForHumans() }}</span>
+                </div>
+
+                {{-- ❤️ مفضلة + مشاركة --}}
+                <div class="d-flex align-items-center gap-3">
+                    {{-- مفضلة (يتم فتح نافذة تسجيل الدخول مثلاً) --}}
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginAlert" title="أضف إلى المفضلة">
+                        <i class="bi bi-heart fs-5 text-danger"></i>
+                    </a>
+
+                    {{-- مشاركة (نسخ الرابط) --}}
+                    <a href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('تم نسخ الرابط!')" title="مشاركة">
+                        <i class="bi bi-share fs-5 text-primary"></i>
+                    </a>
+                </div>
+
+            </div>
         @endif
 
     </div>
@@ -119,8 +142,10 @@
             </ul>
         </div>
     </div>
-    <div class="footcover" x-data="review" x-init="loadReviews()">
-        <ul>
+    <div class="footcover px-3 pb-3" x-data="review" x-init="loadReviews()">
+        <ul class="d-flex justify-content-between align-items-center small">
+
+            {{-- ⭐ تقييم الموقع --}}
             <li class="rev d-flex align-items-center">
                 <template x-for="s in [1,2,3,4,5]">
                     <i
@@ -135,13 +160,18 @@
                 <small class="ms-2" x-text="avg + ' (' + total + ' تقييم)'"></small>
             </li>
 
-            <li>
-                <div class="save">
-                    <a data-bs-toggle="modal" data-bs-target="#loginAlert">
-                        <i class="bi bi-heart"></i>
-                    </a>
+                {{-- 🌐 تقييم Google --}}
+            @if(!is_null($business->rating))
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-google text-danger" style=" font-size: 1.3rem; "></i>
+                    <span>
+                        {{ number_format($business->rating, 2) }}
+                        @if($business->reviews_count > 0)
+                            ({{ $business->reviews_count }} تقييم Google)
+                        @endif
+                    </span>
                 </div>
-            </li>
+            @endif
         </ul>
     </div>
 

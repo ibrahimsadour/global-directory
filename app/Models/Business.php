@@ -91,7 +91,7 @@ class Business extends Model
         return $this->hasMany(Review::class);
     }
     // عدد التقييمات
-    public function getReviewsCountAttribute(): int
+    public function getLocalReviewsCountAttribute(): int
     {
         return $this->reviews()->count();
     }
@@ -141,6 +141,11 @@ class Business extends Model
             // حذف السيو
             $business->seo()->delete();
         });
+    }
+    // علاقة لتسجيل مشاهدات النشاط
+    public function views()
+    {
+        return $this->hasMany(BusinessView::class);
     }
 
 }
