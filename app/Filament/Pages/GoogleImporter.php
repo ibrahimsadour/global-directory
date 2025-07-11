@@ -109,7 +109,8 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
                             ->reactive()
                             ->visible(fn (callable $get) => filled($get('governorate_id')))
                             ->hint(fn (callable $get) => !$get('governorate_id') ? 'اختر المحافظة أولاً' : null),
-
+                    ]),
+                    Grid::make(1)->schema([
                         Select::make('category_id')
                             ->label('التصنيف')
                             ->options(function () {
@@ -144,7 +145,16 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
                             ->hint('أدخل كلمة أو أكثر مثل: كراج  بنشر متنقل  تبديل بطارية  كهربائي')
                             ->required()
                             ->splitKeys(['  ']) // ✅ فقط للإدخال اليدوي
-                            ->suggestions(['كراج', 'بنشر', 'كهرباء', 'مكانيكي', 'بطارية']),
+                            ->suggestions(['كراج', 'بنشر', 'كهرباء', 'مكانيكي', 'بطارية'])
+                            ->suffixAction(
+                                \Filament\Forms\Components\Actions\Action::make('clearKeywords')
+                                    ->label('مسح')
+                                    ->icon('heroicon-m-trash')
+                                    ->color('danger')
+                                    ->action(function (\Filament\Forms\Set $set) {
+                                        $set('keyword', []);
+                                    })
+                            ),
 
 
                 ])

@@ -11407,7 +11407,7 @@ footer .footer-bottom .topc li a{
     color:#fff
 }
 footer .footer-bottom .topc li i{
-    margin-inline-start:4px;
+    margin-inline-end:4px;
     font-size:.7rem;
     color:#8bbaff
 }
@@ -11650,7 +11650,7 @@ footer .subcrib .input-group-text i{
     padding:4px
 }
 .businesscover .more-info ul li i{
-    margin-inline-start:4px
+    margin-inline-end:4px
 }
 .businesscover .more-info ul li a{
     color:#6f6f6f
@@ -11876,7 +11876,7 @@ footer .subcrib .input-group-text i{
     border-radius:3px;
     color:#fff;
     padding:7px 10px;
-    margin-top:7px
+    margin-top:4px
 }
 .list-group-item span{
     float:right
@@ -11919,7 +11919,7 @@ footer .subcrib .input-group-text i{
 }
 .cateul li span img{
     max-width:30px!important;
-    margin-inline-start:10px
+    margin-inline-end:10px
 }
 .form-cover{
     padding:15px

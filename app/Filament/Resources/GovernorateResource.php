@@ -167,8 +167,32 @@ class GovernorateResource extends Resource
                     ->onColor('success')
                     ->offColor('danger'),
             ])
+
+            // ✅ أزرار تعديل وحذف
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->label('تعديل')
+                    ->icon('heroicon-o-pencil')
+                    ->button()
+                    ->color('info'),
+
+                Tables\Actions\DeleteAction::make()
+                    ->label('حذف')
+                    ->icon('heroicon-o-trash')
+                    ->button()
+                    ->color('danger'),
+            ])
+
+            // (اختياري) حذف جماعي
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->label('حذف المحدد')
+                    ->color('danger'),
+            ])
+
             ->defaultSort('id', 'desc');
     }
+
 
     public static function getPages(): array
     {

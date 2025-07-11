@@ -62,14 +62,43 @@ class ImportLogResource extends Resource
                 TextColumn::make('user.name')->label('المستخدم')->searchable(),
                 TextColumn::make('city.area')->label('المنطقة')->searchable(),
                 TextColumn::make('category.name')->label('التصنيف')->searchable(),
-                TextColumn::make('keyword')->label('الكلمة المفتاحية'),
+                TextColumn::make('keyword')->label('الكلمة المفتاحية')->limit(25),
                 TextColumn::make('radius')->label('النطاق')->suffix(' كم'),
                 TextColumn::make('total_fetched')->label('تم جلبه')->color('gray'),
                 TextColumn::make('new_saved')->label('تم حفظه')->color('success'),
                 TextColumn::make('imported_at')->label('وقت الاستيراد')->since(),
             ])
+            ->filters([
+                // 👇 مثال على فلتر حسب اسم المستخدم
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->label('المستخدم')
+                    ->relationship('user', 'name'),
+
+                // 👇 مثال على فلتر حسب التصنيف
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->label('التصنيف')
+                    ->relationship('category', 'name'),
+
+                // 👇 مثال على فلتر حسب المنطقة (المدينة)
+                Tables\Filters\SelectFilter::make('city_id')
+                    ->label('المنطقة')
+                    ->relationship('city', 'area'),
+
+                // 👇 فلتر بالتاريخ
+                Tables\Filters\Filter::make('imported_at')
+                    ->form([
+                        Forms\Components\DatePicker::make('from')->label('من'),
+                        Forms\Components\DatePicker::make('until')->label('إلى'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['from'], fn ($q) => $q->whereDate('imported_at', '>=', $data['from']))
+                            ->when($data['until'], fn ($q) => $q->whereDate('imported_at', '<=', $data['until']));
+                    }),
+            ])
             ->defaultSort('imported_at', 'desc');
     }
+
 
     public static function getRelations(): array
     {

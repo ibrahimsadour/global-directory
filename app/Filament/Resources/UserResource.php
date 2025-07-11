@@ -15,6 +15,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Support\Enums\IconSize;
 use Filament\Resources\Pages\Page;
+use Filament\Tables\Columns\ToggleColumn;
 
 class UserResource extends Resource
 {
@@ -100,18 +101,12 @@ class UserResource extends Resource
                     })
                     ->html(),
 
-                BadgeColumn::make('status')
-                    ->label('الحالة')
-                    ->colors([
-                        'success' => fn ($state): bool => $state == 1,
-                        'gray' => fn ($state): bool => $state == 0,
-                    ])
-                    ->formatStateUsing(function ($state) {
-                        return $state == 1
-                            ? '✅ نشط'
-                            : '❌ معطل ';
-                    })
-                    ->html(),
+                ToggleColumn::make('status')
+                    ->label('مفعل؟')
+                    ->onIcon('heroicon-o-check-circle')
+                    ->offIcon('heroicon-o-x-circle')
+                    ->onColor('success')
+                    ->offColor('danger'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('role')->options([
@@ -120,8 +115,17 @@ class UserResource extends Resource
                 ])->label('حسب الدور'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Tables\Actions\EditAction::make()
+                    ->label('') // تعيين نص فارغ
+                    ->icon('heroicon-o-pencil')
+                    ->button()
+                    ->color('info'),
+
+                \Filament\Tables\Actions\DeleteAction::make()
+                    ->label('') // تعيين نص فارغ
+                    ->icon('heroicon-o-trash')
+                    ->button()
+                    ->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

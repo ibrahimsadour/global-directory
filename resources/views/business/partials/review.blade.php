@@ -4,9 +4,18 @@
         <h2 class="border-bottom">التقيمات</h2>
 
         <!-- عرض رسالة إذا لم يكن هناك تقييمات -->
-        <div x-show="!loading && reviews.length === 0" class="alert alert-info">
-            لا توجد تقييمات حتى الآن.
-        </div>
+        @if(auth()->check())
+            @if($review ->isEmpty())
+                <div class="alert alert-info mt-4">
+                    لا توجد تقييمات حتى الآن، <a href="#add-review" class="text-primary underline">أضف تقييمك الآن</a>.
+                </div>
+            @endif
+        @else
+            <div class="alert alert-warning mt-4">
+                قم <a href="/login" class="text-primary underline">بتسجيل الدخول</a> أو 
+                <a href="/register" class="text-primary underline">إنشاء حساب</a> لإضافة تقييمك.
+            </div>
+        @endif
 
         <!-- عرض التقييمات -->
         <template x-for="(r, i) in reviews" :key="r.id">
@@ -86,7 +95,7 @@
                     </div>
                 </div>
 
-                <div class="row p-3">
+                <div class="row p-3" id="add-review">
                     <div class="col-md-12 add-reviwcol">
                         <li class="rev mb-3">
                             <label>اختر عدد النجوم:</label>
