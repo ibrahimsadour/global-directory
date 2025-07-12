@@ -1,5 +1,5 @@
 {{-- صاحب النشاط --}}
-<div class="bycard shadow-sm overview mb-4">
+<div class="bycard shadow-sm overview mb-2">
     <h2 class="border-bottom">تم نشره بواسطة</h2>
     <div class="usercover text-center">
 

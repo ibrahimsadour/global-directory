@@ -36,7 +36,7 @@
             }
         @endphp
 
-        <div style="aspect-ratio: 4 / 3; width: 100%; max-width: 400px; overflow: hidden; border-radius: 10px;">
+        <div style="aspect-ratio: 4 / 3; width: 100%;  overflow: hidden; border-radius: 10px;">
             <img 
                 src="{{ $imageUrl }}" 
                 alt="{{ $business->name }}" 
@@ -45,50 +45,56 @@
                 loading="lazy"
             >
         </div>
-
     </div>
+
+    {{-- 👁️ عدد المشاهدات + تاريخ النشر --}}
+    <div class="d-flex justify-content-between align-items-center mt-3 border-top small text-muted p-3">
+
+        {{-- 👁️ عدد المشاهدات + تاريخ النشر --}}
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-gray-800"><i class="bi bi-eye "></i> {{ $business->views()->count() }} مشاهدة</span>
+            <span class="text-gray-800"><i class="bi bi-clock"></i> {{ $business->created_at->diffForHumans() }}</span>
+        </div>
+
+        {{-- ❤️ مفضلة + مشاركة --}}
+        <div class="d-flex align-items-center gap-3">
+            {{-- مفضلة (يتم فتح نافذة تسجيل الدخول مثلاً) --}}
+            <a href="#" data-bs-toggle="modal" data-bs-target="#loginAlert" title="أضف إلى المفضلة">
+                <i class="bi bi-heart fs-5 text-danger"></i>
+            </a>
+
+            {{-- مشاركة (نسخ الرابط) --}}
+            <a href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('تم نسخ الرابط!')" title="مشاركة">
+                <i class="bi bi-share fs-5 text-primary"></i>
+            </a>
+        </div>
+    </div>
+
     <div class="business-info">
 
         @if(!empty($business->name))
             <h1>{{ $business->name }}</h1>
         @endif
 
-        @if(!empty($business->description))
-            <p>{{ $business->description }}</p>
-
-            <div class="d-flex justify-content-between align-items-center mt-3 border-top pt-2 small text-muted">
-
-                {{-- 👁️ عدد المشاهدات + تاريخ النشر --}}
-                <div class="d-flex align-items-center gap-3">
-                    <span><i class="bi bi-eye"></i> {{ $business->views()->count() }} مشاهدة</span>
-                    <span><i class="bi bi-clock"></i> {{ $business->created_at->diffForHumans() }}</span>
-                </div>
-
-                {{-- ❤️ مفضلة + مشاركة --}}
-                <div class="d-flex align-items-center gap-3">
-                    {{-- مفضلة (يتم فتح نافذة تسجيل الدخول مثلاً) --}}
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginAlert" title="أضف إلى المفضلة">
-                        <i class="bi bi-heart fs-5 text-danger"></i>
-                    </a>
-
-                    {{-- مشاركة (نسخ الرابط) --}}
-                    <a href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('تم نسخ الرابط!')" title="مشاركة">
-                        <i class="bi bi-share fs-5 text-primary"></i>
-                    </a>
-                </div>
-
-            </div>
-        @endif
-
     </div>
-    <div class="more-info row">
-        <div class="col-lg-5 col-md-12">
+
+    {{-- الوصف: --}}
+    <div class="more-info row overview">
+        <h2 class="border-bottom">الوصف:</h2>
+        @if(!empty($business->description))
+            <p class="pt-2">{{ $business->description }}</p>
+        @endif
+    </div>
+    {{-- المعلومات --}}
+    <div class="more-info row overview">
+        <h2 class="border-bottom">المعلومات:</h2>
+        <div class="col-lg-5 col-md-12 pt-2">
             <ul>
 
             @if(!empty($business->phone))
                 <li>
                     <a href="tel:{{ $business->phone }}">
-                        <i class="bi bi-telephone"></i> {{ $business->phone }}
+                        <i class="bi bi-telephone text-gray-800"></i> {{ $business->phone }}
                     </a>
                 </li>
             @endif
@@ -96,7 +102,7 @@
             @if(!empty($business->email))
                 <li>
                     <a href="mailto:{{ $business->email }}">
-                        <i class="bi bi-envelope"></i> {{ $business->email }}
+                        <i class="bi bi-envelope text-gray-800"></i> {{ $business->email }}
                     </a>
                 </li>
             @endif
@@ -112,7 +118,7 @@
                     @if(!empty($business->website))
                     <li>
                         <a href="{{ $business->website }}" target="_blank" rel="nofollow">
-                            <i class="bi bi-globe"></i> {{ $host }}
+                            <i class="bi bi-globe text-gray-800"></i> {{ $host }}
                         </a>
                     </li>
                     @endif
@@ -120,13 +126,13 @@
 
             </ul>
         </div>
-        <div class="col-lg-7 col-md-12">
+        <div class="col-lg-7 col-md-12 pt-lg-2 pt-0">
             <ul>
             @if(!setting('site_address'))
-                <li> <i class="bi bi-map"></i>{{setting('site_address')}} </li>
+                <li> <i class="bi bi-map text-gray-800"></i>{{setting('site_address')}} </li>
             @endif
             @if(!empty($business->address))
-                <li class="text-truncate"><i class="bi bi-geo-alt"></i> {{ $business->address ? $business->address : '' }}</li>
+                <li class="text-truncate"><i class="bi bi-geo-alt text-gray-800"></i> {{ $business->address ? $business->address : '' }}</li>
             @endif
             @if(!empty($business->whatsapp))
                 @php
@@ -135,13 +141,15 @@
                 @endphp
                 <li>
                     <a href="https://wa.me/{{ $whatsapp }}" target="_blank" rel="nofollow">
-                        <i class="bi bi-whatsapp"></i> {{ $business->whatsapp }}
+                        <i class="bi bi-whatsapp text-gray-800"></i> {{ $business->whatsapp }}
                     </a>
                 </li>
             @endif                     
             </ul>
         </div>
     </div>
+
+    {{-- ⭐ تقييم الموقع --}}
     <div class="footcover px-3 pb-3" x-data="review" x-init="loadReviews()">
         <ul class="d-flex justify-content-between align-items-center small">
 

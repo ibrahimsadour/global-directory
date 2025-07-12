@@ -10784,7 +10784,7 @@ img{
 }
 .breadcrumb{
     background-color:#cccccc54;
-    padding:100px 50px 15px;
+    padding:100px 15px 15px;
     text-align:center
 }
 .breadcrumb ul{
@@ -11638,7 +11638,7 @@ footer .subcrib .input-group-text i{
     font-weight:600
 }
 .businesscover .more-info{
-    padding:0 15px 15px
+    padding:30px 15px 15px
 }
 .businesscover .more-info ul{
     display:inline-block;
@@ -11851,7 +11851,7 @@ footer .subcrib .input-group-text i{
     font-size:.9rem
 }
 .bycard .usercover{
-    padding-top:30px;
+    padding-top:10px;
     display:inline-block;
     text-align:center;
     width:100%

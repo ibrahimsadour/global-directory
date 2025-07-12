@@ -6,12 +6,12 @@
         <!-- عرض رسالة إذا لم يكن هناك تقييمات -->
         @if(auth()->check())
             @if($review ->isEmpty())
-                <div class="alert alert-info mt-4">
+                <div class="alert alert-info mt-2">
                     لا توجد تقييمات حتى الآن، <a href="#add-review" class="text-primary underline">أضف تقييمك الآن</a>.
                 </div>
             @endif
         @else
-            <div class="alert alert-warning mt-4">
+            <div class="alert alert-warning mt-2">
                 قم <a href="/login" class="text-primary underline">بتسجيل الدخول</a> أو 
                 <a href="/register" class="text-primary underline">إنشاء حساب</a> لإضافة تقييمك.
             </div>
