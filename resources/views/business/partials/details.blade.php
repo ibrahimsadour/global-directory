@@ -36,19 +36,19 @@
             }
         @endphp
 
-        <div style="aspect-ratio: 4 / 3; width: 100%;  overflow: hidden; border-radius: 10px;">
+        <div style="aspect-ratio: 4 / 3; width: 100%;  overflow: hidden; border-radius: 4px;">
             <img 
                 src="{{ $imageUrl }}" 
                 alt="{{ $business->name }}" 
                 title="{{ $business->name }}" 
                 style="width: 100%; height: 100%; object-fit: cover;" 
-                loading="lazy"
+                fetchpriority="high"
             >
         </div>
     </div>
 
     {{-- 👁️ عدد المشاهدات + تاريخ النشر --}}
-    <div class="d-flex justify-content-between align-items-center mt-3 border-top small text-muted p-3">
+    <div class="d-flex justify-content-between align-items-center mt-2 border-top small text-muted p-2">
 
         {{-- 👁️ عدد المشاهدات + تاريخ النشر --}}
         <div class="d-flex align-items-center gap-3">
@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <div class="business-info">
+    <div class="business-info p-2">
 
         @if(!empty($business->name))
             <h1>{{ $business->name }}</h1>

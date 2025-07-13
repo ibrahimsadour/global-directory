@@ -1,9 +1,9 @@
 <div class="breadcrumb container-fluid">
-    <div class="container">
+    <div class="container d-none d-sm-block">
         <div class="row">
             <ul class="flex flex-wrap gap-1 rtl:space-x-reverse ">
                 @foreach($items as $index => $item)
-                <li class="flex items-center gap-1 text-sm">
+                <li class="flex items-center gap-1 text-sm p-2">
                     @if(isset($item['url']))
                         <a href="{{ $item['url'] }}" title="{{ $item['title'] }}" class="flex items-center gap-1">
                             @if($index === 0)

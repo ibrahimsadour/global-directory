@@ -5,10 +5,14 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/css/home.css',
+                'resources/js/leaflet.js', 
                 'resources/js/home.js',
+                'resources/css/app.css',
+                'resources/css/leaflet.css', 
+                'resources/css/home.css',
+                'resources/css/bootstrap-icons.min.css',
+
             ],
             refresh: true,
         }),

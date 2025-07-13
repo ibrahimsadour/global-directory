@@ -21,14 +21,23 @@
 
         
         {{-- ملفات CSS عبر Vite --}}
-        @vite(['resources/css/home.css', 'resources/js/home.js'])
+        @vite([
+            
+            // اكواد الموقع
+            'resources/css/home.css',
+            'resources/js/home.js',
 
-        {{-- أي ملفات أيقونات خارجية أو خطوط --}}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+            // أي ملفات أيقونات خارجية أو خطوط 
+            'resources/css/bootstrap-icons.min.css',
+            'resources/js/leaflet.js',
 
-        {{-- اكواد للخريطة --}}
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+            // اكواد الخرائط
+            'resources/css/leaflet.css',
+
+        ])
+
+
+
 
         {{-- ايقونة الموقع --}}
         <link rel="icon" type="image/png" href="{{ setting('site_favicon') ? asset('storage/' . setting('site_favicon')) : asset('storage/site-settings/site_favicon') }}">
