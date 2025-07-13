@@ -14,7 +14,7 @@ class BusinessRepository
     }
     
     // عرض الاعلانات التي ذات صلة
-    public function related($business, $limit = 4)
+    public function related($business, $limit = 6)
     {
         return Business::where('category_id', $business->category_id)
             ->where('id', '!=', $business->id)

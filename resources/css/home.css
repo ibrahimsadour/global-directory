@@ -1,8 +1,38 @@
 @charset "UTF-8";
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 300;
+  src: url('/fonts/tajawal/tajawal-v11-arabic_latin-300.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/tajawal/tajawal-v11-arabic_latin-regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/fonts/tajawal/tajawal-v11-arabic_latin-500.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/tajawal/tajawal-v11-arabic_latin-700.woff2') format('woff2');
+  font-display: swap;
+}
 
 .shado-1{
     box-shadow:0 2px 5px #00000029,0 2px 10px #0000001f
@@ -11638,7 +11668,7 @@ footer .subcrib .input-group-text i{
     font-weight:600
 }
 .businesscover .more-info{
-    padding:30px 15px 15px
+    padding:5px 15px 5px
 }
 .businesscover .more-info ul{
     display:inline-block;
@@ -11687,13 +11717,13 @@ footer .subcrib .input-group-text i{
 }
 .overview{
     background-color:#fff;
-    margin-bottom:30px
+    margin-bottom:15px
 }
 .overview h2,.overview .h2{
     font-size:1rem;
     font-weight:600;
     padding:12px;
-    margin-bottom:0
+    margin-bottom:4px
 }
 .overview .details{
     padding:12px
@@ -12305,8 +12335,8 @@ footer .subcrib .input-group-text i{
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: #0062ff; 
-    color: #fff;
+    background-color: #fff; 
+    color: #021442;
     padding: 5px 10px;
     font-size: 13px;
     font-weight: 600;

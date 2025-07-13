@@ -1,5 +1,5 @@
 <div x-data="contactForm" class="overview services shadow-sm no-margin d-none ">
-    <h2 class="border-bottom">اتصل بنا</h2>
+    <h2 class="border-bottom homepage-title">اتصل بنا</h2>
     <form @submit.prevent="handleSubmit">
         <div x-show="success" class="alert alert-success m-3 mb-0" role="alert" style="display: none;">
             Your Message Submited Sucessfully

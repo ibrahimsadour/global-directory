@@ -1,5 +1,5 @@
 <div class="overview services shadow-sm no-margin ">
-    <h2 class="border-bottom">الفئة</h2>
+    <h2 class="border-bottom homepage-title">الفئة</h2>
     <ul class="list-group cateul list-group-flush">
         <li class="list-group-item align-items-center">
             <span>

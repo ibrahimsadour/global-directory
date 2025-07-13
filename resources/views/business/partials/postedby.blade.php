@@ -1,6 +1,6 @@
 {{-- صاحب النشاط --}}
 <div class="bycard shadow-sm overview mb-2">
-    <h2 class="border-bottom">تم نشره بواسطة</h2>
+    <h2 class="border-bottom homepage-title">تم نشره بواسطة</h2>
     <div class="usercover text-center">
 
         <!-- صورة المستخدم في المنتصف -->

@@ -8,7 +8,7 @@
 
 @if($gallery && count($gallery))
     <div class="overview products shadow-sm no-margin">
-        <h2 class="border-bottom">معرض الصور</h2>
+        <h2 class="border-bottom homepage-title">معرض الصور</h2>
         <div class="row no-margin">
             @foreach($gallery as $img)
                 <div class="col-md-3 col-sm-4 col-6 mb-3 p-2">

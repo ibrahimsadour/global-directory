@@ -78,66 +78,70 @@
 
 {{-- Begin Second section --}}
 <div class="container-fluid single-container">
-   <div class="container">
-      <div class="row">
-         <div class="col-md-8">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
 
-            {{-- معلومات النشاط الرئيسية --}}
-            @include('business.partials.details')
+                {{-- معلومات النشاط الرئيسية --}}
+                @include('business.partials.details')
 
-            {{-- <div class="overview shadow-sm no-margin row">
-               <div class="details p-3 border-bottom">
-                  <p class="mb-2">{{ $business->description }}</p>
-               </div>
-            </div> --}}
-            
-            {{-- الخدمات --}}
-            @include('business.partials.services')
+                {{-- <div class="overview shadow-sm no-margin row">
+                <div class="details p-3 border-bottom">
+                    <p class="mb-2">{{ $business->description }}</p>
+                </div>
+                </div> --}}
+                
+                {{-- الخدمات --}}
+                @include('business.partials.services')
 
-            {{-- المنتجات--}}
-            @include('business.partials.products')
-
-
-
-            {{-- معرض الصوور --}}
-            @include('business.partials.gallery')
+                {{-- المنتجات--}}
+                @include('business.partials.products')
 
 
 
-            {{-- التقيمات --}}
-            @include('business.partials.review')
+                {{-- معرض الصوور --}}
+                @include('business.partials.gallery')
 
-         </div>
+
+
+                {{-- التقيمات --}}
+                @include('business.partials.review')
+
+            </div>
          
-         <div class="col-md-4 sidecl">
+            <div class="col-md-4 sidecl">
 
-            {{-- الخريطة --}}
-            @include('business.partials.map')
+                {{-- الخريطة --}}
+                @include('business.partials.map')
 
-            
-            {{-- صاحب النشاط --}}
-            @include('business.partials.postedby')
-
-
-            {{-- تم تعطيله الان / اتصل بنا --}} 
-            {{-- @include('business.partials.contact-form') --}}
+                
+                {{-- صاحب النشاط --}}
+                @include('business.partials.postedby')
 
 
-            {{-- social Links --}}
-            @include('business.partials.social-link')
-
-            {{-- الفئة --}}
-            @include('business.partials.category')
+                {{-- تم تعطيله الان / اتصل بنا --}} 
+                {{-- @include('business.partials.contact-form') --}}
 
 
-            {{-- اوقات الدوام --}}
-            @include('business.partials.timing')
+                {{-- social Links --}}
+                @include('business.partials.social-link')
+
+                {{-- الفئة --}}
+                @include('business.partials.category')
 
 
+                {{-- اوقات الدوام --}}
+                @include('business.partials.timing')
 
-         </div>
-      </div>
-   </div>
+            </div>
+        </div>
+
+        @include('business.partials.related-busines', [
+            'related' => $related,
+            'business' => $business
+        ])
+
+    </div>
 </div>
 {{-- End Second section --}}
 @endsection

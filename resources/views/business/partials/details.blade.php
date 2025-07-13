@@ -42,7 +42,9 @@
                 alt="{{ $business->name }}" 
                 title="{{ $business->name }}" 
                 style="width: 100%; height: 100%; object-fit: cover;" 
+                loading="eager"
                 fetchpriority="high"
+
             >
         </div>
     </div>
@@ -52,8 +54,8 @@
 
         {{-- 👁️ عدد المشاهدات + تاريخ النشر --}}
         <div class="d-flex align-items-center gap-3">
-            <span class="text-gray-800"><i class="bi bi-eye "></i> {{ $business->views()->count() }} مشاهدة</span>
-            <span class="text-gray-800"><i class="bi bi-clock"></i> {{ $business->created_at->diffForHumans() }}</span>
+            <span class="text-gray-800 homepage-title"><i class="bi bi-eye "></i> {{ $business->views()->count() }} مشاهدة</span>
+            <span class="text-gray-800 homepage-title"><i class="bi bi-clock"></i> {{ $business->created_at->diffForHumans() }}</span>
         </div>
 
         {{-- ❤️ مفضلة + مشاركة --}}
@@ -73,21 +75,21 @@
     <div class="business-info p-2">
 
         @if(!empty($business->name))
-            <h1>{{ $business->name }}</h1>
+            <h1 class="homepage-title">{{ $business->name }}</h1>
         @endif
 
     </div>
 
     {{-- الوصف: --}}
     <div class="more-info row overview">
-        <h2 class="border-bottom">الوصف:</h2>
+        <h2 class="border-bottom homepage-title">الوصف:</h2>
         @if(!empty($business->description))
             <p class="pt-2">{{ $business->description }}</p>
         @endif
     </div>
     {{-- المعلومات --}}
     <div class="more-info row overview">
-        <h2 class="border-bottom">المعلومات:</h2>
+        <h2 class="border-bottom homepage-title">المعلومات:</h2>
         <div class="col-lg-5 col-md-12 pt-2">
             <ul>
 

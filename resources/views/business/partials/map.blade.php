@@ -1,11 +1,6 @@
-<!-- ✅ Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<!-- ✅ Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <!-- ✅ عرض الخريطة -->
 <div class="overview mt-4 px-3 pb-3">
-    <h2 class="border-bottom mb-2">العنوان على الخريطة</h2>
+    <h2 class="border-bottom mb-2 homepage-title">العنوان على الخريطة</h2>
     <div id="map" style="
         width: 100%;
         height: 300px;

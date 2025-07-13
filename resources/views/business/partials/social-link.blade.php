@@ -2,7 +2,7 @@
 <div class="overview services shadow-sm no-margin ">
 
         @if(!empty($business->facebook))
-            <h2 class="border-bottom"> الروابط الاجتماعية </h2>
+            <h2 class="border-bottom homepage-title"> الروابط الاجتماعية </h2>
             <ul class="list-group social-link timilist list-group-flush">
             <li class="list-group-item">
                     <a href="{{ $business->facebook }}" target="_blank" rel="nofollow">

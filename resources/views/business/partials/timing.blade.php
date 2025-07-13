@@ -24,7 +24,7 @@
     @endphp
 
     @if($has_open_days)
-        <h2 class="border-bottom mb-3">أوقات الدوام</h2>
+        <h2 class="border-bottom mb-3 homepage-title">أوقات الدوام</h2>
         <ul class="list-group">
             @foreach($business->hours as $hour)
                 <li class="list-group-item d-flex justify-content-between align-items-center">

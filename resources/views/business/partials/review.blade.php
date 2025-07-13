@@ -1,7 +1,7 @@
 {{-- التقيمات --}}
 <section x-data="review" x-init="loadReviews()">
     <div id="revbox" class="review-box overview shadow-sm">
-        <h2 class="border-bottom">التقيمات</h2>
+        <h2 class="border-bottom homepage-title">التقيمات</h2>
 
         <!-- عرض رسالة إذا لم يكن هناك تقييمات -->
         @if(auth()->check())
@@ -87,7 +87,7 @@
     @auth
         @if(!$myReview)
             <div class="add-review overview shadow-sm">
-                <h2 class="border-bottom">اضافة تقيم</h2>
+                <h2 class="border-bottom homepage-title">اضافة تقيم</h2>
 
                 <div x-show="success" class="succmsg p-3 pb-0">
                     <div class="alert alert-success mb-0" role="alert">
