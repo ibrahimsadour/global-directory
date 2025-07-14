@@ -2,12 +2,13 @@
 <div class="featured-listing container-fluid py-5">
     <div class="container">
 
-        <!-- ✅ العنوان -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="fw-bold mb-1 homepage-title">القوائم <span class="text-primary">المميزة</span></h2>
-                <p class="text-muted mb-0">ألقِ نظرة على العروض المميزة</p>
-            </div>
+
+        <div class="section-title mb-3 row">
+            <h2 class="homepage-title">القوائم  <strong class="after-category-title"> المميزة</strong></h2>
+            {{-- <p>
+                ألقِ نظرة على العروض المميزة
+                <a class="text-primary" href="{{ route('categories.index') }}">عرض جميع الفئات</a>
+            </p> --}}
         </div>
 
         <!-- ✅ الشبكة -->

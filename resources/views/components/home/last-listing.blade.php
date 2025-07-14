@@ -4,13 +4,10 @@
 
         <!-- ✅ العنوان -->
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-            <div>
-                <h2 class="fw-bold mb-1 homepage-title" style="font-size: 1.5rem;">
-                    أحدث <span class="text-primary">الأعمال التجارية</span>
+            <div class="section-title">
+                <h2 class="homepage-title">
+                    أحدث <strong class="after-category-title">الأعمال التجارية</strong>
                 </h2>
-                <p class="text-muted mb-0" style="font-size: 0.95rem;">
-                    استعرض أحدث الإعلانات التي تمت إضافتها مؤخرًا
-                </p>
             </div>
 
             <a href="{{ route('categories.index') }}"
@@ -20,6 +17,7 @@
                 <i class="bi bi-arrow-left-short fs-4 ms-1 fw-bold"></i>
             </a>
         </div>
+
 
 
         <!-- ✅ الشبكة -->

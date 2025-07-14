@@ -1,24 +1,3 @@
-<style>
-    .footcover .rev i,
-    .footcover .save i {
-        font-size: 1.3rem;
-        margin-inline-end: 4px;
-    }
-
-    .footcover .rev i.act {
-        color: #f9b234; /* لون النجوم المفعلة */
-    }
-
-    .footcover .rev i:not(.act) {
-        color: #ccc; /* النجوم غير المفعلة */
-    }
-
-    .footcover .save i {
-        color: #dc3545; /* لون القلب (أحمر) */
-    }
-</style>
-
-
 <div class="businesscover shadow-sm ">
     <div class="imagecover text-center p-2">
         @php
@@ -75,7 +54,7 @@
     <div class="business-info p-2">
 
         @if(!empty($business->name))
-            <h1 class="homepage-title">{{ $business->name }}</h1>
+            <h1 class="homepage-title" style=" font-size: 25px; font-weight: 600; ">{{ $business->name }}</h1>
         @endif
 
     </div>
