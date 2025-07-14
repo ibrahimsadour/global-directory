@@ -1,5 +1,5 @@
 @if($featuredBusinesses && $featuredBusinesses->count())
-<div class="featured-listing container-fluid py-5 bg-white">
+<div class="featured-listing container-fluid py-5">
     <div class="container">
 
         <!-- ✅ العنوان -->

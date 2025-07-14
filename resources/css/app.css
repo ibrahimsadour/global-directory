@@ -1,3 +1,9 @@
+@charset "UTF-8"; /* (اختياري، إذا كنت تستخدمه) */
+
+@import './home.css';
+@import './bootstrap-icons.min.css';
+@import './leaflet.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

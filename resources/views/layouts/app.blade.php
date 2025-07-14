@@ -24,15 +24,12 @@
         @vite([
             
             // اكواد الموقع
-            'resources/css/home.css',
             'resources/js/home.js',
-
-            // أي ملفات أيقونات خارجية أو خطوط 
-            'resources/css/bootstrap-icons.min.css',
-            'resources/js/leaflet.js',
+            'resources/css/app.css',
 
             // اكواد الخرائط
-            'resources/css/leaflet.css',
+            'resources/js/leaflet.js',
+
 
         ])
 

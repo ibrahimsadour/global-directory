@@ -9,9 +9,6 @@ export default defineConfig({
                 'resources/js/leaflet.js', 
                 'resources/js/home.js',
                 'resources/css/app.css',
-                'resources/css/leaflet.css', 
-                'resources/css/home.css',
-                'resources/css/bootstrap-icons.min.css',
 
             ],
             refresh: true,
