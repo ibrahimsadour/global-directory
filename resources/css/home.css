@@ -11204,7 +11204,7 @@ header .small-menu{
     fill:#00000080!important
 }
 .featured-listing{
-    background-color:#fff;
+    /* background-color:#fff; */
     padding:50px
 }
 @media screen and (max-width: 1170px){

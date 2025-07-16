@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Business;
+use App\Models\Governorate;
+
 
 use Illuminate\Http\Request;
 
@@ -14,6 +16,8 @@ class CategoryController extends Controller
     {
         // جلب جميع الفئات
         $categories = Category::all();
+        $governorates = Governorate::where('is_active', true)->get();
+
 
         // جلب جميع النشاطات (اختياري)
         $businesses = Business::where('is_active', 1)
@@ -24,7 +28,9 @@ class CategoryController extends Controller
         // إرسالهم لنفس الصفحة أو صفحة منفصلة حسب تصميمك
         return view('category.index', [
             'categories' => $categories,
-            'businesses' => $businesses
+            'businesses' => $businesses,
+            'governorates' => $governorates
+
             // لا ترسل متغير category هنا
         ]);
     }

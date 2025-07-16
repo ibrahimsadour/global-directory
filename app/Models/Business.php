@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class Business extends Model
 {
@@ -52,6 +53,9 @@ class Business extends Model
         'twitter',
         'linkedin',
         'youtube',
+
+        'created_at',
+        'updated_at'
     ];
 
 
@@ -146,6 +150,63 @@ class Business extends Model
     public function views()
     {
         return $this->hasMany(BusinessView::class);
+    }
+
+
+
+    
+    public function getOpeningStatus(): array
+    {
+        $now = Carbon::now();
+
+        $daysMap = [
+            'saturday'   => 'السبت',
+            'sunday'     => 'الأحد',
+            'monday'     => 'الاثنين',
+            'tuesday'    => 'الثلاثاء',
+            'wednesday'  => 'الأربعاء',
+            'thursday'   => 'الخميس',
+            'friday'     => 'الجمعة',
+        ];
+
+        $carbonDay = strtolower($now->englishDayOfWeek); // مثال: monday
+        $today = $daysMap[$carbonDay] ?? null;
+
+        $currentTime = $now->format('H:i:s');
+
+        // نحصل على وقت اليوم الحالي
+        $hour = $this->hours->firstWhere('day', $today);
+
+        if ($hour && $hour->open_time && $hour->close_time) {
+
+            // ✅ مفتوح 24 ساعة
+            if ($hour->open_time === '00:00:00' && $hour->close_time === '23:59:59') {
+                return [
+                    'status' => 'open',
+                    'label' => 'مفتوح 24 ساعة',
+                ];
+            }
+
+            // ✅ مفتوح الآن
+            if ($currentTime >= $hour->open_time && $currentTime < $hour->close_time) {
+                return [
+                    'status' => 'open',
+                    'label' => 'مفتوح الآن – حتى ' . Carbon::createFromTimeString($hour->close_time)->format('g:i A'),
+                ];
+            }
+
+            // ❌ مغلق الآن
+            return [
+                'status' => 'closed',
+                'label' => 'مغلق – يفتح اليوم الساعة ' . Carbon::createFromTimeString($hour->open_time)->format('g:i A'),
+            ];
+        }
+
+        // ✅ لا يوجد وقت محفوظ لليوم الحالي = اعتبره مفتوح
+        return [
+            'status' => 'open',
+            'label' => 'مفتوح الآن',
+        ];
     }
 
 }
