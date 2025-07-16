@@ -30,18 +30,20 @@ class BusinessList extends Component
         'ratingFilter' => ['except' => null],
         'selectedGovernorate' => ['except' => null],
     ];
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
     public function mount($categorySlug = null)
     {
         $this->initialCategorySlug = $categorySlug;
 
-        if ($categorySlug) {
+        if ($categorySlug && !$this->selectedCategory) {
             $category = \App\Models\Category::where('slug', $categorySlug)->first();
             if ($category) {
                 $this->selectedCategory = $category->id;
             }
         }
     }
+
 
     public function updating($property)
     {
@@ -58,8 +60,20 @@ class BusinessList extends Component
     {
         $query = Business::query();
 
+        // ✅ فلترة الفئة: يدعم الفئات الرئيسية والفرعية
         if ($this->selectedCategory) {
-            $query->where('category_id', $this->selectedCategory);
+            $category = Category::with('children')->find($this->selectedCategory);
+
+            if ($category) {
+                $categoryIds = [$category->id];
+
+                // إذا كانت فئة رئيسية ولها أبناء، أضف الأبناء للفلترة
+                if ($category->children->count()) {
+                    $categoryIds = array_merge($categoryIds, $category->children->pluck('id')->toArray());
+                }
+
+                $query->whereIn('category_id', $categoryIds);
+            }
         }
 
         if ($this->selectedGovernorate) {

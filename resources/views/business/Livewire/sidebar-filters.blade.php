@@ -11,11 +11,8 @@
                 <a wire:click.prevent="$set('selectedCategory', null)"
                 href="#"
                 class="block px-3 py-1 rounded-md transition
-                    @if(is_null($selectedCategory))
-                            {{ is_null($selectedCategory) ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-blue-50 hover:text-blue-600 text-gray-700' }}">
-                        <i class="bi bi-sliders2-vertical me-1"></i> كل الفئات
-                    @endif
-
+                {{ is_null($selectedCategory) ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
+                    <i class="bi bi-sliders2-vertical me-1"></i> كل الفئات
                 </a>
             </li>
 
@@ -23,27 +20,29 @@
             @foreach($categories as $category)
                 @if(is_null($category->parent_id) && $category->is_active)
                     <li>
-                        @if($category->children && $category->children->where('is_active', 1)->count())
+                        @php
+                            $children = $category->children->where('is_active', 1);
+                        @endphp
+
+                        @if($children->count())
                             <div x-data="{ open: false }" class="space-y-1">
                                 <button @click="open = !open"
                                         class="w-full flex items-center justify-between px-2 py-1 rounded-md bg-gray-100 text-blue-600 font-medium hover:bg-blue-50 transition">
                                     <span>{{ $category->name }}</span>
                                     <span class="flex items-center gap-1">
-                                        ({{ $category->children->where('is_active', 1)->count() }})
+                                        ({{ $children->count() }})
                                         <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-xs"></i>
                                     </span>
                                 </button>
 
                                 <ul x-show="open" x-transition x-cloak class="ps-4 pt-2 space-y-1">
-                                    @foreach($category->children->where('is_active', 1) as $child)
+                                    @foreach($children as $child)
                                         <li>
                                             <a wire:click.prevent="$set('selectedCategory', {{ $child->id }})"
                                             @click="open = false"
                                             href="#"
                                             class="block px-3 py-1 rounded-md transition
-                                                    {{ $selectedCategory == $child->id
-                                                        ? 'bg-blue-100 text-blue-700 font-semibold'
-                                                        : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
+                                            {{ $selectedCategory == $child->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
                                                 – {{ $child->name }}
                                             </a>
                                         </li>
@@ -54,9 +53,7 @@
                             <a wire:click.prevent="$set('selectedCategory', {{ $category->id }})"
                             href="#"
                             class="block px-3 py-1 rounded-md transition
-                                    {{ $selectedCategory == $category->id
-                                        ? 'bg-blue-100 text-blue-700 font-semibold'
-                                        : 'text-gray-800 hover:bg-blue-50 hover:text-blue-600' }}">
+                            {{ $selectedCategory == $category->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-800 hover:bg-blue-50 hover:text-blue-600' }}">
                                 {{ $category->name }}
                             </a>
                         @endif
