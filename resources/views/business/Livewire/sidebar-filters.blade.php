@@ -14,8 +14,7 @@
                 </li>
             @endif
 
-            <!-- ✅ كل الفئات -->
-            <!-- ✅ عرض "كل الفئات" فقط إذا لم نكن داخل فئة محددة -->
+            <!-- ✅ "كل الفئات" فقط إذا لم نكن داخل فئة فرعية -->
             @if(!isset($parentCategory))
                 <li>
                     <a wire:click.prevent="$set('selectedCategory', null)"
@@ -27,9 +26,8 @@
                 </li>
             @endif
 
-
+            <!-- ✅ عند وجود فئة أم، عرض فقط فروعها -->
             @if(isset($parentCategory))
-                <!-- ✅ الفئات الفرعية فقط -->
                 @foreach($categories as $child)
                     <li>
                         <a wire:click.prevent="$set('selectedCategory', {{ $child->id }})"
@@ -40,54 +38,57 @@
                         </a>
                     </li>
                 @endforeach
+
             @else
                 <!-- ✅ الفئات الرئيسية + فروعها -->
                 @foreach($categories as $category)
                     @if(is_null($category->parent_id) && $category->is_active)
+                        @php $children = $category->children->where('is_active', 1); @endphp
+
                         <li>
-                            @php $children = $category->children->where('is_active', 1); @endphp
-                            @if($children->count())
-                                <div x-data="{ open: false }" class="space-y-1">
+                            <div x-data="{ open: false }" class="space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <!-- ✅ زر اختيار الفئة الرئيسية على اليمين -->
+                                    <button wire:click.prevent="$set('selectedCategory', {{ $category->id }})"
+                                            class="px-2 py-1 rounded text-xs
+                                            {{ $selectedCategory == $category->id ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 hover:bg-blue-100' }}"
+                                            title="تحديد هذه الفئة">
+                                        <i class="bi bi-check-circle{{ $selectedCategory == $category->id ? '-fill' : '' }}"></i>
+                                    </button>
+
+                                    <!-- ✅ اسم الفئة وزر فتح الفروع -->
                                     <button @click="open = !open"
-                                            class="w-full flex items-center justify-between px-2 py-1 rounded-md bg-gray-100 text-blue-600 font-medium hover:bg-blue-50 transition">
+                                            class="flex-1 flex items-center justify-between px-2 py-1 rounded-md bg-gray-100 text-blue-600 font-medium hover:bg-blue-50 transition ms-2">
                                         <span>{{ $category->name }}</span>
-                                        <span class="flex items-center gap-1">
+                                        <span class="flex items-center gap-1 text-xs">
                                             ({{ $children->count() }})
-                                            <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-xs"></i>
+                                            <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
                                         </span>
                                     </button>
-                                    <ul x-show="open" x-transition x-cloak class="ps-4 pt-2 space-y-1">
-                                        @foreach($children as $child)
-                                            <li>
-                                                <a wire:click.prevent="$set('selectedCategory', {{ $child->id }})"
-                                                @click="open = false"
-                                                href="#"
-                                                class="block px-3 py-1 rounded-md transition
-                                                {{ $selectedCategory == $child->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
-                                                    – {{ $child->name }}
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
                                 </div>
-                            @else
-                                <a wire:click.prevent="$set('selectedCategory', {{ $category->id }})"
-                                href="#"
-                                class="block px-3 py-1 rounded-md transition
-                                {{ $selectedCategory == $category->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-800 hover:bg-blue-50 hover:text-blue-600' }}">
-                                    {{ $category->name }}
-                                </a>
-                            @endif
+
+                                <!-- ✅ قائمة الفروع -->
+                                <ul x-show="open" x-transition x-cloak class="ps-4 pt-2 space-y-1">
+                                    @foreach($children as $child)
+                                        <li>
+                                            <a wire:click.prevent="$set('selectedCategory', {{ $child->id }})"
+                                            @click="open = false"
+                                            href="#"
+                                            class="block px-3 py-1 rounded-md transition
+                                            {{ $selectedCategory == $child->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
+                                                – {{ $child->name }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
                         </li>
                     @endif
                 @endforeach
             @endif
         </ul>
     </div>
-
-
-
-
 
 
     <!-- ✅ المحافظات -->
