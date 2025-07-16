@@ -4,6 +4,8 @@
     'selectedCategory' => null,
     'selectedGovernorate' => null,
     'ratingFilter' => null,
+    'parentCategory' => null,
+
 ])
 <div x-data="{ openFilters: false }">
     <!-- زر تصفية للموبايل -->
@@ -50,7 +52,9 @@
                 'governorates' => $governorates,
                 'selectedCategory' => $selectedCategory,
                 'selectedGovernorate' => $selectedGovernorate,
-                'ratingFilter' => $ratingFilter
+                'ratingFilter' => $ratingFilter,
+                'parentCategory' => null // ← هنا الجديد
+
             ])
             {{-- ✅ زر "عرض النتائج" أسفل الفلاتر --}}
             <div class="mt-6 text-center">

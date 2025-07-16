@@ -4,15 +4,14 @@ namespace App\Livewire;
 
 use App\Models\Business;
 use App\Models\Governorate;
+use App\Models\Category;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Category;
 
 class BusinessList extends Component
 {
     use WithPagination;
 
-    // إذا كنت تستخدم Bootstrap لتنسيق الـ Pagination
     protected $paginationTheme = 'bootstrap';
 
     public string $sort = 'latest';
@@ -22,7 +21,6 @@ class BusinessList extends Component
     public ?int $ratingFilter = null;
     public ?string $initialCategorySlug = null;
 
-    // حفظ الفلاتر في رابط الصفحة
     protected $queryString = [
         'sort' => ['except' => 'latest'],
         'view' => ['except' => 'list'],
@@ -30,20 +28,18 @@ class BusinessList extends Component
         'ratingFilter' => ['except' => null],
         'selectedGovernorate' => ['except' => null],
     ];
-    protected $listeners = ['refreshComponent' => '$refresh'];
 
     public function mount($categorySlug = null)
     {
         $this->initialCategorySlug = $categorySlug;
 
-        if ($categorySlug && !$this->selectedCategory) {
-            $category = \App\Models\Category::where('slug', $categorySlug)->first();
+        if ($categorySlug) {
+            $category = Category::where('slug', $categorySlug)->first();
             if ($category) {
                 $this->selectedCategory = $category->id;
             }
         }
     }
-
 
     public function updating($property)
     {
@@ -51,6 +47,7 @@ class BusinessList extends Component
             $this->resetPage();
         }
     }
+
     public function resetFilters()
     {
         $this->reset(['sort', 'view', 'selectedCategory', 'ratingFilter', 'selectedGovernorate']);
@@ -60,20 +57,8 @@ class BusinessList extends Component
     {
         $query = Business::query();
 
-        // ✅ فلترة الفئة: يدعم الفئات الرئيسية والفرعية
         if ($this->selectedCategory) {
-            $category = Category::with('children')->find($this->selectedCategory);
-
-            if ($category) {
-                $categoryIds = [$category->id];
-
-                // إذا كانت فئة رئيسية ولها أبناء، أضف الأبناء للفلترة
-                if ($category->children->count()) {
-                    $categoryIds = array_merge($categoryIds, $category->children->pluck('id')->toArray());
-                }
-
-                $query->whereIn('category_id', $categoryIds);
-            }
+            $query->where('category_id', $this->selectedCategory);
         }
 
         if ($this->selectedGovernorate) {
@@ -99,16 +84,29 @@ class BusinessList extends Component
                 $query->latest();
         }
 
+        $parentCategory = null;
+        $categories = [];
+
+        if ($this->initialCategorySlug) {
+            $parentCategory = Category::where('slug', $this->initialCategorySlug)->first();
+            if ($parentCategory) {
+                $categories = $parentCategory->children()->where('is_active', true)->get();
+            }
+        } else {
+            $categories = Category::with('children')
+                ->whereNull('parent_id')
+                ->where('is_active', true)
+                ->get();
+        }
+
         return view('livewire.business-list', [
             'businesses' => $query->paginate(10),
             'governorates' => Governorate::where('is_active', true)->get(),
-            'categories' => Category::with('children')
-                        ->whereNull('parent_id')
-                        ->where('is_active', true)
-                        ->get(),
+            'categories' => $categories,
             'selectedCategory' => $this->selectedCategory,
             'selectedGovernorate' => $this->selectedGovernorate,
             'ratingFilter' => $this->ratingFilter,
+            'parentCategory' => $parentCategory,
         ]);
     }
 }

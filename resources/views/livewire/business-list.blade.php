@@ -5,6 +5,7 @@
         :selectedCategory="$selectedCategory"
         :selectedGovernorate="$selectedGovernorate"
         :ratingFilter="$ratingFilter"
+        :parentCategory="$parentCategory"
     >
         {{-- ✅ شريط الأدوات والنتائج --}}
         @include('business.Livewire.businesses-toolbar', [

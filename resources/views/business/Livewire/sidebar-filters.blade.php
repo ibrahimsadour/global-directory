@@ -6,62 +6,88 @@
         </h2>
 
         <ul class="space-y-2 text-sm text-gray-700">
-            <!-- ✅ خيار "كل الفئات" -->
-            <li>
-                <a wire:click.prevent="$set('selectedCategory', null)"
-                href="#"
-                class="block px-3 py-1 rounded-md transition
-                {{ is_null($selectedCategory) ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
-                    <i class="bi bi-sliders2-vertical me-1"></i> كل الفئات
-                </a>
-            </li>
 
-            <!-- ✅ الفئات الرئيسية -->
-            @foreach($categories as $category)
-                @if(is_null($category->parent_id) && $category->is_active)
+            @if(isset($parentCategory))
+                <!-- ✅ عرض اسم الفئة الأم -->
+                <li class="text-sm text-blue-700 font-semibold px-3 pb-1">
+                    <i class="bi bi-folder"></i> {{ $parentCategory->name }}
+                </li>
+            @endif
+
+            <!-- ✅ كل الفئات -->
+            <!-- ✅ عرض "كل الفئات" فقط إذا لم نكن داخل فئة محددة -->
+            @if(!isset($parentCategory))
+                <li>
+                    <a wire:click.prevent="$set('selectedCategory', null)"
+                    href="#"
+                    class="block px-3 py-1 rounded-md transition
+                    {{ is_null($selectedCategory) ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
+                        <i class="bi bi-sliders2-vertical me-1"></i> كل الفئات
+                    </a>
+                </li>
+            @endif
+
+
+            @if(isset($parentCategory))
+                <!-- ✅ الفئات الفرعية فقط -->
+                @foreach($categories as $child)
                     <li>
-                        @php
-                            $children = $category->children->where('is_active', 1);
-                        @endphp
-
-                        @if($children->count())
-                            <div x-data="{ open: false }" class="space-y-1">
-                                <button @click="open = !open"
-                                        class="w-full flex items-center justify-between px-2 py-1 rounded-md bg-gray-100 text-blue-600 font-medium hover:bg-blue-50 transition">
-                                    <span>{{ $category->name }}</span>
-                                    <span class="flex items-center gap-1">
-                                        ({{ $children->count() }})
-                                        <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-xs"></i>
-                                    </span>
-                                </button>
-
-                                <ul x-show="open" x-transition x-cloak class="ps-4 pt-2 space-y-1">
-                                    @foreach($children as $child)
-                                        <li>
-                                            <a wire:click.prevent="$set('selectedCategory', {{ $child->id }})"
-                                            @click="open = false"
-                                            href="#"
-                                            class="block px-3 py-1 rounded-md transition
-                                            {{ $selectedCategory == $child->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
-                                                – {{ $child->name }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @else
-                            <a wire:click.prevent="$set('selectedCategory', {{ $category->id }})"
-                            href="#"
-                            class="block px-3 py-1 rounded-md transition
-                            {{ $selectedCategory == $category->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-800 hover:bg-blue-50 hover:text-blue-600' }}">
-                                {{ $category->name }}
-                            </a>
-                        @endif
+                        <a wire:click.prevent="$set('selectedCategory', {{ $child->id }})"
+                        href="#"
+                        class="block px-3 py-1 rounded-md transition
+                        {{ $selectedCategory == $child->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
+                            – {{ $child->name }}
+                        </a>
                     </li>
-                @endif
-            @endforeach
+                @endforeach
+            @else
+                <!-- ✅ الفئات الرئيسية + فروعها -->
+                @foreach($categories as $category)
+                    @if(is_null($category->parent_id) && $category->is_active)
+                        <li>
+                            @php $children = $category->children->where('is_active', 1); @endphp
+                            @if($children->count())
+                                <div x-data="{ open: false }" class="space-y-1">
+                                    <button @click="open = !open"
+                                            class="w-full flex items-center justify-between px-2 py-1 rounded-md bg-gray-100 text-blue-600 font-medium hover:bg-blue-50 transition">
+                                        <span>{{ $category->name }}</span>
+                                        <span class="flex items-center gap-1">
+                                            ({{ $children->count() }})
+                                            <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-xs"></i>
+                                        </span>
+                                    </button>
+                                    <ul x-show="open" x-transition x-cloak class="ps-4 pt-2 space-y-1">
+                                        @foreach($children as $child)
+                                            <li>
+                                                <a wire:click.prevent="$set('selectedCategory', {{ $child->id }})"
+                                                @click="open = false"
+                                                href="#"
+                                                class="block px-3 py-1 rounded-md transition
+                                                {{ $selectedCategory == $child->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
+                                                    – {{ $child->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @else
+                                <a wire:click.prevent="$set('selectedCategory', {{ $category->id }})"
+                                href="#"
+                                class="block px-3 py-1 rounded-md transition
+                                {{ $selectedCategory == $category->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-800 hover:bg-blue-50 hover:text-blue-600' }}">
+                                    {{ $category->name }}
+                                </a>
+                            @endif
+                        </li>
+                    @endif
+                @endforeach
+            @endif
         </ul>
     </div>
+
+
+
+
 
 
     <!-- ✅ المحافظات -->
