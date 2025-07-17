@@ -53,7 +53,7 @@
                 'selectedCategory' => $selectedCategory,
                 'selectedGovernorate' => $selectedGovernorate,
                 'ratingFilter' => $ratingFilter,
-                'parentCategory' => null // ← هنا الجديد
+                'parentCategory' => $parentCategory // ← هنا الجديد
 
             ])
             {{-- ✅ زر "عرض النتائج" أسفل الفلاتر --}}
