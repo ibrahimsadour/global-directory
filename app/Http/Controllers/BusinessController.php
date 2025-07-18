@@ -8,50 +8,51 @@ use App\Services\BusinessService;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Review;
 use App\Models\BusinessView; 
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class BusinessController extends Controller
 {
     public function show($slug, BusinessService $service, Request $request)
     {
-        // استدعاء النشاط والبيانات
+        // 1. جلب بيانات النشاط
         $data = $service->showBusinessWithRelated($slug);
         $business = $data['business'];
-
-        // جلب أول 5 تقييمات مرفقة بالمستخدم
-        $review = $business->reviews()->with('user')->latest()->take(5)->get();
-
-        // المستخدم الحالي
-        $uid = auth()->id();
         $bid = $business->id;
 
-        // جلب تقييم المستخدم الحالي (إن وجد)
-        $myReview = $business->reviews()->where('user_id', $uid)->first();
+        // 2. جلب التقييمات والمراجعة الشخصية (إن وُجدت)
+        $uid = auth()->id();
+        $review = $business->reviews()->with('user')->latest()->take(5)->get();
+        $myReview = $uid ? $business->reviews()->where('user_id', $uid)->first() : null;
 
-        // ✅ تسجيل المشاهدة (إن لم تُسجّل من نفس IP آخر 6 ساعات)
-        $ip = $request->ip();
+        // 3. التحقق من أن الزائر ليس روبوت (Crawler)
+        $userAgent = $request->userAgent();
+        $crawler = new CrawlerDetect(null, $userAgent);
 
-        $alreadyViewed = BusinessView::where('business_id', $bid)
-            ->where('ip', $ip)
-            ->where('viewed_at', '>=', now()->subHours(6))
-            ->exists();
+        if (! $crawler->isCrawler()) {
+            $ip = $request->ip();
 
-        if (! $alreadyViewed) {
-            BusinessView::create([
-                'business_id' => $bid,
-                'ip' => $ip,
-                'viewed_at' => now(),
-            ]);
+            // 4. تسجيل المشاهدة إذا لم تكن مسجلة خلال آخر 6 ساعات
+            $alreadyViewed = BusinessView::where('business_id', $bid)
+                ->where('ip', $ip)
+                ->where('viewed_at', '>=', now()->subHours(6))
+                ->exists();
+
+            if (! $alreadyViewed) {
+                BusinessView::create([
+                    'business_id' => $bid,
+                    'ip' => $ip,
+                    'viewed_at' => now(),
+                ]);
+            }
         }
 
-        // دمج البيانات
-        $data = array_merge($data, [
+        // 5. تمرير البيانات إلى الواجهة
+        return view('business.show', array_merge($data, [
             'review' => $review,
             'uid' => $uid,
             'bid' => $bid,
             'myReview' => $myReview,
-        ]);
-
-        return view('business.show', $data);
+        ]));
     }
 
 }
