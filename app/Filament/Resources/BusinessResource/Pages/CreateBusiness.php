@@ -60,20 +60,20 @@ class CreateBusiness extends CreateRecord
         }
     }
     // لتحويل الصور الى صيغة webb
-    protected function mutateFormDataBeforeSave(array $data): array
+    protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // ✅ في الإنشاء، لا نحتاج للتحقق من الصور القديمة لأننا ننشئ سجل جديد
+        // ✅ تحويل صورة الغلاف إلى WebP
         if (!empty($data['image'])) {
             $data['image'] = $this->convertImageToWebpIfNeeded($data['image']);
         }
 
+        // ✅ تحويل معرض الصور إلى WebP
         if (!empty($data['gallery'])) {
             $data['gallery'] = $this->convertGalleryToWebpIfNeeded($data['gallery']);
         }
 
         return $data;
     }
-
 
 
 }

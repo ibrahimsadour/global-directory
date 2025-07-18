@@ -5,13 +5,14 @@ namespace App\Traits;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 trait HandlesWebpImages
 {
     /**
      * تحويل صورة واحدة إلى WebP مع ضغطها بجودة 70%.
      */
-    protected function convertImageToWebpIfNeeded(string $path): string
+    protected function convertImageToWebpIfNeeded(string $path, ?string $oldPath = null): string
     {
         $manager = new ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
 
@@ -26,24 +27,29 @@ trait HandlesWebpImages
         $fullPath = storage_path('app/public/' . $path);
 
         try {
-            // قراءة الصورة وتحويلها إلى WebP بجودة 70
-            $webpImage = $manager->read($fullPath)->toWebp(quality: 80);
-
+            $webpImage = $manager->read($fullPath)->toWebp(quality: 60);
             $webpPath = Str::replaceLast(pathinfo($path, PATHINFO_EXTENSION), 'webp', $path);
+
             Storage::disk('public')->put($webpPath, $webpImage->toString());
+
+            if ($oldPath && $oldPath !== $path && Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+
             Storage::disk('public')->delete($path);
 
             return $webpPath;
         } catch (\Throwable $e) {
-            // في حال فشل التحويل، نُعيد الصورة الأصلية بدون تغيير
+            Log::error('❌ فشل تحويل الصورة إلى WebP: ' . $e->getMessage());
             return $path;
         }
     }
 
+
     /**
      * تحويل مجموعة صور (معرض) إلى WebP مع ضغط.
      */
-    protected function convertGalleryToWebpIfNeeded(array $gallery): array
+    protected function convertGalleryToWebpIfNeeded(array $gallery, array $oldGallery = []): array
     {
         $converted = [];
 
@@ -51,8 +57,16 @@ trait HandlesWebpImages
             $converted[] = $this->convertImageToWebpIfNeeded($path);
         }
 
+        // حذف الصور القديمة التي لم تعد موجودة
+        foreach ($oldGallery as $oldImage) {
+            if (!in_array($oldImage, $converted) && Storage::disk('public')->exists($oldImage)) {
+                Storage::disk('public')->delete($oldImage);
+            }
+        }
+
         return $converted;
     }
+
 
     /**
      * في حال لم يتم رفع صورة جديدة، نحتفظ بالصورة القديمة.

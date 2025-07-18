@@ -81,22 +81,28 @@ class EditBusiness extends EditRecord
         }
     }
     
-    // لتحويل الصور الى صيغة webb
     protected function mutateFormDataBeforeSave(array $data): array
     {
+        // حفظ الصورة والمعرض القديمين قبل أي تعديل
+        $oldImage = $this->record->image ?? null;
+        $oldGallery = $this->record->gallery ?? [];
+
         // ✅ الحفاظ على الصورة القديمة إن لم يتم رفع جديدة
         $data = $this->preserveOldImageIfEmpty($data, 'image', $this->record);
 
-        // ✅ التحويل إلى WebP إن لزم الأمر
-        $data['image'] = $this->convertImageToWebpIfNeeded($data['image']);
+        // ✅ التحويل إلى WebP + حذف الصورة القديمة إن وُجدت وتم استبدالها
+        if (!empty($data['image'])) {
+            $data['image'] = $this->convertImageToWebpIfNeeded($data['image'], $oldImage);
+        }
 
-        // ✅ الحفاظ على معرض الصور القديم إذا لم يتم تعديل
+        // ✅ الحفاظ على معرض الصور القديم إن لم يتم رفع جديد
         $data = $this->preserveOldGalleryIfEmpty($data, $this->record);
 
-        // ✅ تحويل كل صور المعرض إلى WebP إن لزم
-        $data['gallery'] = $this->convertGalleryToWebpIfNeeded($data['gallery']);
+        // ✅ تحويل المعرض إلى WebP + حذف الصور القديمة التي تم إزالتها
+        $data['gallery'] = $this->convertGalleryToWebpIfNeeded($data['gallery'], $oldGallery);
 
         return $data;
     }
+
 
 }
