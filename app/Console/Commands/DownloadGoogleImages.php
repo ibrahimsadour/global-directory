@@ -6,15 +6,16 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use App\Models\Business;
+use Intervention\Image\Facades\Image;
 
 class DownloadGoogleImages extends Command
 {
     protected $signature = 'business:download-images';
-    protected $description = 'Download and save Google image links as local files for businesses';
+    protected $description = 'Download Google Place images and save them locally as .webp files in from-google folder';
 
     public function handle(): int
     {
-        $this->info("🔍 جاري تحميل الصور من Google وحفظها محليًا...");
+        $this->info("🔍 جاري تحميل الصور من Google وحفظها بصيغة WebP...");
 
         $businesses = Business::where('image', 'like', '%maps.googleapis.com%')
             ->whereNotNull('place_id')
@@ -27,7 +28,9 @@ class DownloadGoogleImages extends Command
         foreach ($businesses as $business) {
             $url = $business->image;
             $placeId = $business->place_id;
-            $filename = 'businesses/' . $placeId . '.jpg';
+
+            // ✅ حفظ الصور داخل مجلد مخصص للصور القادمة من Google
+            $filename = 'business-images/from-google/' . $placeId . '.webp';
 
             // ✅ تخطى إذا الصورة موجودة مسبقاً
             if (Storage::disk('public')->exists($filename)) {
@@ -44,16 +47,17 @@ class DownloadGoogleImages extends Command
                     continue;
                 }
 
-                Storage::disk('public')->put($filename, $response->body());
+                $webpImage = Image::make($response->body())->encode('webp', 80);
+                Storage::disk('public')->put($filename, $webpImage);
 
                 $business->update([
-                    'image' => 'storage/' . $filename,
+                    'image' => $filename,
                 ]);
 
-                $this->info("✅ تم حفظ الصورة: {$business->name}");
+                $this->info("✅ تم حفظ الصورة بصيغة WebP: {$business->name}");
                 $success++;
 
-                usleep(300000); // انتظار بسيط لتجنب الضغط
+                usleep(300000);
 
             } catch (\Exception $e) {
                 $this->error("❌ خطأ في {$business->name}: " . $e->getMessage());
