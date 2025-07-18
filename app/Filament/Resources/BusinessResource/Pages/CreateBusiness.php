@@ -4,10 +4,15 @@ namespace App\Filament\Resources\BusinessResource\Pages;
 
 use App\Filament\Resources\BusinessResource;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\Str;
+use App\Traits\HandlesWebpImages;
 
 class CreateBusiness extends CreateRecord
 {
     protected static string $resource = BusinessResource::class;
+    use HandlesWebpImages;
 
     protected function beforeFill(): void
     {
@@ -54,6 +59,21 @@ class CreateBusiness extends CreateRecord
             );
         }
     }
+    // لتحويل الصور الى صيغة webb
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        // ✅ في الإنشاء، لا نحتاج للتحقق من الصور القديمة لأننا ننشئ سجل جديد
+        if (!empty($data['image'])) {
+            $data['image'] = $this->convertImageToWebpIfNeeded($data['image']);
+        }
+
+        if (!empty($data['gallery'])) {
+            $data['gallery'] = $this->convertGalleryToWebpIfNeeded($data['gallery']);
+        }
+
+        return $data;
+    }
+
 
 
 }
