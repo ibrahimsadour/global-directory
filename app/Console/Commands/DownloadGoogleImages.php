@@ -6,7 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use App\Models\Business;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class DownloadGoogleImages extends Command
 {
@@ -16,6 +17,8 @@ class DownloadGoogleImages extends Command
     public function handle(): int
     {
         $this->info("🔍 جاري تحميل الصور من Google وحفظها بصيغة WebP...");
+
+        $manager = new ImageManager(new Driver());
 
         $businesses = Business::where('image', 'like', '%maps.googleapis.com%')
             ->whereNotNull('place_id')
@@ -28,11 +31,8 @@ class DownloadGoogleImages extends Command
         foreach ($businesses as $business) {
             $url = $business->image;
             $placeId = $business->place_id;
-
-            // ✅ حفظ الصور داخل مجلد مخصص للصور القادمة من Google
             $filename = 'business-images/from-google/' . $placeId . '.webp';
 
-            // ✅ تخطى إذا الصورة موجودة مسبقاً
             if (Storage::disk('public')->exists($filename)) {
                 $this->line("⏩ موجود مسبقًا: {$business->name}");
                 continue;
@@ -47,7 +47,7 @@ class DownloadGoogleImages extends Command
                     continue;
                 }
 
-                $webpImage = Image::make($response->body())->encode('webp', 80);
+                $webpImage = $manager->read($response->body())->toWebp();
                 Storage::disk('public')->put($filename, $webpImage);
 
                 $business->update([
