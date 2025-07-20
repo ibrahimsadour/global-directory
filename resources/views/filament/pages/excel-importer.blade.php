@@ -35,20 +35,18 @@
                     <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden p-4 flex flex-col gap-3">
 
                         {{-- الصورة --}}
-                        @if (!empty($biz['photo_url'] ?? $biz['image']))
-                            <div class="w-full h-[160px] overflow-hidden rounded-md border border-gray-300 shadow-sm">
-                                <img 
-                                    src="{{ $biz['photo_url'] ?? $biz['image'] }}" 
-                                    alt="صورة النشاط"
-                                    class="w-[100%] h-[160px] object-cover object-center" 
-                                    style=" height: 400px; width: 100%; "
-                                />
-                            </div>
-                        @else
-                            <div class="w-full h-[160px] flex items-center justify-center text-gray-400 italic border border-dashed border-gray-300 rounded-md">
-                                لا توجد صورة
-                            </div>
-                        @endif
+                        @php
+                            $image = $biz['photo_url'] ?? $biz['image'] ?? 'storage/business_photos/default.webp';
+                        @endphp
+
+                        <div class="w-full h-[160px] overflow-hidden rounded-md border border-gray-300 shadow-sm">
+                            <img 
+                                src="{{ asset($image) }}" 
+                                alt="{{ $biz['name'] ?? '—' }}" 
+                                class="w-full h-[160px] object-cover object-center"
+                            />
+                        </div>
+
 
                         {{-- المعلومات --}}
                         <h2 class="text-lg font-bold text-gray-800">{{ $biz['name'] ?? '—' }}</h2>
