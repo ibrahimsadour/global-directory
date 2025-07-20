@@ -76,24 +76,27 @@
 
                         <!-- ✅ التقييم -->
                         @php
-                            $rating = $business->rating ?? 0;
+                            $rating = $business->googleData->google_rating ?? 0;
                             $fullStars = floor($rating);
                             $halfStar = ($rating - $fullStars) >= 0.5;
                             $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
                         @endphp
 
-                        <div class="d-flex align-items-center small text-warning">
-                            @for ($i = 0; $i < $fullStars; $i++)
-                                <i class="bi bi-star-fill"></i>
-                            @endfor
-                            @if($halfStar)
-                                <i class="bi bi-star-half"></i>
-                            @endif
-                            @for ($i = 0; $i < $emptyStars; $i++)
-                                <i class="bi bi-star"></i>
-                            @endfor
-                            <span class="text-dark ms-1">{{ number_format($rating, 1) }}</span>
-                        </div>
+                        @if($rating > 0)
+                            <div class="d-flex align-items-center small text-warning">
+                                @for ($i = 0; $i < $fullStars; $i++)
+                                    <i class="bi bi-star-fill"></i>
+                                @endfor
+                                @if($halfStar)
+                                    <i class="bi bi-star-half"></i>
+                                @endif
+                                @for ($i = 0; $i < $emptyStars; $i++)
+                                    <i class="bi bi-star"></i>
+                                @endfor
+                                <span class="text-dark ms-1">{{ number_format($rating, 1) }}</span>
+                            </div>
+                        @endif
+
 
                         <!-- ✅ وصف مختصر -->
                         <p class="text-muted mt-2 mb-1" style="font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">

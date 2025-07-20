@@ -1,3 +1,4 @@
+{{-- ... بداية الصفحة --}}
 <x-filament::page>
     {{ $this->form }}
 
@@ -49,7 +50,6 @@
                             </div>
                         @endif
 
-
                         {{-- المعلومات --}}
                         <h2 class="text-lg font-bold text-gray-800">{{ $biz['name'] ?? '—' }}</h2>
 
@@ -61,10 +61,6 @@
                             📞 <strong class="min-w-[80px] inline-block">الهاتف:</strong> {{ $biz['phone'] ?? '—' }}
                         </p>
 
-                        <p class="text-sm text-gray-700 flex items-center gap-1">
-                            ⭐ <strong class="min-w-[80px] inline-block">التقييم:</strong> {{ $biz['rating'] ?? '—' }} ({{ $biz['reviews_count'] ?? 0 }} مراجعة)
-                        </p>
-
                         <p class="text-xs text-gray-600 flex items-center gap-1">
                             🧭 <strong class="min-w-[80px] inline-block">الإحداثيات:</strong> {{ $biz['latitude'] ?? '—' }}, {{ $biz['longitude'] ?? '—' }}
                         </p>
@@ -72,8 +68,8 @@
                         <p class="text-xs text-gray-500 break-all flex items-center gap-1">
                             🆔 <strong class="min-w-[80px] inline-block">place_id:</strong> {{ $biz['place_id'] ?? '—' }}
                         </p>
-                        
-                        {{-- عرض اوقات الدوامم --}}
+
+                        {{-- أوقات الدوام --}}
                         @if (!empty($biz['opening_hours']) && is_string($biz['opening_hours']))
                             <div class="text-sm text-gray-700">
                                 <strong class="block mb-1">🕒 أوقات العمل:</strong>
@@ -93,6 +89,30 @@
                             </div>
                         @endif
 
+                        {{-- بيانات Google الإضافية --}}
+                        @if (!empty($biz['google_maps_url']) || !empty($biz['google_reviews_url']) || !empty($biz['google_rating']))
+                            <div class="text-sm text-gray-600 border-t pt-2 mt-2">
+                                <strong class="block mb-1 text-gray-800">🌐 بيانات Google:</strong>
+                                
+                                @if (!empty($biz['google_maps_url']))
+                                    <p class="text-xs text-blue-600">
+                                        📍 <a href="{{ $biz['google_maps_url'] }}" target="_blank" class="underline">رابط الموقع على Google Maps</a>
+                                    </p>
+                                @endif
+
+                                @if (!empty($biz['google_reviews_url']))
+                                    <p class="text-xs text-blue-600">
+                                        📝 <a href="{{ $biz['google_reviews_url'] }}" target="_blank" class="underline">عرض التقييمات على Google</a>
+                                    </p>
+                                @endif
+
+                                @if (!empty($biz['google_rating']) || !empty($biz['google_reviews_count']))
+                                    <p class="text-xs text-gray-700">
+                                        ⭐ تقييم Google: {{ $biz['google_rating'] ?? '—' }} ({{ $biz['google_reviews_count'] ?? 0 }} مراجعة)
+                                    </p>
+                                @endif
+                            </div>
+                        @endif
 
                         {{-- زر الحفظ الفردي --}}
                         <div class="mt-2">
@@ -116,8 +136,6 @@
                     </div>
                 @endforeach
             </div>
-
-
         </div>
     @endif
 </x-filament::page>

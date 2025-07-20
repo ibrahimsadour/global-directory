@@ -203,11 +203,17 @@ class Business extends Model
         ];
     }
 
-
+    // روابط السوشيال ميديا
     public function socialLinks(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(BusinessSocialLink::class);
     }
+    // جميع بيانات غوغل مثل رابط الخريطة والمراجعات و عدد المراجعات ونسبة المراجعات
+    public function googleData()
+    {
+        return $this->hasOne(BusinessGoogleData::class);
+    }
+
 
 
 }

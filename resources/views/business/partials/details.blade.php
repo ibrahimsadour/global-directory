@@ -149,18 +149,19 @@
                 <small class="ms-2" x-text="avg + ' (' + total + ' تقييم)'"></small>
             </li>
 
-                {{-- 🌐 تقييم Google --}}
-            @if(!is_null($business->rating))
+            {{-- 🌐 تقييم Google --}}
+            @if(!is_null($business->googleData?->google_rating))
                 <div class="d-flex align-items-center gap-2">
-                    <i class="bi bi-google text-danger" style=" font-size: 1.3rem; "></i>
+                    <i class="bi bi-google text-danger" style="font-size: 1.3rem;"></i>
                     <span>
-                        {{ number_format($business->rating, 2) }}
-                        @if($business->reviews_count > 0)
-                            ({{ $business->reviews_count }} تقييم Google)
+                        {{ number_format($business->googleData->google_rating, 2) }}
+                        @if($business->googleData->google_reviews_count > 0)
+                            ({{ $business->googleData->google_reviews_count }} تقييم Google)
                         @endif
                     </span>
                 </div>
             @endif
+
         </ul>
     </div>
 

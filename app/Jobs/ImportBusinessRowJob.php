@@ -23,6 +23,7 @@ use Throwable;
 use Illuminate\Support\Facades\Cache;
 use App\Models\BusinessHour;
 use Carbon\Carbon;
+use App\Models\BusinessGoogleData;
 
 
 
@@ -128,8 +129,6 @@ class ImportBusinessRowJob implements ShouldQueue
                 'is_approved' => $row['is_approved'],
                 'is_active' => $row['is_active'],
                 'image' => $row['image'],
-                'rating' => $row['rating'],
-                'reviews_count' => $row['reviews_count'],
                 'place_id' => $row['place_id'] ?? null,
             ]);
 
@@ -172,6 +171,32 @@ class ImportBusinessRowJob implements ShouldQueue
                     }
                 }
             }
+
+            // ✅ استيراد بيانات Google الإضافية إن توفرت
+            if (!empty($row['place_id'])) {
+                $googleData = [];
+
+                if (!empty($row['google_maps_url'])) {
+                    $googleData['google_maps_url'] = $row['google_maps_url'];
+                }
+                if (!empty($row['google_reviews_url'])) {
+                    $googleData['google_reviews_url'] = $row['google_reviews_url'];
+                }
+                if (!empty($row['google_rating'])) {
+                    $googleData['google_rating'] = floatval($row['google_rating']);
+                }
+                if (!empty($row['google_reviews_count'])) {
+                    $googleData['google_reviews_count'] = intval($row['google_reviews_count']);
+                }
+
+                if (!empty($googleData)) {
+                    $business->googleData()->updateOrCreate(
+                        ['business_id' => $business->id],
+                        $googleData
+                    );
+                }
+            }
+
 
             // ارسال النتيجة الى قسم نتائج الاستيراد
             Cache::increment('imported_count_user_' . $this->admin->id);

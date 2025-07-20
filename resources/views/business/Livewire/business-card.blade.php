@@ -45,11 +45,18 @@
 
         <div class="flex justify-between items-center mt-3">
             <div class="text-yellow-400">
+                @php
+                    $googleData = $business->googleData ?? null;
+                    $rating = $googleData->google_rating ?? 0;
+                    $reviews = $googleData->google_reviews_count ?? 0;
+                @endphp
+
                 @for ($i = 0; $i < 5; $i++)
-                    <i class="bi {{ $i < floor($business->rating) ? 'bi-star-fill' : 'bi-star' }}"></i>
+                    <i class="bi {{ $i < floor($rating) ? 'bi-star-fill' : 'bi-star' }}"></i>
                 @endfor
-                <small class="text-gray-500">({{ number_format($business->rating ?? 0, 1) }} / {{ $business->reviews_count ?? 0 }} مراجعة)</small>
+                <small class="text-gray-500">({{ number_format($rating, 1) }} / {{ $reviews }} مراجعة)</small>
             </div>
+
             {{-- <div>
                 <a data-bs-toggle="modal" data-bs-target="#loginAlert" class="text-red-500">
                     <i class="bi bi-heart"></i>

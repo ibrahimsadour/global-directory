@@ -50,13 +50,15 @@
                     {{-- ✅ التقييم --}}
                     <div class="d-flex flex-column">
                         @php
-                            $rating = $item->rating ?? 0;
-                            $fullStars = floor($rating);
-                            $halfStar = ($rating - $fullStars) >= 0.5;
+                            $googleRating = $item->googleData->google_rating ?? 0;
+                            $reviewsCount = $item->googleData->google_reviews_count ?? 0;
+
+                            $fullStars = floor($googleRating);
+                            $halfStar = ($googleRating - $fullStars) >= 0.5;
                             $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
                         @endphp
 
-                        <div class="text-warning" title="متوسط التقييم {{ number_format($rating, 1) }} من 5">
+                        <div class="text-warning" title="متوسط التقييم {{ number_format($googleRating, 1) }} من 5">
                             @for ($i = 0; $i < $fullStars; $i++)
                                 <i class="bi bi-star-fill fs-6"></i>
                             @endfor
@@ -67,14 +69,14 @@
                                 <i class="bi bi-star fs-6"></i>
                             @endfor
 
-                            <span class="text-dark ms-1" title="{{ number_format($rating, 1) }} من 5">
-                                {{ number_format($rating, 1) }}
+                            <span class="text-dark ms-1" title="{{ number_format($googleRating, 1) }} من 5">
+                                {{ number_format($googleRating, 1) }}
                             </span>
                         </div>
 
                         <small class="text-muted">
                             <i class="bi bi-google text-danger me-1"></i>
-                            ({{ $item->reviews_count ?? 0 }} تقييم على غوغل)
+                            ({{ $reviewsCount }} تقييم على غوغل)
                         </small>
                     </div>
                 </div>
