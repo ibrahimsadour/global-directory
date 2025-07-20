@@ -74,15 +74,15 @@
                         </p>
                         
                         {{-- عرض اوقات الدوامم --}}
-                        @if (!empty($business['opening_hours']))
+                        @if (!empty($biz['opening_hours']) && is_string($biz['opening_hours']))
                             <div class="text-sm text-gray-700">
-                                <strong class="block mb-1">أوقات العمل:</strong>
+                                <strong class="block mb-1">🕒 أوقات العمل:</strong>
                                 <ul class="space-y-1 rtl:space-y-reverse">
-                                    @foreach (explode(',', $business['opening_hours']) as $entry)
+                                    @foreach (explode(',', $biz['opening_hours']) as $entry)
                                         @php
-                                            $parts = explode(':', $entry, 2);
-                                            $day = trim($parts[0] ?? '');
-                                            $hours = trim($parts[1] ?? '', "[] ");
+                                            preg_match('/^(.+?):\[(.+?)\]$/u', trim($entry), $matches);
+                                            $day = $matches[1] ?? null;
+                                            $hours = $matches[2] ?? null;
                                         @endphp
 
                                         @if ($day && $hours)
@@ -92,6 +92,7 @@
                                 </ul>
                             </div>
                         @endif
+
 
                         {{-- زر الحفظ الفردي --}}
                         <div class="mt-2">
