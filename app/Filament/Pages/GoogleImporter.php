@@ -298,8 +298,6 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
             'governorate_id'    => $governorateId,
             'location_id'       => $this->location_id,
             'category_id'       => $categoryId,
-            'rating'            => $place['rating'] ?? null,
-            'reviews_count'     => $place['reviews_count'] ?? null,
             'image'             => $place['photo_url'] ?? null,
             'gallery'           => null,
             'is_featured'       => false,
@@ -322,6 +320,32 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
                 $socialData
             );
         }
+
+        // ✅ استيراد بيانات Google الإضافية إن توفرت
+        if (!empty($place['place_id'])) {
+            $googleData = [];
+
+            if (!empty($place['google_maps_url'])) {
+                $googleData['google_maps_url'] = $place['google_maps_url'];
+            }
+            if (!empty($place['google_reviews_url'])) {
+                $googleData['google_reviews_url'] = $place['google_reviews_url'];
+            }
+            if (!empty($place['rating'])) {
+                $googleData['google_rating'] = floatval($place['rating']);
+            }
+            if (!empty($place['reviews_count'])) {
+                $googleData['google_reviews_count'] = intval($place['reviews_count']);
+            }
+
+            if (!empty($googleData)) {
+                $business->googleData()->updateOrCreate(
+                    ['business_id' => $business->id],
+                    $googleData
+                );
+            }
+        }
+
 
 
         // ✅ حفظ بيانات السيو في جدول seos المرتبط

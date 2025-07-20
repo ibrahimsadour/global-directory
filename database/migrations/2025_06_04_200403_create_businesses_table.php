@@ -35,8 +35,6 @@ return new class extends Migration
 
             // بيانات تاتي من استيراد Google maps
             $table->string('place_id')->unique()->comment('معرّف المكان من Google Places');
-            $table->decimal('rating', 3, 2)->nullable()->comment('متوسط التقييم من Google');
-            $table->unsignedInteger('reviews_count')->nullable()->comment('عدد التقييمات من Google');
 
             // حالة النشاط
             $table->boolean('is_featured')->default(false);

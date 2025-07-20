@@ -195,19 +195,25 @@ class GooglePlacesService
 
             $socialFields = ['facebook', 'instagram', 'twitter', 'linkedin', 'youtube', 'tiktok'];
             $socialData = [];
-
             foreach ($socialFields as $field) {
                 if (!empty($place[$field] ?? null)) {
                     $socialData[$field] = $place[$field];
                 }
             }
-
             if (!empty($socialData)) {
                 $business->socialLinks()->updateOrCreate(
                     ['business_id' => $business->id],
                     $socialData
                 );
             }
+
+            \App\Models\BusinessGoogleData::create([
+                'business_id'          => $business->id,
+                'google_maps_url'      => null,
+                'google_reviews_url'   => null,
+                'google_rating'        => $place['rating'] ?? null,
+                'google_reviews_count' => $place['reviews_count'] ?? null,
+            ]);
 
 
             dispatch(new \App\Jobs\GenerateSeoForBusiness($business));

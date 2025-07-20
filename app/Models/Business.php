@@ -35,8 +35,6 @@ class Business extends Model
 
         // بياانات Google maps
         'place_id',
-        'rating',
-        'reviews_count',
 
 
         // الحالة
