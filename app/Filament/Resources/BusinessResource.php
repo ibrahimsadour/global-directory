@@ -254,13 +254,17 @@ class BusinessResource extends Resource
                                 ]),
 
 
-                                Fieldset::make('روابط التواصل الاجتماعي')->schema([
-                                    TextInput::make('facebook')->label('رابط Facebook')->url(),
-                                    TextInput::make('instagram')->label('رابط Instagram')->url(),
-                                    TextInput::make('twitter')->label('رابط Twitter')->url(),
-                                    TextInput::make('linkedin')->label('رابط LinkedIn')->url(),
-                                    TextInput::make('youtube')->label('رابط YouTube')->url(),
-                                ]),
+                                Fieldset::make('روابط التواصل الاجتماعي')
+                                    ->relationship('socialLinks')
+                                    ->schema([
+                                        TextInput::make('facebook')->label('رابط Facebook')->url()->maxLength(255),
+                                        TextInput::make('instagram')->label('رابط Instagram')->url()->maxLength(255),
+                                        TextInput::make('twitter')->label('رابط Twitter')->url()->maxLength(255),
+                                        TextInput::make('linkedin')->label('رابط LinkedIn')->url()->maxLength(255),
+                                        TextInput::make('youtube')->label('رابط YouTube')->url()->maxLength(255),
+                                        TextInput::make('tiktok')->label('رابط Tiktok')->url()->maxLength(255),
+
+                                    ]),
 
                             ]),
 

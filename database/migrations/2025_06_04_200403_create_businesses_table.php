@@ -49,12 +49,6 @@ return new class extends Migration
             // معرض الصور
             $table->json('gallery')->nullable();
 
-            // روابط التواصل الاجتماعي
-            $table->string('facebook')->nullable();
-            $table->string('instagram')->nullable();
-            $table->string('twitter')->nullable();
-            $table->string('linkedin')->nullable();
-            $table->string('youtube')->nullable();
 
             // التواريخ
             $table->timestamps();

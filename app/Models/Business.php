@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use App\Models\BusinessSocialLink;
 
 class Business extends Model
 {
@@ -46,13 +47,6 @@ class Business extends Model
         // الصورة
         'image',
         'gallery',
-
-        // روابط السوشيال
-        'facebook',
-        'instagram',
-        'twitter',
-        'linkedin',
-        'youtube',
 
         'created_at',
         'updated_at'
@@ -208,5 +202,12 @@ class Business extends Model
             'label' => 'مفتوح الآن',
         ];
     }
+
+
+    public function socialLinks(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(BusinessSocialLink::class);
+    }
+
 
 }

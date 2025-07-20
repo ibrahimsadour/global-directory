@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Notifications\Notification;
 
 class ImportLogResource extends Resource
 {
@@ -69,22 +70,18 @@ class ImportLogResource extends Resource
                 TextColumn::make('imported_at')->label('وقت الاستيراد')->since(),
             ])
             ->filters([
-                // 👇 مثال على فلتر حسب اسم المستخدم
                 Tables\Filters\SelectFilter::make('user_id')
                     ->label('المستخدم')
                     ->relationship('user', 'name'),
 
-                // 👇 مثال على فلتر حسب التصنيف
                 Tables\Filters\SelectFilter::make('category_id')
                     ->label('التصنيف')
                     ->relationship('category', 'name'),
 
-                // 👇 مثال على فلتر حسب المنطقة (المدينة)
                 Tables\Filters\SelectFilter::make('city_id')
                     ->label('المنطقة')
                     ->relationship('city', 'area'),
 
-                // 👇 فلتر بالتاريخ
                 Tables\Filters\Filter::make('imported_at')
                     ->form([
                         Forms\Components\DatePicker::make('from')->label('من'),
@@ -96,8 +93,23 @@ class ImportLogResource extends Resource
                             ->when($data['until'], fn ($q) => $q->whereDate('imported_at', '<=', $data['until']));
                     }),
             ])
+            ->headerActions([
+                Tables\Actions\Action::make('delete_all')
+                    ->label('🗑️ حذف كل السجلات')
+                    ->color('danger')
+                    ->icon('heroicon-o-trash')
+                    ->requiresConfirmation()
+                    ->action(function () {
+                        \App\Models\ImportLog::truncate();
+                        Notification::make()
+                            ->title('✅ تم حذف كل سجلات الاستيراد')
+                            ->success()
+                            ->send();
+                    }),
+            ])
             ->defaultSort('imported_at', 'desc');
     }
+
 
 
     public static function getRelations(): array
