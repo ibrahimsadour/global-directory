@@ -150,36 +150,9 @@ class ExcelImporter extends Page implements Forms\Contracts\HasForms
                 }
 
                 // 🔧 تنظيف رابط الصورة إن كانت من Google Photos
-                foreach ($businesses as $row) {
-                    $lat = $row['latitude'] ?? null;
-                    $lng = $row['longitude'] ?? null;
-
-                    if (!$lat || !$lng) {
-                        Log::channel('import-businesses')->warning("❌ النشاط '{$row['name']}' تم استبعاده: إحداثيات غير صالحة.");
-                        continue;
-                    }
-
-                    if (!$this->pointInPolygon(floatval($lng), floatval($lat), $polygon)) {
-                        Log::channel('import-businesses')->warning("❌ النشاط '{$row['name']}' خارج حدود المنطقة '{$location->area}'.", [
-                            'lat' => $lat,
-                            'lng' => $lng,
-                        ]);
-                        continue;
-                    }
-
-                    // 🔧 تنظيف رابط الصورة إن كانت من Google Photos
-                    if (!empty($row['image']) && str_starts_with($row['image'], 'https://lh3.googleusercontent.com')) {
-                        $row['image'] = preg_replace('/=w.*$/', '', $row['image']);
-                    }
-
-                    // ✅ إضافة صورة افتراضية إن لم تكن موجودة
-                    if (empty($row['image'])) {
-                        $row['image'] = 'business_photos/default.webp';
-                    }
-
-                    $filtered->push($row);
+                if (!empty($row['image']) && str_starts_with($row['image'], 'https://lh3.googleusercontent.com')) {
+                    $row['image'] = preg_replace('/=w.*$/', '', $row['image']);
                 }
-
 
                 $filtered->push($row);
             }
