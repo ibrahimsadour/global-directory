@@ -115,39 +115,53 @@ class ImportBusinessRowJob implements ShouldQueue
             // ✅ تحميل وتحويل الصورة إلى WebP إذا كانت من Google Photos أو أي رابط خارجي
             if (!empty($row['image']) && str_starts_with($row['image'], 'https://')) {
                 try {
-                    $imageContent = file_get_contents($row['image']);
+                    $imageContent = @file_get_contents($row['image']); // استخدم @ لكتم التحذيرات
 
                     if ($imageContent !== false) {
-                        // الحصول على نوع الصورة الحقيقي من الهيدر
-                        $headers = get_headers($row['image'], 1);
+                        // الحصول على نوع الصورة من الهيدر
+                        $headers = @get_headers($row['image'], 1);
                         $contentType = $headers['Content-Type'] ?? null;
 
                         if (is_array($contentType)) {
                             $contentType = $contentType[0];
                         }
 
+                        // التحقق من نوع الصورة المسموح
                         $extension = match ($contentType) {
                             'image/jpeg' => 'jpg',
                             'image/png'  => 'png',
                             'image/gif'  => 'gif',
-                            default      => 'jpg', // افتراضي إن لم يتعرف عليها
+                            default      => null,
                         };
 
-                        // توليد اسم الملف بالامتداد الصحيح
-                        $slug = Str::slug($row['name']); // أو استخدم أي توليد slug مخصص
-                        $filename = 'business_photos/from-google/' . $slug . '-' . Str::random(6) . '.' . $extension;
+                        if ($extension) {
+                            // توليد اسم عشوائي للصورة
+                            $slug = Str::slug($row['name']);
+                            $filename = 'business_photos/from-google/' . $slug . '-' . Str::random(6) . '.' . $extension;
 
-                        // حفظ الصورة الأصلية في storage
-                        Storage::disk('public')->put($filename, $imageContent);
+                            // حفظ الصورة الأصلية في storage
+                            Storage::disk('public')->put($filename, $imageContent);
 
-                        // ✅ التحويل إلى WebP وضغطها
-                        $webpPath = $this->convertImageToWebpIfNeeded($filename);
-                        $row['image'] = $webpPath;
+                            // ✅ التحويل إلى WebP وضغطها
+                            $webpPath = $this->convertImageToWebpIfNeeded($filename);
+                            $row['image'] = $webpPath;
+                        } else {
+                            // ❌ نوع صورة غير مدعوم، نستخدم الصورة الافتراضية
+                            $row['image'] = 'business_photos/default.webp';
+                            Log::warning("⚠️ نوع غير مدعوم للصورة: $contentType");
+                        }
+                    } else {
+                        // فشل تحميل الصورة
+                        $row['image'] = 'business_photos/default.webp';
+                        Log::warning("⚠️ فشل تحميل الصورة من الرابط: " . $row['image']);
                     }
                 } catch (\Exception $e) {
-                    Log::warning("⚠️ فشل تحميل أو تحويل الصورة من الرابط: " . $e->getMessage());
+                    // استثناء عام
+                    $row['image'] = 'business_photos/default.webp';
+                    Log::warning("⚠️ فشل عام في تحميل أو تحويل الصورة: " . $e->getMessage());
                 }
             }
+
             
             // إنشاء النشاط
             $business = Business::create([
