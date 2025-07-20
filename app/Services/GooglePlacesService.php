@@ -188,15 +188,27 @@ class GooglePlacesService
                 'reviews_count'  => $place['reviews_count'] ?? null,
                 'image'          => $place['photo_url'] ?? null,
                 'gallery'        => null,
-                'facebook'       => null,
-                'instagram'      => null,
-                'twitter'        => null,
-                'linkedin'       => null,
-                'youtube'        => null,
                 'is_featured'    => false,
                 'is_approved'    => true,
                 'is_active'      => true,
             ]);
+
+            $socialFields = ['facebook', 'instagram', 'twitter', 'linkedin', 'youtube', 'tiktok'];
+            $socialData = [];
+
+            foreach ($socialFields as $field) {
+                if (!empty($place[$field] ?? null)) {
+                    $socialData[$field] = $place[$field];
+                }
+            }
+
+            if (!empty($socialData)) {
+                $business->socialLinks()->updateOrCreate(
+                    ['business_id' => $business->id],
+                    $socialData
+                );
+            }
+
 
             dispatch(new \App\Jobs\GenerateSeoForBusiness($business));
 

@@ -302,15 +302,27 @@ class GoogleImporter extends Page implements Forms\Contracts\HasForms
             'reviews_count'     => $place['reviews_count'] ?? null,
             'image'             => $place['photo_url'] ?? null,
             'gallery'           => null,
-            'facebook'          => null,
-            'instagram'         => null,
-            'twitter'           => null,
-            'linkedin'          => null,
-            'youtube'           => null,
             'is_featured'       => false,
             'is_approved'       => true,
             'is_active'         => true,
         ]);
+
+        $socialFields = ['facebook', 'instagram', 'twitter', 'linkedin', 'youtube', 'tiktok']; // دعم تيك توك
+        $socialData = [];
+
+        foreach ($socialFields as $field) {
+            if (!empty($place[$field] ?? null)) {
+                $socialData[$field] = $place[$field];
+            }
+        }
+
+        if (!empty($socialData)) {
+            $business->socialLinks()->updateOrCreate(
+                ['business_id' => $business->id],
+                $socialData
+            );
+        }
+
 
         // ✅ حفظ بيانات السيو في جدول seos المرتبط
         $business->seo()->create([

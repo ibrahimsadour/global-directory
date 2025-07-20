@@ -130,14 +130,11 @@ class ImportBusinessRowJob implements ShouldQueue
                 'image' => $row['image'],
                 'rating' => $row['rating'],
                 'reviews_count' => $row['reviews_count'],
-                'facebook' => $row['facebook'],
-                'instagram' => $row['instagram'],
-                'twitter' => $row['twitter'],
-                'linkedin' => $row['linkedin'],
-                'youtube' => $row['youtube'],
                 'place_id' => $row['place_id'] ?? null,
             ]);
-            
+
+            //  حفظ روابط السوشيال
+            $this->saveSocialLinks($business, $row);
 
             // ✅ معالجة أوقات الدوام إن وجدت
             if (!empty($row['opening_hours']) && is_string($row['opening_hours'])) {
@@ -288,4 +285,25 @@ class ImportBusinessRowJob implements ShouldQueue
             'meta_keywords' => $name,
         ];
     }
+
+    //  حفظ روابط السوشيال
+    private function saveSocialLinks(Business $business, array $row): void
+    {
+        $socialFields = ['facebook', 'instagram', 'twitter', 'linkedin', 'youtube', 'tiktok'];
+        $socialData = [];
+
+        foreach ($socialFields as $field) {
+            if (!empty($row[$field] ?? null)) {
+                $socialData[$field] = $row[$field];
+            }
+        }
+
+        if (!empty($socialData)) {
+            $business->socialLinks()->updateOrCreate(
+                ['business_id' => $business->id],
+                $socialData
+            );
+        }
+    }
+
 }
