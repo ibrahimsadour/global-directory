@@ -33,19 +33,21 @@
             <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-6 mt-6">
                 @foreach ($previewBusinesses as $biz)
                     <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden p-4 flex flex-col gap-3">
+                    {{-- الصورة --}}
+                    @php
+                        $rawImage = $biz['photo_url'] ?? $biz['image'] ?? null;
+                        $hasImage = !empty($rawImage) && !Str::contains($rawImage, 'default');
+                        $image = $hasImage ? $rawImage : 'storage/business_photos/default.webp';
+                    @endphp
 
-                        {{-- الصورة --}}
-                        @php
-                            $image = $biz['photo_url'] ?? $biz['image'] ?? 'storage/business_photos/default.webp';
-                        @endphp
+                    <div class="w-full h-[160px] overflow-hidden rounded-md border border-gray-300 shadow-sm">
+                        <img 
+                            src="{{ asset($image) }}" 
+                            alt="{{ $biz['name'] ?? '—' }}" 
+                            class="w-full h-[160px] object-cover object-center"
+                        />
+                    </div>
 
-                        <div class="w-full h-[160px] overflow-hidden rounded-md border border-gray-300 shadow-sm">
-                            <img 
-                                src="{{ asset($image) }}" 
-                                alt="{{ $biz['name'] ?? '—' }}" 
-                                class="w-full h-[160px] object-cover object-center"
-                            />
-                        </div>
 
 
                         {{-- المعلومات --}}
