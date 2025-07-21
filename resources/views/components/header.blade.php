@@ -1,4 +1,32 @@
 <header>
+    <!-- ✅ إشعار تنبيهي احترافي تحت الشعار -->
+<!-- ✅ إشعار تنبيهي أنيق تحت الشعار -->
+<div class="container-fluid py-2 px-3" style="background-color: #fff8db; border-bottom: 1px solid #ffe58f; font-size: 0.9rem;">
+    <div class="container position-relative d-flex flex-wrap align-items-center justify-content-center justify-content-md-between gap-2">
+        
+        <!-- زر X في الأعلى على اليمين (RTL) -->
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="إغلاق"
+            onclick="this.closest('.container-fluid').remove()"></button>
+
+
+        <!-- الأيقونة + النص -->
+        <div class="d-flex align-items-center text-dark text-center text-md-start" style="max-width: 100%;">
+            <i class="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>
+            <div>
+                <strong>تنويه:</strong> منصة <strong>DalilGo</strong> ما زالت قيد التطوير. إذا واجهت مشكلة أو لديك اقتراح،
+                راسلنا عبر
+                <a href="https://wa.me/31616722566?text=مرحبًا، لدي ملاحظة حول منصة DalilGo..." target="_blank" class="text-success fw-bold text-decoration-underline">
+                    واتساب
+                </a>.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
     <div class="container head-container">
         <div class="row">
             <div class="col-lg-3 col-md-4 logo">
