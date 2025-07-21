@@ -179,9 +179,9 @@ class ImportBusinessRowJob implements ShouldQueue
                 'website' => $row['website'],
                 'whatsapp' => $row['whatsapp'],
                 'description' => $description,
-                'is_featured' => $row['is_featured'],
-                'is_approved' => $row['is_approved'],
-                'is_active' => $row['is_active'],
+                'is_featured' => 0,
+                'is_approved' => 1,
+                'is_active' => 1,
                 'image' => $row['image'],
                 'place_id' => $row['place_id'] ?? null,
             ]);
