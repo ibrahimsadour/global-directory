@@ -307,7 +307,29 @@ class ImportBusinessRowJob implements ShouldQueue
     {
         try {
             $siteAddress = setting('site_address');
-            $prompt = "اكتب وصفًا تسويقيًا واضحًا باللغة العربية حيث يستهدف السوق المحلي في الكويت فقط لخدمة اسمها \"{$name}\"، وتخدم منطقة \"{$siteAddress}\". لا يتجاوز 60 كلمة.";
+
+            // ✅ مصفوفة توصيف نوع النشاط حسب الفئة الرئيسية
+            $categoryTypes = [
+                1 => 'مطعم أو مكان يقدم مأكولات ومشروبات',
+                2 => 'محل أو مركز تسوق يقدم منتجات متنوعة',
+                3 => 'مركز أو منشأة طبية أو صيدلية أو مستشفى',
+                4 => 'شركة تقدم خدمات مهنية أو منزلية أو تقنية',
+                5 => 'مركز تعليمي أو مؤسسة تعليمية أو تدريبية',
+                6 => 'مكان ترفيهي أو سياحي أو خدمات سفر',
+                7 => 'شركة أو مكتب عقاري أو خدمات بناء',
+                8 => 'جهة مالية أو مصرفية أو خدمات أعمال',
+                9 => 'كراج أو خدمة سيارات أو بيع وشراء مركبات',
+                10 => 'مكان ديني أو اجتماعي أو خيري',
+                86 => 'بعثة دبلوماسية مثل سفارة أو قنصلية',
+            ];
+
+            $category = \App\Models\Category::find($categoryId);
+            $parentId = $category?->parent_id ?? $category?->id;
+            $typeDescription = $categoryTypes[$parentId] ?? 'نشاط تجاري أو خدمي داخل الكويت';
+
+            // ✅ توليد البرومبت الذكي بناءً على نوع النشاط
+            $prompt = "اكتب وصفًا واضحًا باللغة العربية لنشاط من نوع {$typeDescription} باسم \"{$name}\" يقع في منطقة \"{$siteAddress}\" داخل الكويت. اجعل الوصف واقعيًا ومختصرًا ويعكس نوع الخدمة أو الجهة. لا يتجاوز 60 كلمة.";
+
             $response = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [['role' => 'user', 'content' => $prompt]],
@@ -320,10 +342,12 @@ class ImportBusinessRowJob implements ShouldQueue
             Log::error("فشل توليد وصف النشاط: " . $e->getMessage());
         }
 
-        $cat = Category::find($categoryId)?->name ?? 'الخدمة';
-        $gov = Governorate::find($governorateId)?->name ?? 'المحافظة';
+        // ✅ وصف احتياطي في حال فشل الذكاء الصناعي
+        $cat = \App\Models\Category::find($categoryId)?->name ?? 'الخدمة';
+        $gov = \App\Models\Governorate::find($governorateId)?->name ?? 'المحافظة';
         return "نقدم خدمات {$cat} في {$gov}. للتواصل: {$phone}";
     }
+
 
     private function generateSeo($name): array
     {
