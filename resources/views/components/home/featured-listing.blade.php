@@ -12,7 +12,7 @@
         </div>
 
         <!-- ✅ الشبكة -->
-        <div class="row g-4">
+        <div class="row g-2">
             @foreach($featuredBusinesses as $business)
             <div class="col-6 col-lg-3">
                 <div class="card shadow-sm h-100 overflow-hidden">
@@ -99,9 +99,9 @@
 
 
                         <!-- ✅ وصف مختصر -->
-                        <p class="text-muted mt-2 mb-1" style="font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                        {{-- <p class="text-muted mt-2 mb-1" style="font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
                             {{ strip_tags($business->description) }}
-                        </p>
+                        </p> --}}
 
                         <!-- ✅ معلومات النشاط -->
                         <ul class="list-unstyled small mb-2">

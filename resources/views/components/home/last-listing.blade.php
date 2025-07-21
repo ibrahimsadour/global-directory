@@ -21,7 +21,7 @@
 
 
         <!-- ✅ الشبكة -->
-        <div class="row g-4">
+        <div class="row g-2">
             @foreach($latestBusinesses as $business)
             <div class="col-6 col-lg-3">
                 <div class="card shadow-sm h-100 overflow-hidden">
