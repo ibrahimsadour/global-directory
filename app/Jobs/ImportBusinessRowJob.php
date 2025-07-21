@@ -177,7 +177,7 @@ class ImportBusinessRowJob implements ShouldQueue
                 'phone' => $row['phone'],
                 'email' => $row['email'],
                 'website' => $row['website'],
-                'whatsapp' => $row['whatsapp'],
+                'whatsapp' => $row['phone'], //بالوقت الحالي تمت الاضافة نفس رقم الهاتف لتجنب الاخطاء
                 'description' => $description,
                 'is_featured' => 0,
                 'is_approved' => 1,
