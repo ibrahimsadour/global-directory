@@ -121,7 +121,7 @@
                     $whatsapp = preg_replace('/\D/', '', $business->whatsapp);
                 @endphp
                 <li>
-                    <a href="https://wa.me/{{ $whatsapp }}" target="_blank" rel="nofollow">
+                    <a href="https://wa.me/965{{ $whatsapp }}" target="_blank" rel="nofollow">
                         <i class="bi bi-whatsapp text-gray-800"></i> {{ $business->whatsapp }}
                     </a>
                 </li>
@@ -131,39 +131,53 @@
     </div>
 
     {{-- ⭐ تقييم الموقع --}}
-    <div class="footcover px-3 pb-3" x-data="review" x-init="loadReviews()">
-        <ul class="d-flex justify-content-between align-items-center small">
+<div class="footcover px-3 pb-3" x-data="review" x-init="loadReviews()">
+    <div class="row gx-2 gy-2">
 
-            {{-- ⭐ تقييم الموقع --}}
-            <li class="rev d-flex align-items-center">
+        {{-- ⭐ تقييم الموقع --}}
+        <div class="col-12 col-md-6">
+            <div class="d-flex align-items-center">
                 <template x-for="s in [1,2,3,4,5]">
                     <i
-                        class="bi"
+                        class="bi fs-6"
                         :class="{
                             'bi-star-fill act': s <= Math.floor(avg),
                             'bi-star-half act': s === Math.ceil(avg) && avg % 1 >= 0.5 && s > Math.floor(avg),
-                            'bi-star-fill': s > avg && !(s === Math.ceil(avg) && avg % 1 >= 0.5)
+                            'bi-star': s > avg && !(s === Math.ceil(avg) && avg % 1 >= 0.5)
                         }"
                     ></i>
                 </template>
-                <small class="ms-2" x-text="avg + ' (' + total + ' تقييم)'"></small>
-            </li>
+                <small class="ms-2 fw-bold" x-text="avg + ' (' + total + ' تقييم على DalilGo)'" ></small>
+            </div>
+        </div>
 
-            {{-- 🌐 تقييم Google --}}
-            @if(!is_null($business->googleData?->google_rating))
-                <div class="d-flex align-items-center gap-2">
-                    <i class="bi bi-google text-danger" style="font-size: 1.3rem;"></i>
-                    <span>
+        {{-- 🌐 تقييم Google --}}
+        @if(!is_null($business->googleData?->google_rating))
+            <div class="col-12 col-md-6">
+                <div class="d-flex align-items-center flex-wrap gap-1">
+                    <i class="bi bi-google text-danger" style="font-size: 1rem;"></i>
+                    <small class="fw-bold">
                         {{ number_format($business->googleData->google_rating, 2) }}
                         @if($business->googleData->google_reviews_count > 0)
-                            ({{ $business->googleData->google_reviews_count }} تقييم Google)
+                            ({{ $business->googleData->google_reviews_count }} تقييم على Google)
                         @endif
-                    </span>
-                </div>
-            @endif
+                    </small>
 
-        </ul>
+                    @if($business->googleData?->google_reviews_url)
+                        <a href="{{ $business->googleData->google_reviews_url }}"
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                        class="text-primary text-decoration-underline text-sm">
+                            اقرأ المراجعات →
+                        </a>
+                    @endif
+                </div>
+            </div>
+        @endif
+
     </div>
+</div>
+
 
 
 

@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const latitude = @json($business->latitude ?? 29.3759);
     const longitude = @json($business->longitude ?? 47.9774);
     const address = @json($business->address ?? '');
+    const mapsUrl = @json($business->googleData->google_maps_url ?? '');
 
     let mapInitialized = false;
 
@@ -31,32 +32,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const marker = L.marker([latitude, longitude]).addTo(map);
 
+        // ✅ بناء محتوى الـ Popup
         if (address) {
-            marker.bindPopup(address).openPopup();
+            let popupContent = `<strong>${address}</strong>`;
+
+            if (mapsUrl) {
+                popupContent += `<br><a href="${mapsUrl}" target="_blank" rel="noopener" style="color: #0d6efd; text-decoration: underline;">عرض الاتجاهات على الخريطة 🚗</a>`;
+            }
+
+            marker.bindPopup(popupContent).openPopup();
         }
 
         L.control.scale().addTo(map);
         mapInitialized = true;
     };
 
-    // ✅ Lazy Load باستخدام IntersectionObserver
     const mapElement = document.getElementById('map');
     if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     loadMap();
-                    observer.unobserve(mapElement); // نوقف المراقبة بعد التحميل
+                    observer.unobserve(mapElement);
                 }
             });
         }, {
-            rootMargin: '0px 0px 200px 0px', // تحميل قبل الظهور الكامل بـ200px
+            rootMargin: '0px 0px 200px 0px',
         });
 
         observer.observe(mapElement);
     } else {
-        // المتصفح لا يدعم IntersectionObserver، نحمل الخريطة مباشرة
         loadMap();
     }
 });
 </script>
+
