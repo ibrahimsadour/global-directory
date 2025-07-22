@@ -1,30 +1,30 @@
 <header>
-    <!-- ✅ إشعار تنبيهي احترافي تحت الشعار -->
-<!-- ✅ إشعار تنبيهي أنيق تحت الشعار -->
-<div class="container-fluid py-2 px-3" style="background-color: #fff8db; border-bottom: 1px solid #ffe58f; font-size: 0.9rem;">
-    <div class="container position-relative d-flex flex-wrap align-items-center justify-content-center justify-content-md-between gap-2">
-        
-        <!-- زر X في الأعلى على اليمين (RTL) -->
-        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="إغلاق"
-            onclick="this.closest('.container-fluid').remove()"></button>
+    <!-- ✅ إشعار DalilGo -->
+    <div id="dalilgo-popup" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
+        <div class="bg-white w-full max-w-md mx-4 rounded-2xl p-6 shadow-lg relative text-center">
+            <!-- زر الإغلاق -->
+            <button onclick="closePopup()" class="absolute top-2 left-2 text-gray-500 hover:text-red-600 text-2xl">&times;</button>
 
-
-        <!-- الأيقونة + النص -->
-        <div class="d-flex align-items-center text-dark text-center text-md-start" style="max-width: 100%;">
-            <i class="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>
-            <div>
-                <strong>تنويه:</strong> منصة <strong>DalilGo</strong> ما زالت قيد التطوير. إذا واجهت مشكلة أو لديك اقتراح،
-                راسلنا عبر
-                <a href="https://wa.me/31616722566?text=مرحبًا، لدي ملاحظة حول منصة DalilGo..." target="_blank" class="text-success fw-bold text-decoration-underline">
-                    واتساب
-                </a>.
-            </div>
+            <!-- محتوى الإشعار -->
+            <h2 class="text-xl font-bold mb-3 text-yellow-700">🚧 تنويه هام</h2>
+            <p class="text-sm text-gray-700">
+                منصة <strong>DalilGo</strong> ما زالت قيد التطوير. نحن نعمل على تحسين التجربة باستمرار، ونقدّر زيارتك ودعمك 🙏
+            </p>
         </div>
-
     </div>
-</div>
 
+    <!-- ✅ JavaScript (تأخير 5 ثواني) -->
+    <script>
+        window.addEventListener('load', function () {
+            setTimeout(() => {
+                document.getElementById('dalilgo-popup').classList.remove('hidden');
+            }, 5000); // يظهر بعد 5 ثواني
+        });
 
+        function closePopup() {
+            document.getElementById('dalilgo-popup').classList.add('hidden');
+        }
+    </script>
 
 
     <div class="container head-container">

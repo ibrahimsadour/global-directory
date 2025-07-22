@@ -53,10 +53,11 @@ class AdminPanelProvider extends PanelProvider
         ->widgets([
             Widgets\AccountWidget::class,
             Widgets\FilamentInfoWidget::class,
-            StatsOverview::class,
-                \App\Filament\Widgets\BusinessChartWidget::class, // أضف هذا السطر
-
+            \App\Filament\Widgets\BusinessChartWidget::class,
+            \App\Filament\Widgets\TopViewedBusinessesChart::class,
+            \App\Filament\Widgets\StatsOverview::class,
         ])
+
 
 
         ->middleware([
