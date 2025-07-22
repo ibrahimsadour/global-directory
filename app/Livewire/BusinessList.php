@@ -66,19 +66,28 @@ class BusinessList extends Component
         }
 
         if (!is_null($this->ratingFilter)) {
-            $query->where('rating', '>=', $this->ratingFilter);
+            $query->whereHas('googleData', function ($q) {
+                $q->where('google_rating', '>=', $this->ratingFilter);
+            });
         }
 
         switch ($this->sort) {
             case 'oldest':
                 $query->oldest();
                 break;
+
             case 'high_rating':
-                $query->orderByDesc('rating');
+                $query->leftJoin('business_google_data', 'businesses.id', '=', 'business_google_data.business_id')
+                    ->orderByDesc('business_google_data.google_rating')
+                    ->select('businesses.*');
                 break;
+
             case 'low_rating':
-                $query->orderBy('rating');
+                $query->leftJoin('business_google_data', 'businesses.id', '=', 'business_google_data.business_id')
+                    ->orderBy('business_google_data.google_rating')
+                    ->select('businesses.*');
                 break;
+                
             case 'latest':
             default:
                 $query->latest();
