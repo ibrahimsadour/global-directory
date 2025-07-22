@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Business;
-use App\Models\Governorate;
 use App\Models\Category;
+use App\Models\Governorate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -24,9 +24,15 @@ class BusinessList extends Component
     protected $queryString = [
         'sort' => ['except' => 'latest'],
         'view' => ['except' => 'list'],
-        'selectedCategory' => ['except' => null],
-        'ratingFilter' => ['except' => null],
-        'selectedGovernorate' => ['except' => null],
+        'selectedCategory' => ['except' => null, 'as' => 'cat'],
+        'ratingFilter' => ['except' => null, 'as' => 'rating'],
+        'selectedGovernorate' => ['except' => null, 'as' => 'gov'],
+    ];
+
+    protected $casts = [
+        'selectedCategory' => 'integer',
+        'selectedGovernorate' => 'integer',
+        'ratingFilter' => 'integer',
     ];
 
     public function mount($categorySlug = null)
@@ -50,8 +56,23 @@ class BusinessList extends Component
 
     public function resetFilters()
     {
-        $this->reset(['sort', 'view', 'selectedCategory', 'ratingFilter', 'selectedGovernorate']);
+        $this->reset([
+            'sort',
+            'view',
+            'selectedCategory',
+            'ratingFilter',
+            'selectedGovernorate',
+        ]);
+
+        // إذا كان هناك slug للفئة، أعد التوجيه إليها
+        if ($this->initialCategorySlug) {
+            return redirect()->route('categories.show', ['slug' => $this->initialCategorySlug]);
+        }
+
+        // إذا لم يكن هناك فئة محددة، أعد التوجيه إلى صفحة كل النشاطات
+        return redirect()->route('categories.index');
     }
+
 
     public function render()
     {
@@ -87,7 +108,7 @@ class BusinessList extends Component
                     ->orderBy('business_google_data.google_rating')
                     ->select('businesses.*');
                 break;
-                
+
             case 'latest':
             default:
                 $query->latest();
