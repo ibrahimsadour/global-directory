@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('content');
+            $table->string('image')->nullable(); // ✅ مضاف حديثًا
+            $table->longText('content')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
             $table->timestamps();
         });
 
