@@ -13,18 +13,25 @@
         </div>
     </div>
 
-    <!-- ✅ JavaScript (تأخير 5 ثواني) -->
+    <!-- ✅ JavaScript مع localStorage -->
     <script>
         window.addEventListener('load', function () {
-            setTimeout(() => {
-                document.getElementById('dalilgo-popup').classList.remove('hidden');
-            }, 5000); // يظهر بعد 5 ثواني
+            // تحقق إذا سبق عرض الإشعار
+            const shown = localStorage.getItem('dalilgo-notice-shown');
+
+            if (!shown) {
+                setTimeout(() => {
+                    document.getElementById('dalilgo-popup').classList.remove('hidden');
+                    localStorage.setItem('dalilgo-notice-shown', 'yes'); // منع تكرار العرض
+                }, 5000);
+            }
         });
 
         function closePopup() {
             document.getElementById('dalilgo-popup').classList.add('hidden');
         }
     </script>
+
 
 
     <div class="container head-container">
