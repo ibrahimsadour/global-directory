@@ -60,7 +60,8 @@
     @endif
 
     {{-- ✅ عرض محتوى الصفحة (HTML من لوحة التحكم) --}}
-    <div class="prose max-w-none text-gray-800 leading-relaxed">
+    <div class="prose prose-blue max-w-none rtl text-gray-800 leading-loose
+        prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-blockquote:border-s-4 prose-blockquote:border-blue-400 prose-blockquote:ps-4 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-1 prose-code:rounded">
         {!! $page->content !!}
     </div>
 

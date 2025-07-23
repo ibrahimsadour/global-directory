@@ -21,6 +21,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Forms\Components\MarkdownEditor;
 
 class PageResource extends Resource
 {
@@ -55,9 +56,11 @@ class PageResource extends Resource
                             ->directory('pages-images')
                             ->imagePreviewHeight('150'),
 
-                        RichEditor::make('content')
+
+                        MarkdownEditor::make('content')
                             ->label('محتوى الصفحة')
-                            ->columnSpanFull(),
+                            ->required()
+                            ->columnSpanFull()
                     ]),
 
                 Section::make('إعدادات إضافية')
