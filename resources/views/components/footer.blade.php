@@ -60,7 +60,7 @@
                     <ul class="topc">
                         <li><a href="{{ route('pages.show', 'about') }}"><i class="bi bi-stop-circle"></i>من نحن</a></li>
                         <li><a href="{{ route('pages.show', 'contact') }}"><i class="bi bi-stop-circle"></i>اتصل بنا</a></li>
-                        <li><a href="{{ route('pages.show', 'faq') }}"><i class="bi bi-stop-circle"></i>الأسئلة الشائعة</a></li>
+                        <li><a href="{{ route('pages.show', 'help') }}"><i class="bi bi-stop-circle"></i>الأسئلة الشائعة</a></li>
                         <li><a href="{{ route('pages.show', 'privacy-policy') }}"><i class="bi bi-stop-circle"></i>سياسة الخصوصية</a></li>
                         <li><a href="{{ route('pages.show', 'terms-and-conditions') }}"><i class="bi bi-stop-circle"></i>الشروط والأحكام</a></li>
                         <li><a href="{{ url('/blog') }}"><i class="bi bi-stop-circle"></i>المدونة</a></li>
