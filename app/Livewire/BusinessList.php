@@ -123,7 +123,10 @@ class BusinessList extends Component
                 $categories = $parentCategory->children()->where('is_active', true)->get();
             }
         } else {
-            $categories = Category::with('children')
+            $categories = Category::withCount('businesses') // عدد نشاطات الفئة الرئيسية
+                ->with(['children' => function ($q) {
+                    $q->withCount('businesses')->where('is_active', 1); // عدد نشاطات الفئات الفرعية
+                }])
                 ->whereNull('parent_id')
                 ->where('is_active', true)
                 ->get();

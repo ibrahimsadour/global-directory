@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Illuminate\Support\Str;
+use App\Models\Business;
 
 class CategoryResource extends Resource
 {
@@ -204,10 +205,12 @@ class CategoryResource extends Resource
                         : null
                     ),
 
-                TextColumn::make('businesses_count')
+                TextColumn::make('total_businesses')
                     ->label('عدد النشاطات')
-                    ->counts('businesses')
-                    ->sortable(),
+                    ->getStateUsing(fn ($record) => 
+                        ($record->businesses_count ?? 0) + $record->children->sum('businesses_count')
+                ),
+
 
                 ToggleColumn::make('is_active')
                     ->label('مفعل؟')
@@ -246,24 +249,26 @@ class CategoryResource extends Resource
             ->defaultSort('id', 'desc');
     }
 
-public static function getEloquentQuery(): Builder
-{
-    // فقط في صفحة الفهرس (index) نقوم بتصفية حسب الفئة الأم
-    if (request()->routeIs('filament.admin.resources.categories.index')) {
-        $parentId = request()->get('parent');
+    public static function getEloquentQuery(): Builder
+    {
+        // فقط في صفحة الفهرس (index) نقوم بتصفية حسب الفئة الأم
+        if (request()->routeIs('filament.admin.resources.categories.index')) {
+            $parentId = request()->get('parent');
 
+            return parent::getEloquentQuery()
+                ->when($parentId, fn($query) => $query->where('parent_id', $parentId))
+                ->when(!$parentId, fn($query) => $query->whereNull('parent_id'))
+                ->withCount('businesses', 'children') // نضيف عدد الأنشطة والفرعية
+                ->with(['children' => fn($q) => $q->withCount('businesses')]) // نجلب عدد الأنشطة للأبناء
+                ->with('parent');
+        }
+
+        // في باقي الصفحات (edit, delete, toggle, bulk ...) نرجع الاستعلام كما هو
         return parent::getEloquentQuery()
-            ->when($parentId, fn($query) => $query->where('parent_id', $parentId))
-            ->when(!$parentId, fn($query) => $query->whereNull('parent_id'))
             ->withCount('businesses', 'children')
+            ->with(['children' => fn($q) => $q->withCount('businesses')])
             ->with('parent');
     }
-
-    // في باقي الصفحات (edit, delete, toggle, bulk ...) نرجع الاستعلام كما هو
-    return parent::getEloquentQuery()
-        ->withCount('businesses', 'children')
-        ->with('parent');
-}
 
 
 

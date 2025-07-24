@@ -55,7 +55,7 @@
                                             class="flex-1 flex items-center justify-between px-2 py-1 rounded-md bg-gray-100 text-blue-600 font-medium hover:bg-blue-50 transition ms-2">
                                         <span>{{ $category->name }}</span>
                                         <span class="flex items-center gap-1 text-xs">
-                                            ({{ $children->count() }})
+                                            ({{ $category->businesses_count + $children->sum('businesses_count') }})
                                             <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
                                         </span>
                                     </button>
@@ -69,7 +69,7 @@
                                                href="#"
                                                class="block px-3 py-1 rounded-md transition
                                                {{ $selectedCategory == $child->id ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' }}">
-                                                – {{ $child->name }}
+                                                – {{ $child->name }} ({{ $child->businesses_count }})
                                             </a>
                                         </li>
                                     @endforeach
