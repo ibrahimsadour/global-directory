@@ -10,15 +10,15 @@
 ])
 
 <!-- ✅ كارد موحد يحتوي جميع الفلاتر -->
-<div class="bg-white shadow-md rounded-2xl p-5 space-y-8">
+<div class="bg-white shadow-md rounded-2xl p-5 space-y-6">
 
     {{-- ✅ الفئات --}}
-    <div>
-        <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-800 flex items-center gap-2">
+    <div class="space-y-3 pb-4 border-b">
+        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
             <i class="bi bi-layers text-blue-500 text-xl"></i>
             تصفية حسب الفئات
         </h2>
-
+        {{-- محتوى الفئات --}}
         <ul class="space-y-2 text-sm text-gray-700">
             {{-- الفئة الرئيسية --}}
             @if(isset($parentCategory))
@@ -97,12 +97,11 @@
     </div>
 
     {{-- ✅ المحافظات --}}
-    <div>
-        <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-800 flex items-center gap-2">
+    <div class="space-y-3 pb-4 border-b">
+        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
             <i class="bi bi-geo-alt-fill text-red-500 text-xl"></i>
             تصفية حسب المحافظات
         </h2>
-
         <div class="flex flex-wrap gap-2">
             <button
                 wire:click="$set('selectedGovernorate', null)"
@@ -112,7 +111,6 @@
                         : 'bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-600 border-gray-200' }}">
                 الكل
             </button>
-
             @foreach($governorates as $gov)
                 <button
                     wire:click="$set('selectedGovernorate', {{ $gov->id }})"
@@ -129,63 +127,52 @@
         </div>
     </div>
 
-{{-- ✅ المدن --}}
-<div>
-    <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-800 flex items-center gap-2">
-        <i class="bi bi-building text-green-500 text-xl"></i>
-        تصفية حسب المدن
-    </h2>
-
-    @if(empty($selectedGovernorate))
-        <p class="text-gray-500 text-sm italic">يرجى اختيار محافظة لعرض المدن.</p>
-    @else
-        <div class="flex flex-wrap gap-2">
-            {{-- زر الكل --}}
-            <button
-                wire:click="$set('selectedLocation', null)"
-                class="px-3 py-1 text-sm rounded-full border font-medium transition
-                    {{ is_null($selectedLocation)
-                        ? 'bg-green-500 text-white border-green-500 shadow'
-                        : 'bg-gray-100 text-gray-700 hover:bg-green-50 hover:text-green-600 border-gray-200' }}">
-                الكل
-                @if(is_null($selectedLocation))
-                    <i class="bi bi-check2-circle ml-1"></i>
-                @endif
-            </button>
-
-            {{-- أزرار المدن --}}
-            @forelse($locations as $loc)
+    {{-- ✅ المدن --}}
+    <div class="space-y-3 pb-4 border-b">
+        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            <i class="bi bi-building text-green-500 text-xl"></i>
+            تصفية حسب المدن
+        </h2>
+        @if(empty($selectedGovernorate))
+            <p class="text-gray-500 text-sm italic">يرجى اختيار محافظة لعرض المدن.</p>
+        @else
+            <div class="flex flex-wrap gap-2">
                 <button
-                    wire:click="$set('selectedLocation', {{ $loc->id }})"
-                    class="px-3 py-1 text-sm rounded-full border transition
-                        {{ $selectedLocation == $loc->id
+                    wire:click="$set('selectedLocation', null)"
+                    class="px-3 py-1 text-sm rounded-full border font-medium transition
+                        {{ is_null($selectedLocation)
                             ? 'bg-green-500 text-white border-green-500 shadow'
                             : 'bg-gray-100 text-gray-700 hover:bg-green-50 hover:text-green-600 border-gray-200' }}">
-                    {{ $loc->area }}
-                    @if($selectedLocation == $loc->id)
+                    الكل
+                    @if(is_null($selectedLocation))
                         <i class="bi bi-check2-circle ml-1"></i>
                     @endif
                 </button>
-            @empty
-                <span class="text-gray-400 text-sm">لا توجد مدن متاحة لهذه المحافظة</span>
-            @endforelse
-        </div>
-    @endif
-</div>
-
-
-<p class="text-xs text-gray-500 mt-2">
-    Debug: selectedLocation = {{ $selectedLocation ?? 'null' }}
-</p>
-
+                @forelse($locations as $loc)
+                    <button
+                        wire:click="$set('selectedLocation', {{ $loc->id }})"
+                        class="px-3 py-1 text-sm rounded-full border transition
+                            {{ $selectedLocation == $loc->id
+                                ? 'bg-green-500 text-white border-green-500 shadow'
+                                : 'bg-gray-100 text-gray-700 hover:bg-green-50 hover:text-green-600 border-gray-200' }}">
+                        {{ $loc->area }}
+                        @if($selectedLocation == $loc->id)
+                            <i class="bi bi-check2-circle ml-1"></i>
+                        @endif
+                    </button>
+                @empty
+                    <span class="text-gray-400 text-sm">لا توجد مدن متاحة لهذه المحافظة</span>
+                @endforelse
+            </div>
+        @endif
+    </div>
 
     {{-- ✅ التقييمات --}}
-    <div>
-        <h2 class="text-lg font-semibold border-b pb-2 mb-4 text-gray-800 flex items-center gap-2">
+    <div class="space-y-3 pb-4 border-b">
+        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
             <i class="bi bi-star-fill text-yellow-500 text-xl"></i>
             تصفية حسب التقييمات
         </h2>
-
         <ul class="space-y-2 text-sm">
             @for($i = 5; $i >= 0; $i--)
                 <li>
@@ -195,13 +182,11 @@
                                name="rating"
                                wire:click="$set('ratingFilter', {{ $i }})"
                                class="form-radio text-blue-600 focus:ring-0">
-
                         <div class="flex text-yellow-400">
                             @for($j = 0; $j < 5; $j++)
                                 <i class="bi {{ $j < $i ? 'bi-star-fill' : 'bi-star' }}"></i>
                             @endfor
                         </div>
-
                         <span class="text-xs text-gray-500">
                             @if($i === 5) ممتاز
                             @elseif($i === 4) جيد جدًا
@@ -218,7 +203,7 @@
     </div>
 
     {{-- ✅ زر إعادة تعيين الفلاتر --}}
-    <div class="text-center pt-3 border-t">
+    <div class="text-center pt-3">
         <button wire:click="resetFilters"
             class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 text-sm font-medium rounded hover:bg-red-100 transition mt-4 shadow-sm">
             <i class="bi bi-x-circle-fill text-base"></i>

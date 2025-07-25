@@ -10,7 +10,7 @@
         <div class="flex items-center gap-2 relative">
             <label for="sort" class="text-sm whitespace-nowrap">ترتيب حسب:</label>
 
-            <div class="relative w-40">
+            <div class="relative w-28">
                 <select
                     wire:model.change="sort"
                     id="sort"

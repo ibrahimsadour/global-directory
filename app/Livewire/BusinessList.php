@@ -104,7 +104,18 @@ class BusinessList extends Component
 
         // فلترة حسب الفئة
         if ($this->selectedCategory) {
-            $query->where('category_id', $this->selectedCategory);
+            // احصل على الفئة المحددة
+            $category = Category::find($this->selectedCategory);
+
+            if ($category) {
+                // جميع الفروع (الأبناء)
+                $subCategoryIds = $category->children()->pluck('id')->toArray();
+                
+                // أضف الفئة الرئيسية نفسها إلى القائمة
+                $allCategoryIds = array_merge([$category->id], $subCategoryIds);
+
+                $query->whereIn('category_id', $allCategoryIds);
+            }
         }
 
         // فلترة المدن عند اختيار المحافظة
