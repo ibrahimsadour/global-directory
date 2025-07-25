@@ -46,8 +46,8 @@
         
         <div class="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl p-4 shadow-2xl relative mx-auto">
             <button @click="openFilters = false"
-                    class="absolute top-2 left-2 text-gray-600 hover:text-red-600 text-lg">
-                <i class="bi bi-x-lg"></i>
+                    class="absolute top-3 right-3 bg-white border border-gray-300 rounded-full p-1 text-gray-600 hover:text-red-600 shadow-md z-50">
+                <i class="bi bi-x-lg text-lg"></i>
             </button>
 
             {{-- ✅ تضمين الفلاتر --}}
