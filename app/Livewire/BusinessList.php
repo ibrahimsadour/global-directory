@@ -6,6 +6,7 @@ use App\Models\Business;
 use App\Models\Category;
 use App\Models\Governorate;
 use Livewire\Component;
+use App\Models\Location;
 use Livewire\WithPagination;
 
 class BusinessList extends Component
@@ -16,10 +17,13 @@ class BusinessList extends Component
 
     public string $sort = 'latest';
     public string $view = 'list';
-    public ?int $selectedCategory = null;
-    public ?int $selectedGovernorate = null;
-    public ?int $ratingFilter = null;
+    public $selectedCategory = null;
+    public $selectedGovernorate = null;
+    public $ratingFilter = null;
+    public $selectedLocation = null;
     public ?string $initialCategorySlug = null;
+    public $governorates = [];
+    public $locations;
 
     protected $queryString = [
         'sort' => ['except' => 'latest'],
@@ -27,29 +31,46 @@ class BusinessList extends Component
         'selectedCategory' => ['except' => null, 'as' => 'cat'],
         'ratingFilter' => ['except' => null, 'as' => 'rating'],
         'selectedGovernorate' => ['except' => null, 'as' => 'gov'],
+        'selectedLocation' => ['except' => null, 'as' => 'loc'],
     ];
 
     protected $casts = [
         'selectedCategory' => 'integer',
         'selectedGovernorate' => 'integer',
         'ratingFilter' => 'integer',
+        'selectedLocation' => 'integer',
     ];
 
     public function mount($categorySlug = null)
     {
         $this->initialCategorySlug = $categorySlug;
-
+        $this->governorates = Governorate::all();
+        $this->locations = collect(); // Collection فارغة        
         if ($categorySlug) {
             $category = Category::where('slug', $categorySlug)->first();
             if ($category) {
                 $this->selectedCategory = $category->id;
             }
         }
+
+        
     }
+    public function updatedSelectedGovernorate($value)
+    {
+        $this->selectedLocation = null; // تصفير المدينة
+        $govId = (int) $value;
+        $this->locations = Location::where('governorate_id', $govId)->get();
+
+        logger()->info('Governorate Selected', [
+            'gov_id' => $govId,
+            'locations_count' => $this->locations->count()
+        ]);
+    }
+
 
     public function updating($property)
     {
-        if (in_array($property, ['sort', 'view', 'selectedCategory', 'ratingFilter', 'selectedGovernorate'], true)) {
+        if (in_array($property, ['sort', 'view', 'selectedCategory', 'ratingFilter', 'selectedGovernorate', 'selectedLocation'], true)) {
             $this->resetPage();
         }
     }
@@ -62,6 +83,7 @@ class BusinessList extends Component
             'selectedCategory',
             'ratingFilter',
             'selectedGovernorate',
+            'selectedLocation',
         ]);
 
         // إذا كان هناك slug للفئة، أعد التوجيه إليها
@@ -76,44 +98,53 @@ class BusinessList extends Component
 
     public function render()
     {
+        logger()->info('Governorate ID', ['selected' => $this->selectedGovernorate]);
+
         $query = Business::query();
 
+        // فلترة حسب الفئة
         if ($this->selectedCategory) {
             $query->where('category_id', $this->selectedCategory);
         }
 
-        if ($this->selectedGovernorate) {
-            $query->where('governorate_id', $this->selectedGovernorate);
+        // فلترة المدن عند اختيار المحافظة
+        if ($this->selectedGovernorate && $this->locations->isEmpty()) {
+            $this->locations = Location::where('governorate_id', (int)$this->selectedGovernorate)->get();
         }
 
+        // فلترة حسب المدينة
+        if ($this->selectedLocation) {
+            $query->where('location_id', $this->selectedLocation);
+        }
+
+        // فلترة حسب التقييم
         if (!is_null($this->ratingFilter)) {
             $query->whereHas('googleData', function ($q) {
                 $q->where('google_rating', '>=', $this->ratingFilter);
             });
         }
 
+        // ترتيب النتائج
         switch ($this->sort) {
             case 'oldest':
                 $query->oldest();
                 break;
-
             case 'high_rating':
                 $query->leftJoin('business_google_data', 'businesses.id', '=', 'business_google_data.business_id')
                     ->orderByDesc('business_google_data.google_rating')
                     ->select('businesses.*');
                 break;
-
             case 'low_rating':
                 $query->leftJoin('business_google_data', 'businesses.id', '=', 'business_google_data.business_id')
                     ->orderBy('business_google_data.google_rating')
                     ->select('businesses.*');
                 break;
-
             case 'latest':
             default:
                 $query->latest();
         }
 
+        // الفئات
         $parentCategory = null;
         $categories = [];
 
@@ -123,9 +154,9 @@ class BusinessList extends Component
                 $categories = $parentCategory->children()->where('is_active', true)->get();
             }
         } else {
-            $categories = Category::withCount('businesses') // عدد نشاطات الفئة الرئيسية
+            $categories = Category::withCount('businesses')
                 ->with(['children' => function ($q) {
-                    $q->withCount('businesses')->where('is_active', 1); // عدد نشاطات الفئات الفرعية
+                    $q->withCount('businesses')->where('is_active', 1);
                 }])
                 ->whereNull('parent_id')
                 ->where('is_active', true)
@@ -140,6 +171,9 @@ class BusinessList extends Component
             'selectedGovernorate' => $this->selectedGovernorate,
             'ratingFilter' => $this->ratingFilter,
             'parentCategory' => $parentCategory,
+            'locations' => $this->locations, // الخاصية الرئيسية
+            'selectedLocation' => $this->selectedLocation,
         ]);
     }
+
 }

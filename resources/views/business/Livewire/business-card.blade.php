@@ -26,10 +26,18 @@
                 @endif
 
                 {{-- <div><i class="bi bi-envelope"></i> {{ $business->email }}</div> --}}
-                
-                @if($business->governorate?->name)
-                    <div><i class="bi bi-geo-alt"></i> {{ $business->governorate->name }}</div>
+                {{-- {{ dd($business->toArray()) }} --}}
+
+                @if($business->governorate?->name || $business->location?->name)
+                    <div>
+                        <i class="bi bi-geo-alt"></i>
+                        {{ $business->governorate->name ?? '' }}
+                        @if($business->location->area ?? '')
+                            - {{ $business->location->area }}
+                        @endif
+                    </div>
                 @endif
+
                 @php
                     $status = $business->getOpeningStatus();
                 @endphp

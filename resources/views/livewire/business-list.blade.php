@@ -2,8 +2,10 @@
     <x-filters-popup 
         :categories="$categories" 
         :governorates="$governorates"
+        :locations="$locations"
         :selectedCategory="$selectedCategory"
         :selectedGovernorate="$selectedGovernorate"
+        :selectedLocation="$selectedLocation"
         :ratingFilter="$ratingFilter"
         :parentCategory="$parentCategory"
     >

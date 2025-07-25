@@ -3,6 +3,7 @@
     'governorates',
     'selectedCategory' => null,
     'selectedGovernorate' => null,
+    'selectedLocation' => null,
     'ratingFilter' => null,
     'parentCategory' => null,
 
@@ -24,8 +25,11 @@
                 'governorates' => $governorates,
                 'selectedCategory' => $selectedCategory,
                 'selectedGovernorate' => $selectedGovernorate,
+                'selectedLocation' => $selectedLocation, // ← أضفنا هذا
                 'ratingFilter' => $ratingFilter,
+                'parentCategory' => $parentCategory,
             ])
+
         </aside>
 
         <!-- المحتوى الرئيسي -->
@@ -52,6 +56,7 @@
                 'governorates' => $governorates,
                 'selectedCategory' => $selectedCategory,
                 'selectedGovernorate' => $selectedGovernorate,
+                'selectedLocation' => $selectedLocation,
                 'ratingFilter' => $ratingFilter,
                 'parentCategory' => $parentCategory // ← هنا الجديد
 
