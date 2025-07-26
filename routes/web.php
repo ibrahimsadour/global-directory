@@ -38,7 +38,6 @@ Route::get('/locations/{slug}', [LocationController::class, 'show'])->name('loca
 
 Route::get('/business/{slug}', [BusinessController::class, 'show'])->name('business.show');
 
-Route::get('/{slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
 
 // Sitemap.xml
 Route::get('/sitemap.xml', function () {
@@ -136,3 +135,4 @@ Route::get('/robots.txt', function () {
 });
 
 
+Route::get('/{slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
