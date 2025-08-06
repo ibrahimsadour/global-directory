@@ -77,6 +77,8 @@ class ImportBusinessRowJob implements ShouldQueue
                 ? preg_replace('/\s+/', '-', trim(preg_replace('/[^\p{Arabic}\p{L}\p{N}\s]/u', '', $slugSource)))
                 : Str::slug($slugSource);
 
+
+            // ✅ تحقق من place_id أولاً
             if (!empty($row['place_id']) && Business::where('place_id', $row['place_id'])->exists()) {
                 $message = "ℹ️ النشاط '{$row['name']}' تم تجاهله: place_id مكرر ({$row['place_id']}).";
                 Notification::make()->title($message)->warning()->send();
@@ -92,15 +94,36 @@ class ImportBusinessRowJob implements ShouldQueue
                 return;
             }
 
+            // ✅ توليد الـ slug الأساسي
+            $slugSource = $row['slug'] ?? $row['name'];
+            $slug = preg_match('/[\p{Arabic}]/u', $slugSource)
+                ? preg_replace('/\s+/', '-', trim(preg_replace('/[^\p{Arabic}\p{L}\p{N}\s]/u', '', $slugSource)))
+                : Str::slug($slugSource);
 
-            // ثم: تحقق من slug
+            // ✅ تحقق من تكرار الـ slug فقط، مع السماح بإنشاء نسخة جديدة باسم المدينة
             if (Business::where('slug', $slug)->exists()) {
-                $message = "ℹ️ النشاط '{$row['name']}' تم تجاهله: slug مكرر ({$slug}).";
-                Notification::make()->title($message)->warning()->send();
-                Log::build(['driver' => 'single', 'path' => storage_path('logs/import-businesses.log')])
-                    ->info($message);
-                return;
+                $location = Location::find($row['location_id']);
+                $locationName = $location?->area ?? '';
+
+                // تعديل الاسم
+                $row['name'] .= ' ' . $locationName;
+
+                // توليد slug جديد بعد إضافة اسم المدينة
+                $slugSource = $row['name'];
+                $slug = preg_match('/[\p{Arabic}]/u', $slugSource)
+                    ? preg_replace('/\s+/', '-', trim(preg_replace('/[^\p{Arabic}\p{L}\p{N}\s]/u', '', $slugSource)))
+                    : Str::slug($slugSource);
+
+                // تحقق مرة أخرى بعد التعديل
+                if (Business::where('slug', $slug)->exists()) {
+                    $message = "ℹ️ النشاط '{$row['name']}' تم تجاهله: slug مكرر ({$slug}) حتى بعد إضافة المدينة.";
+                    Notification::make()->title($message)->warning()->send();
+                    Log::build(['driver' => 'single', 'path' => storage_path('logs/import-businesses.log')])
+                        ->info($message);
+                    return;
+                }
             }
+
 
             // توليد الوصف
             $description = $row['description'] ?? $this->generateDescription(
