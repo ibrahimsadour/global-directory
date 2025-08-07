@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer(['components.header', 'components.footer'], function ($view) {
+        View::composer(['components.head', 'components.footer'], function ($view) {
             $categories = Category::where('is_active', 1)->get();
             $governorates = Governorate::where('is_active', 1)->get();
 

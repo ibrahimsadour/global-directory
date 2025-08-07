@@ -134,5 +134,5 @@ Route::get('/robots.txt', function () {
         ->header('Content-Type', 'text/plain');
 });
 
-
+require __DIR__.'/auth.php';
 Route::get('/{slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');

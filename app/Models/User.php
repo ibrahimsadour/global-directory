@@ -51,15 +51,6 @@ class User extends Authenticatable
         return $this->role === 'user';
     }
     
-    protected static function booted()
-    {
-        static::saving(function ($user) {
-            if ($user->isDirty('password')) {
-                $user->password = bcrypt($user->password);
-            }
-        });
-    }
-
     /**
      * The attributes that should be hidden for serialization.
      *

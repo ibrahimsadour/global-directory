@@ -62,26 +62,55 @@
 
                 <div class="offcanvas home-mobile-menu offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
-                        <h4>مرحباً بالضيف</h4>
+                        @auth
+                            <h4>مرحباً، {{ Auth::user()->name }}</h4>
+                        @else
+                            <h4>مرحباً بالضيف</h4>
+                        @endauth
                         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-house-door"></i> الرئيسية</a>
+                                <a class="nav-link active" aria-current="page" href="{{ route('home.index') }}">
+                                    <i class="bi bi-house-door"></i> الرئيسية
+                                </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-plus-square"></i> اضف موقعك</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="bi bi-unlock"></i> تسجيل الدخول</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="bi bi-person-plus"></i> التسجيل</a>
-                            </li>
+
+                            @auth
+                                <!-- للمستخدمين المسجلين -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('user.business.create') }}">
+                                        <i class="bi bi-plus-square"></i> أضف نشاطك
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="nav-link bg-transparent border-0 text-start w-100">
+                                            <i class="bi bi-box-arrow-right"></i> تسجيل الخروج
+                                        </button>
+                                    </form>
+                                </li>
+                            @endauth
+
+                            @guest
+                                <!-- للزوار فقط -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">
+                                        <i class="bi bi-unlock"></i> تسجيل الدخول
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">
+                                        <i class="bi bi-person-plus"></i> التسجيل
+                                    </a>
+                                </li>
+                            @endguest
                         </ul>
                     </div>
                 </div>
+
             </div>
             <div class="col-lg-5 d-none d-lg-block col-md-8 search">
                 <div class="search-row row no-margin">
