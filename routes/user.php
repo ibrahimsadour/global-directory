@@ -18,28 +18,38 @@ use App\Http\Controllers\User\ReviewController;
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
     Route::get('/my-business', [DashboardController::class, 'business'])->name('my-business');
 
-    // اعدادت الملف الشخصي
+    // الملف الشخصي
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    // إعدادات الحساب لتغيير كلمة المرور
+    // إعدادات الحساب
     Route::get('/settings', [ProfileController::class, 'settings'])->name('settings');
     Route::post('/settings/password', [ProfileController::class, 'updatePassword'])->name('password.update');
 
-    // الأنشطة التجارية
-    Route::get('/business/create', [BusinessController::class, 'create'])->name('business.create'); // نموذج الإضافة
-    Route::post('/business', [BusinessController::class, 'store'])->name('business.store');        // حفظ البيانات
+    // 🔹 خطوات إضافة النشاط التجاري (Wizard)
+    Route::prefix('business')->name('business.')->group(function () {
+        Route::get('/create', fn() => redirect()->route('user.business.step1'))->name('create');
 
-    Route::get('/business/{id}/edit', [BusinessController::class, 'edit'])->name('business.edit'); // نموذج التعديل
-    Route::put('/business/{id}', [BusinessController::class, 'update'])->name('business.update');  // تعديل البيانات
+        Route::get('/step1', [BusinessController::class, 'step1'])->name('step1');
+        Route::post('/step1', [BusinessController::class, 'step1Store'])->name('step1.store');
 
-    Route::delete('/business/{id}', [BusinessController::class, 'destroy'])->name('business.destroy'); // حذف النشاط
+        Route::get('/step2', [BusinessController::class, 'step2'])->name('step2');
+        Route::post('/step2', [BusinessController::class, 'step2Store'])->name('step2.store');
 
-    Route::get('/business/{id}', [BusinessController::class, 'show'])->name('business.show'); // عرض التفاصيل (اختياري)    
+        Route::get('/step3', [BusinessController::class, 'step3'])->name('step3');
+        Route::post('/step3', [BusinessController::class, 'step3Store'])->name('step3.store');
+        // ... تكمل باقي الخطوات بنفس النمط
+        Route::get('/finish', [BusinessController::class, 'finish'])->name('finish');
 
+        // CRUD الأساسي (لو حبيت تخليهم برضو)
+        // Route::post('/', [BusinessController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [BusinessController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [BusinessController::class, 'update'])->name('update');
+        Route::delete('/{id}', [BusinessController::class, 'destroy'])->name('destroy');
+        Route::get('/{id}', [BusinessController::class, 'show'])->name('show');
+    });
 });
 
 // Route::middleware('auth')->group(function () {

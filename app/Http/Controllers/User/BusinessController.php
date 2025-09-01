@@ -5,19 +5,17 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Business;
+use App\Models\BusinessHour;
+use App\Models\BusinessSocialLink;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use App\Services\CategoryService;
 use App\Services\LocationService;
 use App\Services\GovernorateService;
-use Illuminate\Database\QueryException;
 
 class BusinessController extends Controller
 {
-
-
     protected $categoryService;
     protected $locationService;
     protected $governorateService;
@@ -32,18 +30,19 @@ class BusinessController extends Controller
         $this->governorateService = $governorateService;
     }
 
-
-    public function create()
+    /**
+     * ============= STEP 1: البيانات الأساسية =============
+     */
+    public function step1()
     {
         $categories = $this->categoryService->getCategoriesForHome();
-        $locations = []; // غير ضروري الآن لأننا سنستخدم governorates->locations
         $governorates = $this->governorateService->getAllGovernorates();
+        $data = session('business', []);
 
-        return view('user.business.create', compact('categories', 'governorates'));
-
+        return view('user.business.step1', compact('categories', 'governorates', 'data'));
     }
 
-    public function store(Request $request)
+    public function step1Store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -56,98 +55,131 @@ class BusinessController extends Controller
             'whatsapp' => 'nullable|string',
             'address' => 'nullable|string',
             'phone' => 'nullable|string',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        try {
-            $business = new Business($validated);
-            $business->user_id = Auth::id();
-            $business->slug = Str::slug($request->name);
+        session()->put('business', array_merge(session('business', []), $validated));
 
-            if ($request->hasFile('image')) {
-                $path = $request->file('image')->store('business/images', 'public');
-                $business->image = $path;
+        return redirect()->route('user.business.step2');
+    }
+
+    /**
+     * ============= STEP 2: رفع الشعار والمعرض =============
+     */
+    public function step2()
+    {
+        $data = session('business', []);
+        return view('user.business.step2', compact('data'));
+    }
+
+    public function step2Store(Request $request)
+    {
+        $validated = $request->validate([
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'gallery.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('temp/business/images', 'public');
+            $validated['image'] = $path;
+        }
+
+        if ($request->hasFile('gallery')) {
+            $galleryPaths = [];
+            foreach ($request->file('gallery') as $file) {
+                $galleryPaths[] = $file->store('temp/business/gallery', 'public');
+            }
+            $validated['gallery'] = $galleryPaths;
+        }
+
+        session()->put('business', array_merge(session('business', []), $validated));
+
+        return redirect()->route('user.business.step3');
+    }
+
+    /**
+     * ============= STEP 3: أوقات الدوام + روابط التواصل =============
+     */
+    public function step3()
+    {
+        $business = session('business', []);
+        return view('user.business.step3', compact('business'));
+    }
+
+    public function step3Store(Request $request)
+    {
+        $validated = $request->validate([
+            // أوقات العمل (لكل يوم)
+            'hours' => 'nullable|array',
+            'hours.*.day' => 'required|string|in:saturday,sunday,monday,tuesday,wednesday,thursday,friday',
+            'hours.*.open_time' => 'nullable|date_format:H:i',
+            'hours.*.close_time' => 'nullable|date_format:H:i',
+
+            // روابط التواصل
+            'facebook'  => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'twitter'   => 'nullable|url',
+            'linkedin'  => 'nullable|url',
+            'youtube'   => 'nullable|url',
+            'tiktok'    => 'nullable|url',
+        ]);
+
+        // حفظ بالجلسة
+        $business = session('business', []);
+        $business['step3'] = $validated;
+        session(['business' => $business]);
+
+        return redirect()->route('user.business.finish');
+    }
+
+    /**
+     * ============= FINISH: إنهاء وحفظ النشاط =============
+     */
+    public function finish()
+    {
+        $data = session('business', []);
+
+        if (empty($data)) {
+            return redirect()->route('user.business.step1')
+                ->withErrors(['general' => 'لم يتم إدخال بيانات النشاط.']);
+        }
+
+        try {
+            $business = new Business();
+            $business->fill($data);
+            $business->user_id = Auth::id();
+
+            // ✅ توليد slug
+            $slug = Str::slug($data['name']);
+
+            // ✅ تحقق إذا نفس المستخدم أضاف النشاط من قبل
+            if (Business::where('slug', $slug)->where('user_id', Auth::id())->exists()) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['name' => 'لقد قمت بإضافة هذا النشاط مسبقاً.']);
+            }
+
+            $business->slug = $slug;
+
+            // ✅ الشعار
+            if (!empty($data['image'])) {
+                $business->image = $data['image'];
             }
 
             $business->save();
 
-            return redirect()->back()->with('success', 'تم حفظ النشاط بنجاح.');
-
-        } catch (QueryException $e) {
-            if ($e->getCode() == 23000) {
-                // خطأ تكرار
-                return redirect()->back()
-                    ->withInput()
-                    ->withErrors(['name' => 'تم استخدام هذا الاسم من قبل. الرجاء اختيار اسم مختلف.']);
+            // ✅ المعرض (اختياري)
+            if (!empty($data['gallery'])) {
+                foreach ($data['gallery'] as $file) {
+                    // BusinessImage::create(['business_id' => $business->id, 'path' => $file]);
+                }
             }
 
-            // أخطاء أخرى
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(['general' => 'حدث خطأ غير متوقع. الرجاء المحاولة لاحقًا.']);
+            session()->forget('business');
+
+            return redirect()->route('user.dashboard')->with('success', 'تم حفظ النشاط بنجاح.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['general' => 'حدث خطأ غير متوقع: ' . $e->getMessage()]);
         }
     }
 
-    public function edit($id)
-    {
-        $business = Business::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-        return view('business.edit', compact('business'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $business = Business::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'location_id' => 'required|exists:locations,id',
-            'governorate_id' => 'required|exists:governorates,id',
-            'email' => 'nullable|email',
-            'website' => 'nullable|url',
-            'whatsapp' => 'nullable|string',
-            'address' => 'nullable|string',
-            'phone' => 'nullable|string',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        $business->fill($validated);
-        $business->slug = Str::slug($request->name);
-
-        if ($request->hasFile('image')) {
-            if ($business->image) {
-                Storage::disk('public')->delete($business->image);
-            }
-            $path = $request->file('image')->store('business/images', 'public');
-            $business->image = $path;
-        }
-
-        $business->save();
-
-        return redirect()->route('user.my-listings')->with('success', 'Business updated successfully.');
-    }
-
-    public function destroy($id)
-    {
-        $business = Business::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-
-        if ($business->image) {
-            Storage::disk('public')->delete($business->image);
-        }
-
-        $business->delete();
-
-        return redirect()->route('user.my-listings')->with('success', 'Business deleted successfully.');
-    }
-
-    public function show($id)
-    {
-        $business = Business::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-        return view('business.show', compact('business'));
-    }
 }
