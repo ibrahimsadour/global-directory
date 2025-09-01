@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Review extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'business_id',
+        'rating',
+        'message',
+        'is_approved',
+    ];
     
     protected $casts = [
     'approved' => 'boolean',

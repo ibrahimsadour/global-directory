@@ -108,13 +108,13 @@ class BusinessController extends Controller
     public function step3Store(Request $request)
     {
         $validated = $request->validate([
-            // أوقات العمل (لكل يوم)
             'hours' => 'nullable|array',
             'hours.*.day' => 'required|string|in:saturday,sunday,monday,tuesday,wednesday,thursday,friday',
-            'hours.*.open_time' => 'nullable|date_format:H:i',
-            'hours.*.close_time' => 'nullable|date_format:H:i',
+            'hours.*.open_hour' => 'nullable|integer',
+            'hours.*.open_period' => 'nullable|in:AM,PM',
+            'hours.*.close_hour' => 'nullable|integer',
+            'hours.*.close_period' => 'nullable|in:AM,PM',
 
-            // روابط التواصل
             'facebook'  => 'nullable|url',
             'instagram' => 'nullable|url',
             'twitter'   => 'nullable|url',
@@ -123,13 +123,35 @@ class BusinessController extends Controller
             'tiktok'    => 'nullable|url',
         ]);
 
+        // معالجة ساعات العمل وتحويلها إلى open_time/close_time
+        $hours = [];
+        if (!empty($validated['hours'])) {
+            foreach ($validated['hours'] as $row) {
+                if (!empty($row['open_hour']) && !empty($row['close_hour'])) {
+                    $open_time  = $row['open_hour'] . ':00 ' . $row['open_period'];   // مثال: 9:00 AM
+                    $close_time = $row['close_hour'] . ':00 ' . $row['close_period']; // مثال: 5:00 PM
+
+                    $hours[] = [
+                        'day' => $row['day'],
+                        'open_time' => date('H:i', strtotime($open_time)),
+                        'close_time' => date('H:i', strtotime($close_time)),
+                    ];
+                }
+            }
+        }
+
+        // روابط التواصل
+        $socialLinks = $request->only(['facebook','instagram','twitter','linkedin','youtube','tiktok']);
+
         // حفظ بالجلسة
         $business = session('business', []);
-        $business['step3'] = $validated;
+        $business['hours'] = $hours;
+        $business['social_links'] = $socialLinks;
         session(['business' => $business]);
 
         return redirect()->route('user.business.finish');
     }
+
 
     /**
      * ============= FINISH: إنهاء وحفظ النشاط =============
@@ -144,36 +166,47 @@ class BusinessController extends Controller
         }
 
         try {
+            // إنشاء النشاط
             $business = new Business();
-            $business->fill($data);
-            $business->user_id = Auth::id();
-
-            // ✅ توليد slug
-            $slug = Str::slug($data['name']);
-
-            // ✅ تحقق إذا نفس المستخدم أضاف النشاط من قبل
-            if (Business::where('slug', $slug)->where('user_id', Auth::id())->exists()) {
-                return redirect()->back()
-                    ->withInput()
-                    ->withErrors(['name' => 'لقد قمت بإضافة هذا النشاط مسبقاً.']);
-            }
-
-            $business->slug = $slug;
-
-            // ✅ الشعار
-            if (!empty($data['image'])) {
-                $business->image = $data['image'];
-            }
-
+            $business->fill([
+                'user_id'       => Auth::id(),
+                'category_id'   => $data['category_id'] ?? null,
+                'location_id'   => $data['location_id'] ?? null,
+                'governorate_id'=> $data['governorate_id'] ?? null,
+                'name'          => $data['name'] ?? '',
+                'description'   => $data['description'] ?? null,
+                'phone'         => $data['phone'] ?? null,
+                'email'         => $data['email'] ?? null,
+                'website'       => $data['website'] ?? null,
+                'whatsapp'      => $data['whatsapp'] ?? null,
+                'address'       => $data['address'] ?? null,
+                'image'         => $data['image'] ?? null,
+                'gallery'       => !empty($data['gallery']) ? json_encode($data['gallery']) : null,
+            ]);
+            $business->slug = Str::slug($business->name);
             $business->save();
 
-            // ✅ المعرض (اختياري)
-            if (!empty($data['gallery'])) {
-                foreach ($data['gallery'] as $file) {
-                    // BusinessImage::create(['business_id' => $business->id, 'path' => $file]);
+            // حفظ ساعات العمل
+            if (!empty($data['hours'])) {
+                foreach ($data['hours'] as $row) {
+                    BusinessHour::create([
+                        'business_id' => $business->id,
+                        'day'         => $row['day'],
+                        'open_time'   => $row['open_time'],
+                        'close_time'  => $row['close_time'],
+                    ]);
                 }
             }
 
+            // حفظ روابط التواصل
+            if (!empty($data['social_links'])) {
+                BusinessSocialLink::create(array_merge(
+                    ['business_id' => $business->id],
+                    $data['social_links']
+                ));
+            }
+
+            // تفريغ السيشن
             session()->forget('business');
 
             return redirect()->route('user.dashboard')->with('success', 'تم حفظ النشاط بنجاح.');
@@ -181,5 +214,6 @@ class BusinessController extends Controller
             return redirect()->back()->withErrors(['general' => 'حدث خطأ غير متوقع: ' . $e->getMessage()]);
         }
     }
+
 
 }
