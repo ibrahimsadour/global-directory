@@ -3,7 +3,7 @@
 {{-- السيو الافتراضي الخاص بالموقع --}}
 
 @section('structured_data')
-<script type="application/ld+json">
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -17,7 +17,7 @@
 }
 </script>
 
-<script type="application/ld+json">
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -26,11 +26,9 @@
   "logo": "{{ setting('site_logo') ? asset('storage/' . setting('site_logo')) : asset('storage/site-settings/default-logo.webp') }}"
 }
 </script>
-
 @endsection
 
 @section('content')
-
     {{-- عرض الهيدر --}}
     @include('components.home.header')
 
@@ -42,7 +40,7 @@
     {{-- عرض الاعلانات المميزة --}}
     @include('components.home.featured-listing')
 
-    
+
     {{-- عرض المحافظات --}}
     @include('components.home.governorate')
 
@@ -50,34 +48,34 @@
     {{-- عرض اخر الاعلانات المضافة --}}
     @include('components.home.last-listing')
 
+    {{-- اكتشف الأعمال التجارية --}}
+    @include('components.home.discover-businesse')
 
     {{-- الأخبار والنصائح --}}
     @include('components.home.latest-blog')
-
-
-  
 @endsection
 
 @push('styles')
-   
 @endpush
 
 @push('scripts')
     <script>
-         function handleClick(e) {
-             // Now you can access the event object (e) directly
-         }
-    </script> 
-    <script>
-         function handleClick(like, id) {
-             axios.post('update-bookmark', {'id':id,'like':!like});
-             return !like;
-         }
+        function handleClick(e) {
+            // Now you can access the event object (e) directly
+        }
     </script>
     <script>
-         function handleChange(){
+        function handleClick(like, id) {
+            axios.post('update-bookmark', {
+                'id': id,
+                'like': !like
+            });
+            return !like;
+        }
+    </script>
+    <script>
+        function handleChange() {
             document.getElementById("location").submit();
-         }
+        }
     </script>
-
 @endpush
