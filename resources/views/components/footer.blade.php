@@ -28,7 +28,7 @@
                             <i class="bi bi-telephone-forward"></i>
                         </div>
                         <div class="detail">
-                            <p>{{ setting('site_mobile', '+31616722566') }}</p>
+                            <p>{{ setting('site_mobile', '00963944513168') }}</p>
                         </div>
                     </div>
 
