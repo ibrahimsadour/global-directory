@@ -137,18 +137,30 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        
+                        {{-- 🚀 إضافة خيار لوحة تحكم الإدارة (يظهر فقط إذا كان role هو 'admin') --}}
+                        @if(Auth::check() && Auth::user()->role === 'admin')
+                            <a class="dropdown-item fw-bold text-danger" href="{{ route('filament.admin.pages.dashboard') }}">
+                                <i class="bi bi-shield-lock-fill"></i> لوحة تحكم الإدارة
+                            </a>
+                            <div class="dropdown-divider"></div> {{-- فاصل بين روابط الأدمن والمستخدم --}}
+                        @endif
+                        
+                        {{-- روابط المستخدم العادي --}}
                         <a class="dropdown-item" href="{{ route('user.dashboard') }}"><i class="bi bi-speedometer2"></i> لوحة التحكم</a>
                         <a class="dropdown-item" href=""><i class="bi bi-gear"></i> إعدادات</a>
-                        <a class="dropdown-item" href=""><i class="bi bi-plus-square"></i>نشاط تجاري جديد</a>
+                        <a class="dropdown-item" href=""><i class="bi bi-plus-square"></i> نشاط تجاري جديد</a>
+                        
+                        <div class="dropdown-divider"></div> {{-- فاصل قبل تسجيل الخروج --}}
+
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <a
                                 class="dropdown-item"
-                                href=""
-                                onclick="event.preventDefault();
-                                this.closest('form').submit();"
+                                href="#"
+                                onclick="event.preventDefault(); this.closest('form').submit();"
                             >
-                                <i class="bi bi-box-arrow-in-left"></i> تسجيل الخروج
+                                <i class="bi bi-box-arrow-right"></i> تسجيل الخروج
                             </a>
                         </form>
                     </div>
