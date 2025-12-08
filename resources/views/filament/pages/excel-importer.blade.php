@@ -69,25 +69,42 @@
                             🆔 <strong class="min-w-[80px] inline-block">place_id:</strong> {{ $biz['place_id'] ?? '—' }}
                         </p>
 
-                        {{-- أوقات الدوام --}}
-                        @if (!empty($biz['opening_hours']) && is_string($biz['opening_hours']))
-                            <div class="text-sm text-gray-700">
-                                <strong class="block mb-1">🕒 أوقات العمل:</strong>
-                                <ul class="space-y-1 rtl:space-y-reverse">
-                                    @foreach (explode(',', $biz['opening_hours']) as $entry)
-                                        @php
-                                            preg_match('/^(.+?):\[(.+?)\]$/u', trim($entry), $matches);
-                                            $day = $matches[1] ?? null;
-                                            $hours = $matches[2] ?? null;
-                                        @endphp
+                {{-- أوقات الدوام --}}
+                @if (!empty($biz['opening_hours']) && is_string($biz['opening_hours']))
+                    <div class="text-sm text-gray-700">
+                        <strong class="block mb-1">🕒 أوقات العمل:</strong>
+                        <ul class="space-y-1 rtl:space-y-reverse">
+                            @foreach (explode(',', $biz['opening_hours']) as $entry)
+                                @php
+                                    // التعبير المنتظم المعدل: يدعم الأقواس المربعة الاختيارية
+                                    // يلتقط اليوم (matches[1]) ونطاق الوقت/الإغلاق (matches[2])
+                                    // مثال1: الاثنين:[٧:٣٠ص-١١:٠٠م]
+                                    // مثال2: الاثنين:٨:٣٠ص–٢:١٠م
+                                    preg_match('/^(.+?):(?:\[?(.+?)\]?)$/u', trim($entry), $matches);
+                                    
+                                    $day = $matches[1] ?? null;
+                                    $hours = $matches[2] ?? null;
 
-                                        @if ($day && $hours)
-                                            <li><span class="font-semibold">{{ $day }}:</span> {{ $hours }}</li>
-                                        @endif
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+                                    // تنظيف وإعادة تنسيق حالة 'مغلق' أو 'Closed'
+                                    if ($hours) {
+                                        $hours = trim($hours);
+                                        // التعامل مع حالة الإغلاق (قد تحتاج إلى إضافة المزيد من الكلمات مثل Closed أو مغلق)
+                                        if (in_array(strtolower($hours), ['مغلق', 'closed', 'no opening hours'])) {
+                                            $displayHours = '<span class="text-red-600 font-semibold">مغلق</span>';
+                                        } else {
+                                            // يتم عرض الساعات كما هي إذا كانت موجودة
+                                            $displayHours = $hours;
+                                        }
+                                    }
+                                @endphp
+
+                                @if ($day && isset($displayHours))
+                                    <li><span class="font-semibold">{{ $day }}:</span> {!! $displayHours !!}</li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                         {{-- بيانات Google الإضافية --}}
                         @if (!empty($biz['google_maps_url']) || !empty($biz['google_reviews_url']) || !empty($biz['google_rating']))

@@ -217,12 +217,23 @@ class ImportBusinessRowJob implements ShouldQueue
                 $daysData = explode(',', $row['opening_hours']);
 
                 foreach ($daysData as $entry) {
-                    // مثال: السبت:[٦:٠٠ص-٢:٠٠ص]
-                    if (preg_match('/^(.+?):\[(.+?)\]$/u', trim($entry), $matches)) {
-                        $day = trim($matches[1]);
-                        $hours = trim($matches[2]);
+                    $entry = trim($entry);
 
+                    // التعبير المنتظم المعدل: يدعم الأقواس المربعة الاختيارية
+                    // (?:\[?(.+?)\]?) : يلتقط الوقت سواء كان بين [] أو لا.
+                    // مثال: السبت:[٦:٠٠ص-٢:٠٠ص] أو الاثنين:٨:٣٠ص–٢:١٠م
+                    if (preg_match('/^(.+?):(?:\[?(.+?)\]?)$/u', $entry, $matches)) {
+                        $day = trim($matches[1]);
+                        $hours = trim($matches[2]); // هذا الآن هو نطاق الوقت أو كلمة 'مغلق'
+
+                        // 💡 1. التحقق من حالة الإغلاق (مغلق، Closed، إلخ)
+                        if (Str::contains($hours, ['مغلق', 'Closed', 'closed'])) {
+                            // إذا كان اليوم مغلقاً، ننتقل مباشرة إلى اليوم التالي دون محاولة حفظ سجل له.
+                            continue; 
+                        }
+                        
                         try {
+                            // 2. التحقق من حالة الدوام 24 ساعة
                             if (Str::contains($hours, ['Open 24 hours', 'نعمل على مدار 24 ساعة'])) {
                                 BusinessHour::create([
                                     'business_id' => $business->id,
@@ -230,8 +241,14 @@ class ImportBusinessRowJob implements ShouldQueue
                                     'open_time'   => '00:00:00',
                                     'close_time'  => '23:59:59',
                                 ]);
-                            } elseif (Str::contains($hours, ['–', '-'])) {
+                            } 
+                            
+                            // 3. التحقق من نطاق زمني مفتوح (سواء استخدم – أو -)
+                            elseif (Str::contains($hours, ['–', '-'])) {
+                                
+                                // تقسيم الوقت بناءً على الشرطتين (القصيرة أو الطويلة)
                                 [$open, $close] = preg_split('/–|-/', $hours);
+                                
                                 $open = $this->normalizeTime(trim($open));
                                 $close = $this->normalizeTime(trim($close));
 
@@ -242,8 +259,9 @@ class ImportBusinessRowJob implements ShouldQueue
                                     'close_time'  => Carbon::parse($close)->format('H:i:s'),
                                 ]);
                             }
+                            
                         } catch (\Exception $e) {
-                            Log::warning("فشل في حفظ وقت الدوام لـ {$day} في النشاط {$business->name}: {$hours}");
+                            Log::warning("فشل في حفظ وقت الدوام لـ {$day} في النشاط {$business->name}: {$hours} | السبب: {$e->getMessage()}");
                         }
                     }
                 }
