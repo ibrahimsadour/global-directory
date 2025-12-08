@@ -5,14 +5,14 @@
                 <h1 class="homepage-title">{{setting('site_title')}}</h1>
                 <p>{{setting('site_description')}}<p>
                 <form action="{{ route('search') }}" method="GET" role="search"> 
-                    <input type="hidden" name="key" value="{{ request('key') }}" autocomplete="on" />
+                    {{-- <input type="hidden" name="search_key" value="{{ request('search_key') }}" autocomplete="off" /> --}}
                     <div class="search-box-card no-margin row">
                         <div style="width: 100%;" class="col-md-6 no-padding">
                             <div class="input-group">
                                 <input
                                     type="text"
                                     class="form-control border border-2 border-gray-500"
-                                    name="key"
+                                    name="search_key"
                                     placeholder="ابحث عن المحلات التجارية والخدمات وما إلى ذلك..."
                                     style="height: 36px;"
                                 >

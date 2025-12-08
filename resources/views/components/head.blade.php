@@ -115,11 +115,12 @@
             <div class="col-lg-5 d-none d-lg-block col-md-8 search">
                 <div class="search-row row no-margin">
                     <form action="{{ route('search') }}" method="GET" class="d-flex">
-                        <input type="text" name="key" class="form-control" placeholder="ابحث عن نشاط..." value="{{ request('key') }}" />
+                        <input type="text" name="search_key" class="form-control" placeholder="ابحث عن نشاط..." value="{{ request('search_key') }}" autocomplete="off" aria-label="Search keyword" />
                         <button style="width: 10%;" type="submit" class="btn rounded-end btn-primary"><i class="bi bi-search"></i></button>
                     </form>
                 </div>
             </div>
+
             @if (Auth::check())
             <div class="col-lg-4 col-md-8 slink d-none d-md-block login-options right">
                 <div class="dropdown">
